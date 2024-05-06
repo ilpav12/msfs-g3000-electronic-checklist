@@ -1,0 +1,33 @@
+.checklist-options-popup {
+    position: absolute;
+    background: var(--gtc-black-background-gradient);
+    border: var(--gtc-black-background-border);
+    border-radius: var(--gtc-popup-border-radius);
+    color: var(--g3000-color-white);
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+    top: 35px;
+    right: 50px;
+    width: 390px;
+    height: 720px;
+    padding: 12px 7px 0 7px;
+    font-size: 29px;
+}
+
+.checklist-options-popup-title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.checklist-options-popup-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.checklist-options-popup-button {
+    width: 280px;
+    height: 150px;
+    margin-bottom: 25px;
+}

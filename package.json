@@ -1,0 +1,29 @@
+{
+  "name": "tbm-checklist",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "npm run build:compile && npm run build:rollup",
+    "build:compile": "npx tsc",
+    "build:rollup": "robocopy src/Plugins *.css build/Plugins /s & npx rollup -c rollup.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@microsoft/msfs-garminsdk": "^0.6.0-beta3",
+    "@microsoft/msfs-sdk": "^0.8.0-beta3",
+    "@microsoft/msfs-types": "^1.14.6",
+    "@microsoft/msfs-wtg3000-common": "^1.1.14",
+    "@microsoft/msfs-wtg3000-gtc": "^1.1.14",
+    "@microsoft/msfs-wtg3000-mfd": "^1.1.14",
+    "@microsoft/msfs-wtg3000-pfd": "^1.1.14",
+    "@rollup/plugin-image": "^3.0.3",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "rollup": "^2.79.1",
+    "rollup-plugin-import-css": "^3.5.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.5"
+  }
+}
