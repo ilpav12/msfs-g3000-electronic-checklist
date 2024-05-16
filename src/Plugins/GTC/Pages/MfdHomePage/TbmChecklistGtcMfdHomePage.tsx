@@ -15,6 +15,7 @@ import {
 } from "@microsoft/msfs-wtg3000-gtc";
 import {TbmChecklistFilePaths} from "../../../Shared";
 import {TbmChecklistGtcViewKeys} from "../../GtcService/TbmChecklistGtcViewKeys";
+import {TbmChecklistMfdPaneViewKeys} from "../../../MFD/Panes/TbmChecklistMfdPaneViewKeys";
 
 /**
  * Default GTD MFD home page override
@@ -160,10 +161,16 @@ export class TbmChecklistGtcMfdHomePage extends GtcView<GtcMfdHomePageProps> {
                 />
               )
           }
-          <ImgTouchButton
+          <GtcDesignatedPaneButton
+            displayPaneSettingManager={this.displayPaneSettingManager}
+            selectedPaneViewKeys={[TbmChecklistMfdPaneViewKeys.Checklist]}
             label="Checklist"
             imgSrc={TbmChecklistFilePaths.ASSETS_PATH + "/icon_small_checklist.png"}
-            onPressed={() => this.props.gtcService.changePageTo(TbmChecklistGtcViewKeys.Checklist)}
+            onPressed={() => {
+              this.displayPaneSettingManager.getSetting('displayPaneDesignatedView').value = TbmChecklistMfdPaneViewKeys.Checklist;
+              this.displayPaneSettingManager.getSetting('displayPaneView').value = TbmChecklistMfdPaneViewKeys.Checklist;
+              this.props.gtcService.changePageTo(TbmChecklistGtcViewKeys.Checklist)
+            }}
             class="gtc-directory-button"
           />
           <ImgTouchButton
