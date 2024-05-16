@@ -27,7 +27,7 @@
 .touch-button.gtc-checklist-list-button .touch-button-label,
 .touch-button-value.gtc-checklist-list-button .touch-button-value-value {
     text-align: left;
-    margin: 0 10px;
+    padding: 0 10px;
     white-space: normal;
 }
 

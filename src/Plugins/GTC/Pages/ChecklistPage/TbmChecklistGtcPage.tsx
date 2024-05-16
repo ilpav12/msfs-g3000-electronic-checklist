@@ -26,6 +26,8 @@ enum GtcChecklistPagePopupKeys {
 
 export class TbmChecklistGtcPage extends GtcView {
   private readonly optionsPopupKey = GtcChecklistPagePopupKeys.Options;
+  private readonly listRef = FSComponent.createRef<GtcList<any>>();
+  private readonly activeNormalChecklistIndex = Subject.create<number>(2);
 
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
@@ -40,13 +42,12 @@ export class TbmChecklistGtcPage extends GtcView {
     );
 
     this._title.set('Checklist');
+    this._activeComponent.set(this.listRef.instance);
   }
 
   /** @inheritDoc */
   render(): VNode {
-    const listRef = FSComponent.createRef<GtcList<any>>();
     const tbmNormalChecklists = TbmNormalChecklists.getChecklists();
-    const activeChecklistIndex = Subject.create<number>(2);
 
     return (
       <div class="gtc-checklist">
@@ -59,7 +60,7 @@ export class TbmChecklistGtcPage extends GtcView {
             label="Normal"
           >
             <GtcList
-              ref={listRef}
+              ref={this.listRef}
               bus={this.bus}
               listItemHeightPx={135}
               itemsPerPage={5}
@@ -68,14 +69,15 @@ export class TbmChecklistGtcPage extends GtcView {
               class='gtc-checklist-tab-list'
             >
               {tbmNormalChecklists.map((checklist, index) => {
+                const isHighlighted = this.activeNormalChecklistIndex.map(activeIndex => activeIndex === index);
                 return (
                   <GtcListItem>
                     <GtcTouchButton
                       label={checklist.name}
                       onPressed={() => {
-                        activeChecklistIndex.set(index);
+                        this.activeNormalChecklistIndex.set(index === this.activeNormalChecklistIndex.get() ? -1 : index);
                       }}
-                      isHighlighted={activeChecklistIndex.get() === index}
+                      isHighlighted={isHighlighted}
                       isInList
                       class='gtc-checklist-list-button'
                     />
