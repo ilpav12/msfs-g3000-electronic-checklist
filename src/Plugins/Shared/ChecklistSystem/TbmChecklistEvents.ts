@@ -44,5 +44,5 @@ type TbmChecklistEvent = ActiveChecklistChangedEvent | ChecklistResetEvent | Che
 /** Interface of the Tbm checklist events. */
 export interface TbmChecklistEvents {
   /** Tbm checklist event. */
-  readonly Tbm_checklist_event: TbmChecklistEvent;
+  readonly tbm_checklist_event: TbmChecklistEvent;
 }

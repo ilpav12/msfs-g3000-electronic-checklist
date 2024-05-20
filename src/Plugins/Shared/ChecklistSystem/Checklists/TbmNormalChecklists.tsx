@@ -4,7 +4,7 @@ import { TbmChecklist, TbmChecklistCategory, TbmChecklistItemType } from '../Tbm
 
 export enum TbmNormalChecklistNames {
   AirspeedsForNormalOperation = 'Airspeeds for Normal Operation',
-  PreflightInspection = 'Preflight Inspection',
+  InsideInspection = 'Inside Inspection',
   BeforeStartingEngine = 'Before Starting Engine',
   StartingEngine = 'Starting Engine',
   BeforeTaxiing = 'Before Taxiing',
@@ -41,67 +41,41 @@ export class TbmNormalChecklists {
         TbmNormalChecklistNames.AirspeedsForNormalOperation,
         TbmChecklistCategory.Normal,
         [
-          { type: TbmChecklistItemType.Section, title: 'Takeoff Rotation:' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Normal, Flaps 50%', action: '77 KIAS' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Obstacle Clearance, Flaps 50%', action: '85 KIAS' },
-          { type: TbmChecklistItemType.Section, title: 'Enroute Climb, Flaps Up:' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Best Rate of Climb, SL', action: '103 KIAS' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Best Rate of Climb, 10,000', action: '102 KIAS' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Best Angle of Climb, SL', action: '88 KIAS' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Best Angle of Climb, 10,000', action: '88 KIAS' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Normal, Full Power, Full Rich Climb', action: '120 KIAS' },
-          { type: TbmChecklistItemType.Section, title: 'Landing Approach:' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Normal Approach, Flaps Up', action: '90-95 KIAS' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Normal Approach, Flaps 50%', action: '85-90 KIAS' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Normal Approach, Flaps 100%', action: '80-85 KIAS' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Short Field, Flaps 100% (VREF)', action: '79 KIAS' },
-          { type: TbmChecklistItemType.Section, title: 'Go-Around, Flaps 50%:' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Full Power', action: '80 KIAS' },
-          { type: TbmChecklistItemType.Section, title: 'Maximum Recommended Turbulent Air Penetration:' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '3600 lb', action: '140 KIAS' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '2900 lb', action: '123 KIAS' },
-          { type: TbmChecklistItemType.Section, title: 'Maximum Demonstrated Crosswind Velocity:' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Takeoff or Landing', action: '21 Knots' },
-          { type: TbmChecklistItemType.Section, title: 'Anti Ice System Airspeed Limitations:' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Max. Airspeed Anti-Ice System\nOperation', action: '177 KIAS and 204 KTAS' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Recommended Holding Airspeed', action: '120 KIAS' },
+          { type: TbmChecklistItemType.Section, title: 'Rotation airspeed:' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Flaps TO', action: '90 KIAS' },
+          { type: TbmChecklistItemType.Section, title: 'Best rate of climb speed:' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Landing gear and flaps UP', action: '124 KIAS' },
+          { type: TbmChecklistItemType.Section, title: 'Best angle of climb speed:' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Landing gear and flaps UP', action: '100 KIAS' },
+          { type: TbmChecklistItemType.Section, title: 'Maximum speed:' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Flaps TO', action: '178 KIAS' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Flaps LDG', action: '122 KIAS' },
+          { type: TbmChecklistItemType.Section, title: 'Maximum airspeed with landing gear down:' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'temp', action: '140 KIAS' },
+          { type: TbmChecklistItemType.Section, title: 'Maximum landing gear operating airspeeds:' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Extension', action: '178 KIAS' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Retraction', action: '150 KIAS' },
+          { type: TbmChecklistItemType.Section, title: 'Approach airspeed:' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Flaps LDG', action: '85 KIAS' },
+          { type: TbmChecklistItemType.Section, title: 'Maximum operating speed:' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'temp', action: '266 KIAS' },
+          { type: TbmChecklistItemType.Section, title: 'Glide speed (maximum L / D ratio):' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: 'Landing gear and flaps UP', action: '120 KIAS' },
         ],
       ),
       new TbmChecklist(
-        TbmNormalChecklistNames.PreflightInspection,
+        TbmNormalChecklistNames.InsideInspection,
         TbmChecklistCategory.Normal,
         [
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '1. Cabin', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Required Documents', action: 'ON BOARD' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. Avionics Power Switch', action: 'OFF' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Bat 2 Master Switch', action: 'ON' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'd. PFD', action: 'VERIFY ON' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'e. Essential Bus Voltage', action: '23-25 VOLTS' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'f. Flap Position Light', action: 'OUT' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'g. Bat 1 Master Switch', action: 'ON' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'h. Avionics Cooling Fan', action: 'AUDIBLE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'i. WIND SHLD Push-Button', action: 'PRESS' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(1) Verify evidence of deicing\nfluid from spray nozzles.', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'j. PUMP BKUP Switch', action: 'ON' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(1) Metering Pump Duty Cycle', action: 'VERIFY CONTINUOUSLY ON' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(2) Deicing Fluid and Endurance\nIndications', action: 'CHECK' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'k. PUMP BKUP Switch', action: 'OFF' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'l. ICE PROTECT System Switch', action: 'ON' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'm. ICE PROTECT Mode Switch', action: 'NORM' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(1) Metering Pump Duty Cycle', action: 'VERIFY 30s ON, 90s OFF' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(2) Deicing Fluid and Endurance\nIndications', action: 'CHECK' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'n. ICE PROTECT Mode Switch', action: 'HIGH' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(1) Metering Pump Duty Cycle', action: 'VERIFY CONTINUOUSLY ON' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(2) Deicing Fluid and Endurance\nIndications', action: 'CHECK' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'o. ICE Inspection Lights Switch', action: 'ON' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(1) Verify LH and RH Operation.', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'p. PITOT HEAT Switch', action: 'ON 45 SECONDS, THEN OFF' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'q. Lights', action: 'CHECK OPERATION' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'r. Stall Warning', action: 'TEST' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: '1. Cabin door and pilot door, if installed', action: 'Closed / Locked' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: '2. Baggage', action: 'Stowed' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: '3. EMERGENCY EXIT pin', action: 'Removed' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: '4. Seat, pedals, harness', action: 'Adjust / Lock' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: '4. Seat, pedals, harness', action: 'Adjust / Lock' },
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: Test stall warning system by applying suction to the stall warning system inlet and noting the warning horn sounds.
               </div>
             ),
@@ -130,142 +104,27 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: Verify tape covering the forward and aft inspection holes located on outboard ends of horizontal stabilizer is installed and securely attached.
               </div>
             ),
           },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Elevator and Tab', action: 'CONDITION AND MOVEMENT' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'd. Rudder', action: 'FREEDOM OF MOVEMENT' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'e. Rudder Trim Tab', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'f. Attachment hinges, bolts and\ncotter pins', action: 'SECURE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'g. Stabilizers Porous Panels', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(1) Verify Evidence of Deicing\nFluid Along Length of Panels and\nElevator Horns', action: 'SECURE' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '4. Right Fuselage', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Static Button', action: 'CHECK FOR BLOCKAGE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. Wing/Fuselage Fairing', action: 'CHECK' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Door Lock', action: 'UNLOCK' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '5. Right Wing Trailing Edge', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Flap and Rub Strips (if installed)', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. Aileron and Tab', action: 'CONDITION AND MOVEMENT' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Aileron and Seal', action: 'SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'd. Hinges, actuation arm, bolts, and\ncotter pins', action: 'SECURE' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '6. Right Wing Tip', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Tip', action: 'ATTACHMENT' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. Strobe, Nav Light and Lens', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Fuel Vent (underside)', action: 'UNOBSTRUCTED' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '7. Right Wing Forward and Main Gear', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Leading Edge and Stall Strips', action: 'CONDITION' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. Fuel Cap', action: 'CHECK QUANTITY AND SECURE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Fuel Drains (2 underside)', action: 'DRAIN AND SAMPLE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'd. Wheel Fairings', action: 'SECURITY, ACCUMULATION OF DEBRIS' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'e. Tire', action: 'CONDITION, INFLATION, AND WEAR' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'f. Wheel and Brakes', action: 'FLUID LEAKS, EVIDENCE OF\nOVERHEATING, GENERAL CONDITION\nAND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'g. Chocks and Tiedown Ropes', action: 'REMOVE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'h. Deicing Fluid Tank', action: 'VERIFY DESIRED QUANTITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(1) Filler Cap', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(2) Fluid Vent (underside wing)', action: 'UNOBSTRUCTED' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'i. Porous Panels', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(1) Verify Evidence of Deicing\nFluid Along Length of Panels.', action: null },
-          {
-            type: TbmChecklistItemType.Text,
-            text: () => (
-              <div class="Tbm-checklist-text warning">
-                WARNING: Stall Warning Faceplate and Vane may be HOT.
-              </div>
-            ),
-          },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'j. Lift Transducer Faceplate', action: 'PERCEPTIBLY HOT' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'k. Lift Transducer Vane', action: 'VERY HOT' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(1) Verify Stall Warning audio\nalert after lifting stall vane with\nwooden tooth pick or tongue\ndepressor.', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '8. Nose, Right Side', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Vortex Generator', action: 'CONDITION' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. Cowling', action: 'ATTACHMENTS SECURE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Exhaust Pipe', action: 'CONDITION, SECURITY, AND\nCLEARANCE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'd. Gascolator (underside)', action: 'DRAIN FOR 3 SECONDS, SAMPLE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'e. Ice—lnspection Light', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '9. Nose gear, Propeller, and Spinner', action: null },
-          {
-            type: TbmChecklistItemType.Text,
-            text: () => (
-              <div class="Tbm-checklist-text warning">
-                WARNING: Keep clear of propeller rotation plane. Do not allow others to approach propeller.
-              </div>
-            ),
-          },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Tow Bar', action: 'REMOVE AND STOW' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. Strut', action: 'CONDITION' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Wheel Fairing', action: 'SECURITY, ACCUMULATION OF DEBRIS' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'd. Wheel and Tire', action: 'CONDITION, INFLATION, AND WEAR' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'e. Propeller', action: 'CHECK ADEOUATE GROUND\nCLEARANCE, CONDITION\n(INDENTATIONS, NICKS, ETC.)' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'f. Slinger Ring', action: 'EVIDENCE OF DEICING FLUID' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'g. Spinner', action: 'CONDITION, SECURITY, AND OIL LEAKS' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'h. Air Inlets', action: 'UNOBSTRUCTED' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'i. Alternator', action: 'CONDITION' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '10. Nose, Left Side', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Landing Light', action: 'CONDITION' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. Engine Oil', action: 'CHECK 6-8 QUARTS, LEAKS, CAP &\nDOOR SECURE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Cowling', action: 'ATTACHMENTS SECURE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'd. External Power', action: 'DOOR SECURE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'e. Vortex Generator', action: 'CONDITION' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'f. Exhaust Pipe.', action: 'CONDITION, SECURITY, AND\nCLEARANCE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'g. Ice—lnspection Light', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'h. Windshield Spray Nozzles', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '11. Left Gear and Forward Wing', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Wheel fairings', action: 'SECURITY, ACCUMULATION OF DEBRIS' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. Tire', action: 'CONDITION, INFLATION, AND WEAR' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Wheel and Brakes', action: 'FLUID LEAKS, EVIDENCE OF\nOVERHEATING, GENERAL CONDITION\nAND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'd. Chocks and Tiedown Ropes', action: 'REMOVE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'e. Fuel Drains (2 underside)', action: 'DRAIN AND SAMPLE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'f. Fuel Cap.', action: 'CHECK QUANTITY AND SECURE' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'g. Leading Edge and Stall Strips', action: 'CONDITION' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'h. Deicing Fluid Tank', action: 'VERIFY DESIRED QUANTITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(1) Filler Cap', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(2) Fluid Vent (underside wing)', action: 'UNOBSTRUCTED' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'i. Porous Panels', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 3, title: '(1) Verify Evidence of Deicing\nFluid Along Length of Panels.', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '12. Left Wing Tip', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Fuel Vent (underside)', action: 'UNOBSTRUCTED' },
-          {
-            type: TbmChecklistItemType.Text,
-            text: () => (
-              <div class="Tbm-checklist-text warning">
-                WARNING: Pitot Probe may be HOT.
-              </div>
-            ),
-          },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. Pitot Probe (underside)', action: 'UNOBSTRUCTED' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Pitot Probe', action: 'VERY HOT' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'd. Strobe, Nav Light and Lens', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'e. Tip', action: 'ATTACHMENT' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '13. Left Wing Trailing Edge', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Flap and Rub Strips (If installed)', action: 'CONDITION AND SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. Aileron', action: 'FREEDOM OF MOVEMENT' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Aileron Gap Seal', action: 'SECURITY' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'd. Hinges, actuation arm, bolts, and\ncotter Pins', action: 'SECURE' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '14. Cabin', action: null },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. Fluid Quantity', action: 'VERIFY 5 GALLON MINIMUM' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. ICE PROTECT System Switch', action: 'OFF' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'c. Flaps', action: '0%' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'd. Battery 1 Master Switch', action: 'OFF' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'e. Avionics Master Switch', action: 'OFF' },
-          { type: TbmChecklistItemType.Checkbox, level: 2, title: 'f. Cabin Speaker', action: 'OFF' },
         ],
       ),
       new TbmChecklist(
         TbmNormalChecklistNames.BeforeStartingEngine,
         TbmChecklistCategory.Normal,
         [
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '1. Preflight Inspection', action: 'COMPLETED' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '2. Weight and Balance', action: 'VERIFY WITHN LIMITS' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '3. Emergency Equipment', action: 'ON BOARD' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: '1. Preflight\nInspection', action: 'COMPLETED' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: '2. Weight and\nBalance', action: 'VERIFY WITHIN\nLIMITS' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: '3. Emergency\nEquipment', action: 'ON BOARD' },
           { type: TbmChecklistItemType.Checkbox, level: 1, title: '4. Passengers', action: 'BRIEFED' },
-          { type: TbmChecklistItemType.Checkbox, level: 1, title: '5. Seats, Seat Belts, and Harnesses', action: 'ADJUST & SECURE' },
+          { type: TbmChecklistItemType.Checkbox, level: 1, title: '5. Seats, Seat Belts,\nand Harnesses', action: 'ADJUST &\nSECURE' },
           {
             type: TbmChecklistItemType.Text,
             extendedMarginBelow: true,
             text: () => (
-              <div class="Tbm-checklist-text warning">
+              <div class="tbm-checklist-text warning">
                 WARNING: Ensure that the airplane is properly loaded and within the AFM’s weight and
                 balance limitations prior to takeoff.
               </div>
@@ -274,7 +133,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 CAUTION: Crew seats must be locked in position and control handles fully down before
                 flight. Ensure seat belt harnesses are not twisted.
               </div>
@@ -283,7 +142,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 Prior to flight, Verify CAPS handle safety pin is removed and ensure all the passengers
                 have been fully briefed on smoking, the use of the oxygen system, seat belts, doors,
                 emergency exits, egress hammer, and CAPS.
@@ -300,7 +159,7 @@ export class TbmNormalChecklists {
             type: TbmChecklistItemType.Text,
             extendedMarginBelow: true,
             text: () => (
-              <div class="Tbm-checklist-text warning">
+              <div class="tbm-checklist-text warning">
                 WARNING: If airplane will be started using external power, keep all personnel and power
                 unit cables well clear of the propeller rotation plane.
               </div>
@@ -309,7 +168,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 CAUTION: Alternators should be left OFF during engine starting to avoid high electrical
                 loads. During start, limit cranking to intervals of 10 seconds with a 20-second cooling
                 period between cranks. This will improve battery and contactor life.
@@ -354,7 +213,7 @@ export class TbmNormalChecklists {
             type: TbmChecklistItemType.Text,
             extendedMarginBelow: true,
             text: () => (
-              <div class="Tbm-checklist-text warning">
+              <div class="tbm-checklist-text warning">
                 WARNING: Maximum continuous engine speed for taxiing is 1000 RPM on flat, smooth,
                 hard surfaces. Power settings slightly above 1000 RPM are permissible to start motion,
                 for turf, soft surfaces, and on inclines. Use minimum power to maintain taxi speed. If the
@@ -378,7 +237,7 @@ export class TbmNormalChecklists {
             type: TbmChecklistItemType.Text,
             extendedMarginBelow: true,
             text: () => (
-              <div class="Tbm-checklist-text warning">
+              <div class="tbm-checklist-text warning">
                 WARNING: Do not takeoff with frost, ice, snow, or other contamination on the fuselage,
                 wing, stabilizers, and control surfaces.
               </div>
@@ -387,7 +246,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 CAUTION: Because this aircraft has a turbocharged system that maintains 36.0 in.Hg
                 manifold pressure for all takeoffs, the mixture should be full rich for takeoff, even at high
                 elevation airports. Leaning for takeoff and during maximum performance climb may cause
@@ -402,7 +261,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 CAUTION: Use of RECIRC mode prohibited in flight.
               </div>
             ),
@@ -410,7 +269,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: Aircraft with optional Air Conditioning System: Add 100 feet to ground roll
                 distance and 150 feet to distance over 50' obstacle if Air Conditioner is ON during
                 takeoff.
@@ -436,7 +295,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text double-indent">
+              <div class="tbm-checklist-text double-indent">
                 -Verify both ALT 1 and ALT 2 caution lights out and positive amps indication for<br />each alternator.
               </div>
             )
@@ -446,7 +305,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: Pitot Heat should be turned ON for flight into IMC, flight into visible moisture, or
                 whenever ambient temperatures are 41 F (5 C) or less.
               </div>
@@ -458,7 +317,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text single-indent">
+              <div class="tbm-checklist-text single-indent">
                 RPM drop must not exceed 150 RPM for either magneto. RPM differential must not<br />exceed 75 RPM between magnetos.
               </div>
             )
@@ -494,7 +353,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: Fuel BOOST should be left ON during takeoff and for Climb as required for vapor
                 suppression with hot or warm fuel.
               </div>
@@ -516,7 +375,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 The fuel pump should be in the BOOST position during takeoff and for climb as required
                 for vapor suppression with hot or warm fuel.
               </div>
@@ -539,7 +398,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: The fuel pump should be in the BOOST position during takeoff and for climb as
                 required for vapor suppression with hot or warm fuel.
               </div>
@@ -574,7 +433,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: The Fuel Pump must be set to BOOST during maneuvering flight (i.e. flight training
                 maneuvers, chandelles, stalls, etc.).
               </div>
@@ -586,7 +445,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text single-indent">
+              <div class="tbm-checklist-text single-indent">
                 If any CHT’s exceed 420°F:
               </div>
             ),
@@ -606,7 +465,7 @@ export class TbmNormalChecklists {
           { type: TbmChecklistItemType.Checkbox, level: 1, title: '5. Monitor ice accumulation', action: null },
           {
             type: TbmChecklistItemType.Text, text: () => (
-              <div class="Tbm-checklist-text single-indent">
+              <div class="tbm-checklist-text single-indent">
                 If ice accretions do not shed from protected surfaces:
               </div>
             )
@@ -614,7 +473,7 @@ export class TbmNormalChecklists {
           { type: TbmChecklistItemType.Checkbox, level: 2, title: 'a. ICE PROTECT Mode', action: 'HIGH' },
           {
             type: TbmChecklistItemType.Text, text: () => (
-              <div class="Tbm-checklist-text single-indent">
+              <div class="tbm-checklist-text single-indent">
                 If ice accumulating on protected surfaces:
               </div>
             )
@@ -622,7 +481,7 @@ export class TbmNormalChecklists {
           { type: TbmChecklistItemType.Checkbox, level: 2, title: 'b. ICE PROTECT Mode Push-Button', action: 'MAX' },
           {
             type: TbmChecklistItemType.Text, text: () => (
-              <div class="Tbm-checklist-text single-indent">
+              <div class="tbm-checklist-text single-indent">
                 If ice accumulating on protected surfaces:
               </div>
             )
@@ -660,7 +519,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text single-indent">
+              <div class="tbm-checklist-text single-indent">
                 For Rapid Descent:
               </div>
             ),
@@ -670,7 +529,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text single-indent">
+              <div class="tbm-checklist-text single-indent">
                 For Rapid Descent:
               </div>
             ),
@@ -680,7 +539,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 Avoid prolonged idle settings. Maintain a CHT of 240°F (116°C) or greater.
               </div>
             ),
@@ -703,7 +562,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text double-indent">
+              <div class="tbm-checklist-text double-indent">
                 If ice continues accumulating on protected surfaces:
               </div>
             ),
@@ -712,7 +571,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text double-indent">
+              <div class="tbm-checklist-text double-indent">
                 If ice accretions do not shed from protected surfaces:
               </div>
             ),
@@ -723,7 +582,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 CAUTION: To prevent an obstructed View due to residual deicing fluid on windshield, do
                 not operate windshield de—ice system within 30 seconds of landing.
               </div>
@@ -742,13 +601,13 @@ export class TbmNormalChecklists {
           { type: TbmChecklistItemType.Checkbox, level: 1, title: '1. Flaps', action: '100%' },
           { type: TbmChecklistItemType.Checkbox, level: 1, title: '2. Airspeed', action: '80-85 KIAS' },
           { type: TbmChecklistItemType.Checkbox, level: 1, title: '3. Power Lever', action: 'AS REQUIRED' },
-          { type: TbmChecklistItemType.Text, text: () => <div class="Tbm-checklist-text single-indent">After touchdown:</div> },
+          { type: TbmChecklistItemType.Text, text: () => <div class="tbm-checklist-text single-indent">After touchdown:</div> },
           { type: TbmChecklistItemType.Checkbox, level: 1, title: '4. Brakes', action: 'AS REQUIRED' },
           {
             type: TbmChecklistItemType.Text,
             extendedMarginBelow: true,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 CAUTION: Landings should be made with full flaps. Landings with less than full flaps are
                 recommended only if the flaps fail to deploy or to extend the aircraft’s glide distance
                 redue to engine malfunction. Landings with flaps at 50% or 0%; power should be used to
@@ -760,7 +619,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 Normal landings are made with full flaps with power on or off. Surface winds and air
                 turbulence are usually the primary factors in determining the most comfortable approach
                 speeds.
@@ -770,7 +629,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 Actual touchdown should be made with power off and on the main wheels first to reduce.
                 the landing speed and subsequent need for braking. Gently lower the nose wheel to the
                 runway after airplane speed has diminished. This is especially important for rough or soft
@@ -782,7 +641,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 Normal crosswind landings are made with full flaps. Avoid prolonged slips. After
                 touchdown, hold a straight course with rudder and brakes as required.
               </div>
@@ -791,7 +650,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 The maximum allowable crosswind velocity is dependent upon pilot capability as well as
                 aircraft limitations. Operation in direct crosswinds of 21 knots has been demonstrated.
               </div>
@@ -806,14 +665,14 @@ export class TbmNormalChecklists {
           { type: TbmChecklistItemType.Checkbox, level: 1, title: '1. Flaps', action: '100%' },
           { type: TbmChecklistItemType.Checkbox, level: 1, title: '2. Airspeed', action: '79 KIAS' },
           { type: TbmChecklistItemType.Checkbox, level: 1, title: '3. Power Lever', action: 'AS REQUIRED' },
-          { type: TbmChecklistItemType.Text, text: () => <div class="Tbm-checklist-text single-indent">After clear of obstacles:</div> },
+          { type: TbmChecklistItemType.Text, text: () => <div class="tbm-checklist-text single-indent">After clear of obstacles:</div> },
           { type: TbmChecklistItemType.Checkbox, level: 1, title: '4. Power Lever', action: 'REDUCE TO IDLE' },
-          { type: TbmChecklistItemType.Text, text: () => <div class="Tbm-checklist-text single-indent">After touchdown:</div> },
+          { type: TbmChecklistItemType.Text, text: () => <div class="tbm-checklist-text single-indent">After touchdown:</div> },
           { type: TbmChecklistItemType.Checkbox, level: 1, title: '5. Brakes', action: 'MAXIMUM' },
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 For a short field landing in smooth air conditions, make an approach at 79 KIAS with full
                 flaps using enough power to control the glide path (slightly higher approach speeds
                 should be used under turbulent air conditions). After all approach obstacles are cleared,
@@ -826,7 +685,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 Immediately after touchdown, lower the nose wheel and apply braking as required. For
                 maximum brake effectiveness, retract the flaps, hold the control yoke full back, and apply
                 maximum brake pressure without skidding.
@@ -846,7 +705,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text single-indent">
+              <div class="tbm-checklist-text single-indent">
                 After clear of obstacles:
               </div>
             ),
@@ -871,7 +730,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: As the airplane slows the rudder becomes less effective and taxiing is
                 accomplished using differential braking.
               </div>
@@ -894,7 +753,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 CAUTION: Note that the engine hesitates as the switch cycles through the “OFF”
                 position. If the engine does not hesitate, one or both magnetos are not grounded.
                 Prominently mark the propeller as being “Hot”, and contact maintenance personnel
@@ -905,7 +764,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: After a hard landing, the ELT may activate. If this is suspected, press the RESET
                 button.
               </div>
@@ -922,7 +781,7 @@ export class TbmNormalChecklists {
             type: TbmChecklistItemType.Text,
             extendedMarginBelow: true,
             text: () => (
-              <div class="Tbm-checklist-text warning">
+              <div class="tbm-checklist-text warning">
                 WARNING: Use caution when pulling the propeller through by hand. Make sure
                 ignition switch is OFF, keys are out of ignition, and then act as if the engine will start.
               </div>
@@ -938,7 +797,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: In temperatures down to 20°F, hold Fuel Pump switch to HIGH BOOST/PRIME for 15
                 seconds prior to starting.
               </div>
@@ -950,7 +809,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 CAUTION: Limit cranking to intervals of 10 seconds with a 20 second cooling period
                 between cranks.
               </div>
@@ -974,7 +833,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: To facilitate faster cabin cooling, prior to engine start leave the cabin doors open
                 for a short time to allow hot air to escape cabin.
               </div>
@@ -985,7 +844,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: Decrease electrical load if battery discharge is noted.
               </div>
             ),
@@ -1002,7 +861,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 For airplanes that experience prolonged engine operation on the ground, the following
                 procedure is recommended to reduce potential for spark plug lead fouling and lead build—
                 up on engine valve guides.
@@ -1012,7 +871,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text warning">
+              <div class="tbm-checklist-text warning">
                 WARNING: Before takeoff, the mixture lever mst be returned to the full forward/rich
                 position.
               </div>
@@ -1024,7 +883,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 NOTE: If further ground operations will be required after the BEFORE TAKEOFF checklist
                 is completed, lean the mixture again (as described above) until ready for the TAKEOFF
                 checklist.
@@ -1040,7 +899,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 When installed, Electronic Stability and Protection (ESP) assists the pilot in maintaining
                 the airplane in a safe flight condition. To Enable/Disable the System:
               </div>
@@ -1057,7 +916,7 @@ export class TbmNormalChecklists {
           {
             type: TbmChecklistItemType.Text,
             text: () => (
-              <div class="Tbm-checklist-text ">
+              <div class="tbm-checklist-text ">
                 Although ESP is only provided when AFCS Autopilot is disengaged, the AFCS and its
                 servos are the source of ESP guidance. When the AP Disconnect button is pressed and
                 held, the servos will provide no ESP control force feedback. Upon release of the AP
