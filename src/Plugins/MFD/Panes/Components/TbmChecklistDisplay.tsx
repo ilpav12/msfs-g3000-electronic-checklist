@@ -1,16 +1,22 @@
 import {
   ArraySubject,
-  EventBus, FocusPosition,
+  EventBus,
+  FocusPosition,
   FSComponent,
   HardwareUiControlProps,
+  HEvent,
   MathUtils,
   Subject,
-  Subscribable, UiControlPropEventHandlers,
+  Subscribable,
+  UiControlPropEventHandlers,
   VNode
 } from "@microsoft/msfs-sdk";
 import {
-  TbmChecklistEvents, TbmChecklistItem,
-  TbmChecklistItemReadonly, TbmChecklistItemState, TbmChecklistItemType,
+  TbmChecklistEvents,
+  TbmChecklistItem,
+  TbmChecklistItemReadonly,
+  TbmChecklistItemState,
+  TbmChecklistItemType,
   TbmChecklistPageFocusableItemType,
   TbmChecklistReadonly,
   TbmChecklistRepository
@@ -21,9 +27,11 @@ import {
   TbmChecklistUiControl
 } from "../../../Shared/UI/TbmChecklistUiControl";
 import {TbmChecklistItemDisplay} from "./TbmChecklistItemDisplay";
+import {NextChecklistControl} from "./TbmChecklistNextbutton";
 
 import './TbmChecklistDisplay.css';
-import { NextChecklistControl } from "./TbmChecklistNextbutton";
+import {GtcHardwareControlEvent, GtcInteractionEventUtils} from "../../../Shared/Events/GtcInteractionEvent";
+import {DisplayPaneControlEvents} from "@microsoft/msfs-wtg3000-common";
 
 /** Component props for the {@link TbmChecklistDisplay} component */
 export interface TbmChecklistDisplayProps extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
@@ -37,13 +45,12 @@ export interface TbmChecklistDisplayProps extends UiControlPropEventHandlers<Fms
   isChecklistCompleted: Subscribable<boolean>;
   /** The focused item type. */
   focusedItemType: Subject<TbmChecklistPageFocusableItemType>;
-  // /** Function to open checklist popups. */
-  // openChecklistPopup: (type: 'category' | 'checklist') => void;
 }
 
 export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDisplayProps> {
   private readonly scrollContainer = FSComponent.createRef<HTMLDivElement>();
   protected readonly checklistItemListRef = FSComponent.createRef<TbmChecklistControlList<TbmChecklistItemReadonly>>();
+  private gtcInControl = Subject.create(-1);
 
   private items = ArraySubject.create<TbmChecklistItemReadonly>([]);
 
@@ -61,6 +68,30 @@ export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDispl
 
     this.ensureIndexInView = this.checklistItemListRef.instance.ensureIndexInView.bind(this.checklistItemListRef.instance);
     this.checklistItemListRef.instance.ensureIndexInView = this.replaceEnsureIndexInView.bind(this);
+
+    this.props.bus.getSubscriber<HEvent>().on('hEvent').handle(this.onEvent.bind(this));
+    this.props.bus.getSubscriber<DisplayPaneControlEvents>().on('change_display_pane_select_left').handle(() => console.log('test'));
+    this.props.bus.getSubscriber<DisplayPaneControlEvents>().on('gtc_1_display_pane_select').handle((index) => {
+      this.gtcInControl.set(1)
+      console.log('gtc_1_display_pane_select', this.gtcInControl.get(), index)
+    });
+    this.props.bus.getSubscriber<DisplayPaneControlEvents>().on('gtc_2_display_pane_select').handle(() => {
+      this.gtcInControl.set(2)
+      console.log('gtc_2_display_pane_select', this.gtcInControl.get())
+    });
+  }
+
+  onEvent(event: any) {
+    switch (GtcInteractionEventUtils.hEventMap('horizontal', 1)(event)) {
+      case GtcHardwareControlEvent.MapKnobInc:
+        this.scroll('forward');
+        break;
+      case GtcHardwareControlEvent.MapKnobDec:
+        this.scroll('backward');
+        break;
+      case GtcHardwareControlEvent.MapKnobPush:
+        this.toggleItemCompletedStatus(this.items.get(this.previousIndex));
+    }
   }
 
   /**

@@ -1,14 +1,13 @@
-import {DisplayPaneView, DisplayPaneViewProps} from "@microsoft/msfs-wtg3000-common";
+import {DisplayPaneView, DisplayPaneViewEvent, DisplayPaneViewProps} from "@microsoft/msfs-wtg3000-common";
 import {EventBus, FSComponent, Subject, Subscription, VNode} from "@microsoft/msfs-sdk";
 
 import "./TbmChecklistMfdPane.css";
 import { TbmChecklistUiControl } from "../../Shared/UI/TbmChecklistUiControl";
 import { TbmChecklistDisplay } from "./Components/TbmChecklistDisplay";
 import {
-  TbmChecklistCategory,
   TbmChecklistEvents,
   TbmChecklistPageFocusableItemType,
-  TbmChecklistRepository, TbmNormalChecklistNames
+  TbmChecklistRepository,
 } from "../../Shared/ChecklistSystem";
 
 export interface TbmChecklistPageProps extends DisplayPaneViewProps {
@@ -49,7 +48,6 @@ export class TbmChecklistMfdPane extends DisplayPaneView<TbmChecklistPageProps> 
             repo={this.props.repo}
             checklist={this.activeChecklist}
             isChecklistCompleted={this.props.repo.isActiveChecklistComplete}
-            // openChecklistPopup={this.openChecklistPopup.bind(this)}
             innerKnobScroll
           />
         </TbmChecklistUiControl>

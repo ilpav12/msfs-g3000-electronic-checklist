@@ -79,8 +79,8 @@ export class TbmChecklistItemDisplay extends TbmChecklistUiControl<TbmChecklistI
    * @returns The checkbox item VNode.
    */
   private renderCheckboxItem(level: number): VNode {
-    const title = (this.props.item.title || '').replace('\n', '<br>');
-    const action = this.props.item.action && this.props.item.action.replace('\n', '<br>');
+    const title = (this.props.item.title || '').replace(new RegExp('\n', "g"), '<br>');
+    const action = this.props.item.action && this.props.item.action.replace(new RegExp('\n', "g"), '<br>');
 
     return (
       <div class={{

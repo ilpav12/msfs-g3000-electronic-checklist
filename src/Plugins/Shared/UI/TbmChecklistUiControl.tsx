@@ -2,12 +2,13 @@ import {
   FSComponent,
   HardwareControlListProps,
   HardwareUiControl, HardwareUiControlList,
-  HardwareUiControlProps,
+  HardwareUiControlProps, HEvent,
   UiControlEventHandler,
   UiControlPropEventHandlers, VNode
 } from "@microsoft/msfs-sdk";
 
-export type FmsUiControlEvents = Record<'temp', UiControlEventHandler<TbmChecklistUiControl>>
+
+export type FmsUiControlEvents = Record<keyof HEvent, UiControlEventHandler<TbmChecklistUiControl>>
 
 export interface TbmChecklistUiControlProps extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
 }

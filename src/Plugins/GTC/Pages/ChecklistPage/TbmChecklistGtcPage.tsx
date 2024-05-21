@@ -11,7 +11,7 @@ import {
   TabbedContent,
   TabConfiguration
 } from "@microsoft/msfs-wtg3000-gtc";
-import {TbmNormalChecklists} from "../../../Shared/ChecklistSystem";
+import {TbmChecklistEvents, TbmChecklistItemState, TbmNormalChecklists} from "../../../Shared/ChecklistSystem";
 
 import "./TbmChecklistGtcPage.css";
 import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common";
@@ -76,6 +76,12 @@ export class TbmChecklistGtcPage extends GtcView {
                       label={checklist.name}
                       onPressed={() => {
                         this.activeNormalChecklistIndex.set(index === this.activeNormalChecklistIndex.get() ? -1 : index);
+                        this.bus.getPublisher<TbmChecklistEvents>()
+                          .pub('tbm_checklist_event', {
+                            type: 'active_checklist_changed',
+                            newActiveChecklistName: checklist.name,
+                          }, true);
+
                       }}
                       isHighlighted={isHighlighted}
                       isInList
