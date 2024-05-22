@@ -44,6 +44,7 @@ export class TbmChecklistMfdPane extends DisplayPaneView<TbmChecklistPageProps> 
           <TbmChecklistDisplay
             bus={this.props.bus}
             ref={this.checklistDisplayRef}
+            index={this.props.index}
             focusedItemType={this.focusedItemType}
             repo={this.props.repo}
             checklist={this.activeChecklist}

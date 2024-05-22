@@ -4,7 +4,6 @@ import {
   FocusPosition,
   FSComponent,
   HardwareUiControlProps,
-  HEvent,
   MathUtils,
   Subject,
   Subscribable,
@@ -28,10 +27,9 @@ import {
 } from "../../../Shared/UI/TbmChecklistUiControl";
 import {TbmChecklistItemDisplay} from "./TbmChecklistItemDisplay";
 import {NextChecklistControl} from "./TbmChecklistNextbutton";
+import {TbmChecklistGtcInteractionEvent} from "../../../Shared/Events/TbmChecklistGtcInteractionEvent";
 
 import './TbmChecklistDisplay.css';
-import {GtcHardwareControlEvent, GtcInteractionEventUtils} from "../../../Shared/Events/GtcInteractionEvent";
-import {DisplayPaneControlEvents} from "@microsoft/msfs-wtg3000-common";
 
 /** Component props for the {@link TbmChecklistDisplay} component */
 export interface TbmChecklistDisplayProps extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
@@ -39,6 +37,8 @@ export interface TbmChecklistDisplayProps extends UiControlPropEventHandlers<Fms
   bus: EventBus;
   /** The checklist repository */
   repo: TbmChecklistRepository;
+  /** The pane index. */
+  index: number;
   /** The checklist to display. */
   checklist: Subscribable<TbmChecklistReadonly>;
   /** Whether the checklist is completed. */
@@ -50,7 +50,6 @@ export interface TbmChecklistDisplayProps extends UiControlPropEventHandlers<Fms
 export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDisplayProps> {
   private readonly scrollContainer = FSComponent.createRef<HTMLDivElement>();
   protected readonly checklistItemListRef = FSComponent.createRef<TbmChecklistControlList<TbmChecklistItemReadonly>>();
-  private gtcInControl = Subject.create(-1);
 
   private items = ArraySubject.create<TbmChecklistItemReadonly>([]);
 
@@ -69,29 +68,9 @@ export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDispl
     this.ensureIndexInView = this.checklistItemListRef.instance.ensureIndexInView.bind(this.checklistItemListRef.instance);
     this.checklistItemListRef.instance.ensureIndexInView = this.replaceEnsureIndexInView.bind(this);
 
-    this.props.bus.getSubscriber<HEvent>().on('hEvent').handle(this.onEvent.bind(this));
-    this.props.bus.getSubscriber<DisplayPaneControlEvents>().on('change_display_pane_select_left').handle(() => console.log('test'));
-    this.props.bus.getSubscriber<DisplayPaneControlEvents>().on('gtc_1_display_pane_select').handle((index) => {
-      this.gtcInControl.set(1)
-      console.log('gtc_1_display_pane_select', this.gtcInControl.get(), index)
-    });
-    this.props.bus.getSubscriber<DisplayPaneControlEvents>().on('gtc_2_display_pane_select').handle(() => {
-      this.gtcInControl.set(2)
-      console.log('gtc_2_display_pane_select', this.gtcInControl.get())
-    });
-  }
-
-  onEvent(event: any) {
-    switch (GtcInteractionEventUtils.hEventMap('horizontal', 1)(event)) {
-      case GtcHardwareControlEvent.MapKnobInc:
-        this.scroll('forward');
-        break;
-      case GtcHardwareControlEvent.MapKnobDec:
-        this.scroll('backward');
-        break;
-      case GtcHardwareControlEvent.MapKnobPush:
-        this.toggleItemCompletedStatus(this.items.get(this.previousIndex));
-    }
+    this.props.bus.getSubscriber<TbmChecklistGtcInteractionEvent>().on("checklist_interact").handle(() => this.toggleItemCompletedStatus(this.items.get(this.previousIndex)));
+    this.props.bus.getSubscriber<TbmChecklistGtcInteractionEvent>().on("checklist_scroll_up").handle(() => this.scroll('backward'));
+    this.props.bus.getSubscriber<TbmChecklistGtcInteractionEvent>().on("checklist_scroll_down").handle(() => this.scroll('forward'));
   }
 
   /**
