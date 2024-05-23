@@ -21,6 +21,7 @@
     "@rollup/plugin-image": "^3.0.3",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
+    "@types/node": "^20.12.12",
     "rollup": "^2.79.1",
     "rollup-plugin-import-css": "^3.5.0",
     "tslib": "^2.6.2",

@@ -1,12 +1,20 @@
-import { FSComponent, HardwareUiControl, Subscribable, VNode } from '@microsoft/msfs-sdk';
+import {EventBus, FSComponent, HardwareUiControl, Subscribable, VNode} from '@microsoft/msfs-sdk';
 import {
   FmsUiControlEvents,
   TbmChecklistUiControl,
   TbmChecklistUiControlProps
 } from "../../../Shared/UI/TbmChecklistUiControl";
+import {
+  ChecklistInteractionEventAction,
+  TbmChecklistEvents
+} from "../../../Shared/ChecklistSystem/TbmChecklistEvents";
 
 /** Component props for the {@link NextChecklistControl} component */
 export interface NextChecklistControlProps extends TbmChecklistUiControlProps {
+  /** The event bus */
+  bus: EventBus;
+  /** The function to call when the next button is clicked. */
+  onEnter: () => boolean;
   /** Whether this is the last checklist. */
   isLast: Subscribable<boolean>;
 }
@@ -21,6 +29,12 @@ export class NextChecklistControl extends TbmChecklistUiControl<NextChecklistCon
     this.props.isLast.sub(isLast => {
       this.setDisabled(isLast);
     }, true);
+
+    this.props.bus.getSubscriber<TbmChecklistEvents>().on('tbm_checklist_event').handle((event) => {
+      if (this.isFocused && event.type === 'checklist_interaction' && event.action === ChecklistInteractionEventAction.Interact) {
+        this.props.onEnter();
+      }
+    });
   }
 
   /** @inheritDoc */

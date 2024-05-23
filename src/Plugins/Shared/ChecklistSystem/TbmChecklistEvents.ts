@@ -38,8 +38,21 @@ export interface NextChecklistInCategory {
   readonly category: TbmChecklistCategory;
 }
 
+export interface ChecklistInteractionEvent {
+  /** The event type. */
+  readonly type: 'checklist_interaction';
+  /** The event action. */
+  readonly action: ChecklistInteractionEventAction;
+}
+
+export enum ChecklistInteractionEventAction {
+  ScrollUp = 'checklist_scroll_up',
+  ScrollDown = 'checklist_scroll_down',
+  Interact = 'checklist_interact',
+}
+
 /** Tbm checklist event. */
-type TbmChecklistEvent = ActiveChecklistChangedEvent | ChecklistResetEvent | ChecklistItemChangedEvent | NextChecklistInCategory;
+export type TbmChecklistEvent = ActiveChecklistChangedEvent | ChecklistResetEvent | ChecklistItemChangedEvent | NextChecklistInCategory | ChecklistInteractionEvent;
 
 /** Interface of the Tbm checklist events. */
 export interface TbmChecklistEvents {

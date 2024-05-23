@@ -1,14 +1,13 @@
-import {DisplayPaneView, DisplayPaneViewEvent, DisplayPaneViewProps} from "@microsoft/msfs-wtg3000-common";
-import {EventBus, FSComponent, Subject, Subscription, VNode} from "@microsoft/msfs-sdk";
-
-import "./TbmChecklistMfdPane.css";
+import {DisplayPaneView, DisplayPaneViewProps} from "@microsoft/msfs-wtg3000-common";
+import {EventBus, FSComponent, Subject, VNode} from "@microsoft/msfs-sdk";
 import { TbmChecklistUiControl } from "../../Shared/UI/TbmChecklistUiControl";
 import { TbmChecklistDisplay } from "./Components/TbmChecklistDisplay";
 import {
-  TbmChecklistEvents,
   TbmChecklistPageFocusableItemType,
   TbmChecklistRepository,
 } from "../../Shared/ChecklistSystem";
+
+import "./TbmChecklistMfdPane.css";
 
 export interface TbmChecklistPageProps extends DisplayPaneViewProps {
   /** The event bus. */
@@ -23,9 +22,7 @@ export class TbmChecklistMfdPane extends DisplayPaneView<TbmChecklistPageProps> 
   public readonly focusedItemType = Subject.create(TbmChecklistPageFocusableItemType.CheckboxUnchecked);
 
   private readonly checklistDisplayRef = FSComponent.createRef<TbmChecklistDisplay>();
-
-  private readonly checklistEventPublisher = this.props.bus.getPublisher<TbmChecklistEvents>();
-  private readonly subs: Subscription[] = [];
+  private readonly viewContainerRef = FSComponent.createRef();
 
 
   /** @inheritDoc */
@@ -39,17 +36,15 @@ export class TbmChecklistMfdPane extends DisplayPaneView<TbmChecklistPageProps> 
   /** @inheritDoc */
   render(): VNode {
     return (
-      <div className="mfd-page">
-        <TbmChecklistUiControl innerKnobScroll>
+      <div className="mfd-page" ref={ this.viewContainerRef }>
+        <TbmChecklistUiControl ref={ this.uiRoot }>
           <TbmChecklistDisplay
             bus={this.props.bus}
             ref={this.checklistDisplayRef}
-            index={this.props.index}
             focusedItemType={this.focusedItemType}
             repo={this.props.repo}
             checklist={this.activeChecklist}
             isChecklistCompleted={this.props.repo.isActiveChecklistComplete}
-            innerKnobScroll
           />
         </TbmChecklistUiControl>
       </div>

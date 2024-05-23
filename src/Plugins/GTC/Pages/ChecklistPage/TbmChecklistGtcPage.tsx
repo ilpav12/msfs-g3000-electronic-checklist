@@ -81,7 +81,6 @@ export class TbmChecklistGtcPage extends GtcView {
                             type: 'active_checklist_changed',
                             newActiveChecklistName: checklist.name,
                           }, true);
-
                       }}
                       isHighlighted={isHighlighted}
                       isInList

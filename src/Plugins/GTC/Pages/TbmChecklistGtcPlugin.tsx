@@ -1,12 +1,19 @@
 import {FSComponent, MappedSubject, registerPlugin} from "@microsoft/msfs-sdk";
 import {
-  AbstractG3000GtcPlugin, GtcInteractionEvent, GtcKnobStatePluginOverrides,
-  GtcService, GtcViewKeys,
-  GtcViewLifecyclePolicy, LabelBarPluginHandlers
+  AbstractG3000GtcPlugin,
+  GtcInteractionEvent,
+  GtcKnobStatePluginOverrides,
+  GtcService,
+  GtcViewKeys,
+  GtcViewLifecyclePolicy,
+  LabelBarPluginHandlers
 } from "@microsoft/msfs-wtg3000-gtc";
 import {TbmChecklistGtcMfdHomePage, TbmChecklistGtcPage} from "./index";
 import {TbmChecklistGtcViewKeys} from "../GtcService/TbmChecklistGtcViewKeys";
-import {TbmChecklistGtcInteractionEvent} from "../../Shared/Events/TbmChecklistGtcInteractionEvent";
+import {
+  ChecklistInteractionEventAction,
+  TbmChecklistEvents
+} from "../../Shared/ChecklistSystem/TbmChecklistEvents";
 
 export class TbmChecklistGtcPlugin extends AbstractG3000GtcPlugin {
   /** @inheritdoc */
@@ -64,13 +71,22 @@ export class TbmChecklistGtcPlugin extends AbstractG3000GtcPlugin {
 
     switch (event) {
       case GtcInteractionEvent.MapKnobDec:
-        this.binder.bus.getPublisher<TbmChecklistGtcInteractionEvent>().pub('checklist_scroll_up', undefined, true);
+        this.binder.bus.getPublisher<TbmChecklistEvents>().pub('tbm_checklist_event', {
+          type: 'checklist_interaction',
+          action: ChecklistInteractionEventAction.ScrollUp,
+        }, true);
         return true;
       case GtcInteractionEvent.MapKnobInc:
-        this.binder.bus.getPublisher<TbmChecklistGtcInteractionEvent>().pub('checklist_scroll_down', undefined, true);
+        this.binder.bus.getPublisher<TbmChecklistEvents>().pub('tbm_checklist_event', {
+          type: 'checklist_interaction',
+          action: ChecklistInteractionEventAction.ScrollDown,
+        }, true);
         return true;
       case GtcInteractionEvent.MapKnobPush:
-        this.binder.bus.getPublisher<TbmChecklistGtcInteractionEvent>().pub('checklist_interact', undefined, true);
+        this.binder.bus.getPublisher<TbmChecklistEvents>().pub('tbm_checklist_event', {
+          type: 'checklist_interaction',
+          action: ChecklistInteractionEventAction.Interact,
+        }, true);
         return true;
       default:
         return false;

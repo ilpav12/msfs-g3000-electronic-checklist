@@ -11,6 +11,7 @@ import {
   VNode
 } from "@microsoft/msfs-sdk";
 import {
+  ChecklistInteractionEventAction, TbmChecklistEvent,
   TbmChecklistEvents,
   TbmChecklistItem,
   TbmChecklistItemReadonly,
@@ -27,7 +28,6 @@ import {
 } from "../../../Shared/UI/TbmChecklistUiControl";
 import {TbmChecklistItemDisplay} from "./TbmChecklistItemDisplay";
 import {NextChecklistControl} from "./TbmChecklistNextbutton";
-import {TbmChecklistGtcInteractionEvent} from "../../../Shared/Events/TbmChecklistGtcInteractionEvent";
 
 import './TbmChecklistDisplay.css';
 
@@ -37,8 +37,6 @@ export interface TbmChecklistDisplayProps extends UiControlPropEventHandlers<Fms
   bus: EventBus;
   /** The checklist repository */
   repo: TbmChecklistRepository;
-  /** The pane index. */
-  index: number;
   /** The checklist to display. */
   checklist: Subscribable<TbmChecklistReadonly>;
   /** Whether the checklist is completed. */
@@ -68,9 +66,32 @@ export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDispl
     this.ensureIndexInView = this.checklistItemListRef.instance.ensureIndexInView.bind(this.checklistItemListRef.instance);
     this.checklistItemListRef.instance.ensureIndexInView = this.replaceEnsureIndexInView.bind(this);
 
-    this.props.bus.getSubscriber<TbmChecklistGtcInteractionEvent>().on("checklist_interact").handle(() => this.toggleItemCompletedStatus(this.items.get(this.previousIndex)));
-    this.props.bus.getSubscriber<TbmChecklistGtcInteractionEvent>().on("checklist_scroll_up").handle(() => this.scroll('backward'));
-    this.props.bus.getSubscriber<TbmChecklistGtcInteractionEvent>().on("checklist_scroll_down").handle(() => this.scroll('forward'));
+    this.props.bus.getSubscriber<TbmChecklistEvents>().on('tbm_checklist_event').handle(this.onChecklistInteraction.bind(this));
+  }
+
+  /**
+   * Handles checklist interactions.
+   * @param event The checklist event.
+   * @returns Whether the required action was successful.
+   */
+  private onChecklistInteraction(event: TbmChecklistEvent): boolean {
+    if (event.type !== 'checklist_interaction') {
+      return false;
+    }
+
+    switch (event.action) {
+      case ChecklistInteractionEventAction.Interact:
+        this.toggleItemCompletedStatus(this.items.get(this.previousIndex));
+        return true;
+      case ChecklistInteractionEventAction.ScrollUp:
+        this.scroll('backward');
+        return true;
+      case ChecklistInteractionEventAction.ScrollDown:
+        this.scroll('forward');
+        return true;
+      default:
+        return false;
+    }
   }
 
   /**
@@ -146,7 +167,6 @@ export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDispl
     return (
       <TbmChecklistItemDisplay
         item={item}
-        innerKnobScroll
         onRegistered={(control): void => control.setDisabled(item.type === TbmChecklistItemType.Section)}
         toggleItemCompleted={this.toggleItemCompletedStatus.bind(this)}
         setItemIncomplete={this.setItemIncomplete.bind(this)}
@@ -194,7 +214,6 @@ export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDispl
             <div class="tbm-checklist-display" ref={this.scrollContainer}>
               <TbmChecklistControlList
                 class="tbm-checklist-display-list"
-                innerKnobScroll
                 ref={this.checklistItemListRef}
                 data={this.items}
                 renderItem={this.renderChecklistItem.bind(this)}
@@ -205,9 +224,11 @@ export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDispl
               * Checklist Finished *
             </div>
             <NextChecklistControl
-              // onEnter={this.goToNextChecklist.bind(this)}
+              bus={this.props.bus}
+              onEnter={this.goToNextChecklist.bind(this)}
               isLast={this.props.checklist.map(v => v.isLastChecklist)}
-              onFocused={() => this.props.focusedItemType.set(TbmChecklistPageFocusableItemType.NextChecklist)} />
+              onFocused={() => this.props.focusedItemType.set(TbmChecklistPageFocusableItemType.NextChecklist)}
+            />
           </div>
         </div>
       </div>

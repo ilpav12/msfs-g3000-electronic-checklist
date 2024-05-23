@@ -6,9 +6,11 @@ import {
   UiControlEventHandler,
   UiControlPropEventHandlers, VNode
 } from "@microsoft/msfs-sdk";
+import { ScrollBar } from "./ScrollBar";
+import {TbmChecklistEvents} from "../ChecklistSystem/TbmChecklistEvents";
 
 
-export type FmsUiControlEvents = Record<keyof HEvent, UiControlEventHandler<TbmChecklistUiControl>>
+export type FmsUiControlEvents = Record<keyof TbmChecklistEvents, UiControlEventHandler<TbmChecklistUiControl>>
 
 export interface TbmChecklistUiControlProps extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
 }
@@ -30,6 +32,6 @@ export class TbmChecklistControlList<T> extends HardwareUiControlList<T, FmsUiCo
 
   /** @inheritdoc */
   protected renderScrollbar(): VNode {
-    return (<div></div>);
+    return (<ScrollBar />);
   }
 }
