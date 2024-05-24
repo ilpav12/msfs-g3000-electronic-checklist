@@ -1,0 +1,44 @@
+{
+  "content": [
+    {
+      "path": "html_ui/TbmChecklistPlugins/TbmChecklistGtcPlugins.css",
+      "size": 1586,
+      "date": 133604307099717157
+    },
+    {
+      "path": "html_ui/TbmChecklistPlugins/TbmChecklistGtcPlugins.js",
+      "size": 90391,
+      "date": 133604307099717157
+    },
+    {
+      "path": "html_ui/TbmChecklistPlugins/TbmChecklistMfdPlugins.css",
+      "size": 27,
+      "date": 133604307097787173
+    },
+    {
+      "path": "html_ui/TbmChecklistPlugins/TbmChecklistMfdPlugins.js",
+      "size": 1379,
+      "date": 133604307097787173
+    },
+    {
+      "path": "html_ui/TbmChecklistPlugins/Assets/icon_small_checklist.png",
+      "size": 5069,
+      "date": 133589377430000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_TBM930/model/TBM930_SplitScreen_Templates.xml",
+      "size": 682,
+      "date": 133463771009538663
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_TBM930/panel/panel.cfg",
+      "size": 1771,
+      "date": 133463771009548811
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_TBM930/panel/panel.xml",
+      "size": 23178,
+      "date": 133594743455329711
+    }
+  ]
+}

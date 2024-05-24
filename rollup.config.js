@@ -6,7 +6,7 @@ export default [
     // {
     //     input: 'build/Plugins/PFD/index.js',
     //     output: {
-    //         file: 'dist/ilpav-avionics-tbm-integrated-checklist/html_ui/TbmChecklistPlugins/TbmChecklistPfdPlugins.js',
+    //         file: 'dist/ilpav-avionics-tbm-electronic-checklist/html_ui/TbmChecklistPlugins/TbmChecklistPfdPlugins.js',
     //         format: 'iife',
     //         name: 'tbmChecklistPfd',
     //         globals: {
@@ -21,7 +21,7 @@ export default [
     {
         input: 'build/Plugins/MFD/index.js',
         output: {
-            file: 'dist/ilpav-avionics-tbm-integrated-checklist/html_ui/TbmChecklistPlugins/TbmChecklistMfdPlugins.js',
+            file: 'dist/ilpav-avionics-tbm-electronic-checklist/html_ui/TbmChecklistPlugins/TbmChecklistMfdPlugins.js',
             format: 'iife',
             name: 'tbmChecklistMfd',
             globals: {
@@ -36,7 +36,7 @@ export default [
     {
         input: 'build/Plugins/GTC/index.js',
         output: {
-            file: 'dist/ilpav-avionics-tbm-integrated-checklist/html_ui/TbmChecklistPlugins/TbmChecklistGtcPlugins.js',
+            file: 'dist/ilpav-avionics-tbm-electronic-checklist/html_ui/TbmChecklistPlugins/TbmChecklistGtcPlugins.js',
             format: 'iife',
             name: 'tbmChecklistGtc',
             globals: {

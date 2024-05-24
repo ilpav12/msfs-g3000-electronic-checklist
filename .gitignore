@@ -3,4 +3,5 @@
 /node_modules
 
 /build
-/dist
+/dist/ilpav-avionics-tbm-electronic-checklist/html_ui/TbmChecklistPlugins/*.js
+/dist/ilpav-avionics-tbm-electronic-checklist/html_ui/TbmChecklistPlugins/*.css
