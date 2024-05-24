@@ -16,6 +16,11 @@ export interface ChecklistResetEvent {
   readonly checklistName: TbmChecklistNames;
 }
 
+export interface AllChecklistsResetEvent {
+  /** The event type. */
+  readonly type: 'all_checklists_reset';
+}
+
 /** Checklist item changed event. */
 export interface ChecklistItemChangedEvent {
   /** The event type. */
@@ -26,6 +31,13 @@ export interface ChecklistItemChangedEvent {
   readonly itemIndex: number;
   /** The state of the checklist item. */
   readonly itemState: TbmChecklistItemState;
+}
+
+export interface CheckAllItemsEvent {
+  /** The event type. */
+  readonly type: 'check_all_items';
+  /** The name of the checklist. */
+  readonly checklistName: TbmChecklistNames;
 }
 
 /** Next checklist in category event. */
@@ -52,7 +64,14 @@ export enum ChecklistInteractionEventAction {
 }
 
 /** Tbm checklist event. */
-export type TbmChecklistEvent = ActiveChecklistChangedEvent | ChecklistResetEvent | ChecklistItemChangedEvent | NextChecklistInCategory | ChecklistInteractionEvent;
+export type TbmChecklistEvent =
+  ActiveChecklistChangedEvent
+  | ChecklistResetEvent
+  | AllChecklistsResetEvent
+  | ChecklistItemChangedEvent
+  | CheckAllItemsEvent
+  | NextChecklistInCategory
+  | ChecklistInteractionEvent;
 
 /** Interface of the Tbm checklist events. */
 export interface TbmChecklistEvents {

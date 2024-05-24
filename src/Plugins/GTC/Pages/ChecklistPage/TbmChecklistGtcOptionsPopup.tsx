@@ -1,9 +1,18 @@
-import {FSComponent, VNode} from "@microsoft/msfs-sdk";
-import {GtcTouchButton, GtcView} from "@microsoft/msfs-wtg3000-gtc";
+import {FSComponent, Subject, VNode} from "@microsoft/msfs-sdk";
+import {GtcTouchButton, GtcView, GtcViewProps} from "@microsoft/msfs-wtg3000-gtc";
+import {TbmChecklistEvents, TbmChecklistNames} from "../../../Shared/ChecklistSystem";
 
 import "./TbmChecklistGtcOptionsPopup.css";
 
-export class TbmChecklistGtcOptionsPopup extends GtcView {
+interface TbmChecklistGtcOptionsPopupProps extends GtcViewProps {
+  /** The active checklist name. */
+  activeChecklistName: Subject<TbmChecklistNames>,
+}
+
+/**
+ * A popup for checklist options.
+ */
+export class TbmChecklistGtcOptionsPopup extends GtcView<TbmChecklistGtcOptionsPopupProps> {
   /** @inheritdoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
@@ -20,18 +29,41 @@ export class TbmChecklistGtcOptionsPopup extends GtcView {
           <GtcTouchButton
             label={'Check All'}
             class='checklist-options-popup-button'
+            onPressed={() => {
+              this.bus.getPublisher<TbmChecklistEvents>().pub('tbm_checklist_event', {
+                type: 'check_all_items',
+                checklistName: this.props.activeChecklistName.get(),
+              }, true);
+              this.gtcService.goBack();
+            }}
           />
           <GtcTouchButton
             label={'Show Incomplete\nChecklists'}
             class='checklist-options-popup-button'
+            onPressed={() => {
+              // TODO
+            }}
           />
           <GtcTouchButton
             label={'Reset Checklist'}
             class='checklist-options-popup-button'
+            onPressed={() => {
+              this.bus.getPublisher<TbmChecklistEvents>().pub('tbm_checklist_event', {
+                type: 'checklist_reset',
+                checklistName: this.props.activeChecklistName.get(),
+              }, true);
+              this.gtcService.goBack();
+            }}
           />
           <GtcTouchButton
             label={'Reset All\nChecklists'}
             class='checklist-options-popup-button'
+            onPressed={() => {
+              this.bus.getPublisher<TbmChecklistEvents>().pub('tbm_checklist_event', {
+                type: 'all_checklists_reset',
+              }, true);
+              this.gtcService.goBack();
+            }}
           />
         </div>
       </div>

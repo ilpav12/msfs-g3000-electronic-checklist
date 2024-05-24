@@ -75,23 +75,32 @@ export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDispl
    * @returns Whether the required action was successful.
    */
   private onChecklistInteraction(event: TbmChecklistEvent): boolean {
-    if (event.type !== 'checklist_interaction') {
-      return false;
+    if (event.type === 'checklist_interaction') {
+      switch (event.action) {
+        case ChecklistInteractionEventAction.Interact:
+          this.toggleItemCompletedStatus(this.items.get(this.previousIndex));
+          return true;
+        case ChecklistInteractionEventAction.ScrollUp:
+          this.scroll('backward');
+          return true;
+        case ChecklistInteractionEventAction.ScrollDown:
+          this.scroll('forward');
+          return true;
+        default:
+          return false;
+      }
     }
 
-    switch (event.action) {
-      case ChecklistInteractionEventAction.Interact:
-        this.toggleItemCompletedStatus(this.items.get(this.previousIndex));
-        return true;
-      case ChecklistInteractionEventAction.ScrollUp:
-        this.scroll('backward');
-        return true;
-      case ChecklistInteractionEventAction.ScrollDown:
-        this.scroll('forward');
-        return true;
-      default:
-        return false;
+    if (event.type === 'check_all_items') {
+      this.checklistItemListRef.instance.focus(FocusPosition.Last);
+      this.scroll('forward'); // Scroll once more for "Go to next checklist"
     }
+
+    if (event.type === 'checklist_reset') {
+      this.checklistItemListRef.instance.focus(FocusPosition.First);
+    }
+
+    return false;
   }
 
   /**

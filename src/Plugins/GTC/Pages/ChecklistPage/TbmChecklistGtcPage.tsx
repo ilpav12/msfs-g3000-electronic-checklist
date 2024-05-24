@@ -11,11 +11,16 @@ import {
   TabbedContent,
   TabConfiguration
 } from "@microsoft/msfs-wtg3000-gtc";
-import {TbmChecklistEvents, TbmChecklistItemState, TbmNormalChecklists} from "../../../Shared/ChecklistSystem";
+import {
+  TbmChecklistEvents,
+  TbmChecklistNames,
+  TbmNormalChecklistNames,
+  TbmNormalChecklists
+} from "../../../Shared/ChecklistSystem";
+import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common";
+import {TbmChecklistGtcOptionsPopup} from "./TbmChecklistGtcOptionsPopup";
 
 import "./TbmChecklistGtcPage.css";
-import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common";
-import { TbmChecklistGtcOptionsPopup } from "./TbmChecklistGtcOptionsPopup";
 
 /**
  * GTC view keys for popups owned by checklist pages.
@@ -27,7 +32,7 @@ enum GtcChecklistPagePopupKeys {
 export class TbmChecklistGtcPage extends GtcView {
   private readonly optionsPopupKey = GtcChecklistPagePopupKeys.Options;
   private readonly listRef = FSComponent.createRef<GtcList<any>>();
-  private readonly activeNormalChecklistIndex = Subject.create<number>(2);
+  private readonly activeChecklistName = Subject.create<TbmChecklistNames>(TbmNormalChecklistNames.BeforeStartingEngine);
 
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
@@ -43,6 +48,12 @@ export class TbmChecklistGtcPage extends GtcView {
 
     this._title.set('Checklist');
     this._activeComponent.set(this.listRef.instance);
+
+    this.bus.getSubscriber<TbmChecklistEvents>().on('tbm_checklist_event').handle((event) => {
+      if (event.type === 'active_checklist_changed') {
+        this.activeChecklistName.set(event.newActiveChecklistName);
+      }
+    });
   }
 
   /** @inheritDoc */
@@ -68,14 +79,13 @@ export class TbmChecklistGtcPage extends GtcView {
               sidebarState={this._sidebarState}
               class='gtc-checklist-tab-list'
             >
-              {tbmNormalChecklists.map((checklist, index) => {
-                const isHighlighted = this.activeNormalChecklistIndex.map(activeIndex => activeIndex === index);
+              {tbmNormalChecklists.map((checklist) => {
+                const isHighlighted = this.activeChecklistName.map(name => name === checklist.name);
                 return (
                   <GtcListItem>
                     <GtcTouchButton
                       label={checklist.name}
                       onPressed={() => {
-                        this.activeNormalChecklistIndex.set(index === this.activeNormalChecklistIndex.get() ? -1 : index);
                         this.bus.getPublisher<TbmChecklistEvents>()
                           .pub('tbm_checklist_event', {
                             type: 'active_checklist_changed',
@@ -120,6 +130,7 @@ export class TbmChecklistGtcPage extends GtcView {
         gtcService={gtcService}
         controlMode={controlMode}
         displayPaneIndex={displayPaneIndex}
+        activeChecklistName={this.activeChecklistName}
       />
     );
   }

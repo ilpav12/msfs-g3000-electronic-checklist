@@ -48,8 +48,14 @@ export class TbmChecklistRepository {
         case 'checklist_reset':
           this.resetChecklist(event.checklistName, false);
           break;
+        case "all_checklists_reset":
+          this.resetAllChecklists();
+          break;
         case 'item_changed':
           this.setChecklistItemState(event.checklistName, event.itemIndex, event.itemState, false);
+          break;
+        case 'check_all_items':
+          this.checkAllItems(event.checklistName, false);
           break;
         case 'next_checklist':
           this.nextChecklistInCategory(event.checklistName, event.category);
@@ -166,6 +172,23 @@ export class TbmChecklistRepository {
         checklistName,
         itemIndex,
         itemState,
+      }, true);
+    }
+  }
+
+  /**
+   * Sets all the items in the active checklist to the given state.
+   * @param checklistName The name of the checklist.
+   * @param notify Whether to send the bus event. Defaults to true.
+   */
+  public checkAllItems(checklistName: TbmChecklistNames, notify = true): void {
+    const checklist = this.getChecklistByName(checklistName);
+    checklist.items.forEach(x => x.state.set(TbmChecklistItemState.Completed));
+
+    if (notify) {
+      this.publisher.pub('tbm_checklist_event', {
+        type: 'check_all_items',
+        checklistName,
       }, true);
     }
   }
