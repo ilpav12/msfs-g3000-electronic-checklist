@@ -54,6 +54,8 @@ export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDispl
   private previousIndex = 0;
   private ensureIndexInView: ((index: number, pinDirection: 'none' | 'top' | 'bottom') => void) | undefined;
 
+  private readonly warnChecklistNotCompleted = Subject.create<boolean>(false);
+
   public onAfterRender(node: VNode) {
     super.onAfterRender(node);
 
@@ -93,11 +95,11 @@ export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDispl
 
     if (event.type === 'check_all_items') {
       this.checklistItemListRef.instance.focus(FocusPosition.Last);
-      this.scroll('forward'); // Scroll once more for "Go to next checklist"
+      return this.scroll('forward'); // Scroll once more for "Go to next checklist"
     }
 
     if (event.type === 'checklist_reset') {
-      this.checklistItemListRef.instance.focus(FocusPosition.First);
+      return this.checklistItemListRef.instance.focus(FocusPosition.First);
     }
 
     return false;
@@ -199,7 +201,7 @@ export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDispl
     } else if (index < this.previousIndex) {
       offsetIndex = index - 3;
     } else {
-      offsetIndex = index + 5;
+      offsetIndex = index + 8;
     }
     offsetIndex = MathUtils.clamp(offsetIndex, 0, this.items.length - 1);
     this.ensureIndexInView && this.ensureIndexInView(offsetIndex, pinDirection);
@@ -227,16 +229,36 @@ export class TbmChecklistDisplay extends TbmChecklistUiControl<TbmChecklistDispl
                 data={this.items}
                 renderItem={this.renderChecklistItem.bind(this)}
                 hideScrollbar={false}
+                scrollContainer={this.scrollContainer}
               />
             </div>
-            <div class={{ 'tbm-checklist-completed-label': true, 'hidden': this.props.isChecklistCompleted.map(v => !v) }}>
+            <div class={{
+              'tbm-checklist-completed-label': true,
+              'hidden': this.props.isChecklistCompleted.map(v => !v)
+            }}>
               * Checklist Finished *
+            </div>
+            <div class={{
+              'tbm-checklist-not-completed-label': true,
+              'hidden': this.warnChecklistNotCompleted.map(v => !v)
+            }}>
+              * Checklist Not Finished *
             </div>
             <NextChecklistControl
               bus={this.props.bus}
               onEnter={this.goToNextChecklist.bind(this)}
               isLast={this.props.checklist.map(v => v.isLastChecklist)}
-              onFocused={() => this.props.focusedItemType.set(TbmChecklistPageFocusableItemType.NextChecklist)}
+              onFocused={() => {
+                this.props.focusedItemType.set(TbmChecklistPageFocusableItemType.NextChecklist);
+                if (!this.props.isChecklistCompleted.get()) {
+                  this.warnChecklistNotCompleted.set(true);
+                }
+              }}
+              onBlurred={() => {
+                if (this.warnChecklistNotCompleted.get()) {
+                  this.warnChecklistNotCompleted.set(false);
+                }
+              }}
             />
           </div>
         </div>

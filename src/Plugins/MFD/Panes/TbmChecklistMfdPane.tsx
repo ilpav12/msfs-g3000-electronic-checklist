@@ -1,5 +1,5 @@
 import {DisplayPaneView, DisplayPaneViewProps} from "@microsoft/msfs-wtg3000-common";
-import {EventBus, FSComponent, Subject, VNode} from "@microsoft/msfs-sdk";
+import {EventBus, FocusPosition, FSComponent, Subject, VNode} from "@microsoft/msfs-sdk";
 import { TbmChecklistUiControl } from "../../Shared/UI/TbmChecklistUiControl";
 import { TbmChecklistDisplay } from "./Components/TbmChecklistDisplay";
 import {
@@ -22,8 +22,6 @@ export class TbmChecklistMfdPane extends DisplayPaneView<TbmChecklistPageProps> 
   public readonly focusedItemType = Subject.create(TbmChecklistPageFocusableItemType.CheckboxUnchecked);
 
   private readonly checklistDisplayRef = FSComponent.createRef<TbmChecklistDisplay>();
-  private readonly viewContainerRef = FSComponent.createRef();
-
 
   /** @inheritDoc */
   onAfterRender(node: VNode) {
@@ -32,11 +30,10 @@ export class TbmChecklistMfdPane extends DisplayPaneView<TbmChecklistPageProps> 
     this._title.set('Checklist');
   }
 
-
   /** @inheritDoc */
   render(): VNode {
     return (
-      <div className="mfd-page" ref={ this.viewContainerRef }>
+      <div className="mfd-page">
         <TbmChecklistUiControl ref={ this.uiRoot }>
           <TbmChecklistDisplay
             bus={this.props.bus}

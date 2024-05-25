@@ -125,19 +125,27 @@
     color: white;
 }
 
-.tbm-checklist-display-container .tbm-checklist-completed-label {
+.tbm-checklist-display-container .tbm-checklist-completed-label,
+.tbm-checklist-display-container .tbm-checklist-not-completed-label {
     position: absolute;
     bottom: 10px;
     left: 15px;
     color: rgb(0, 255, 0);
+    padding: 2px;
+    font-size: 18px;
+}
+
+.tbm-checklist-display-container .tbm-checklist-not-completed-label {
+    color: rgb(255, 255, 0);
 }
 
 .tbm-checklist-display-container .tbm-next-checklist-label {
     position: absolute;
     bottom: 10px;
-    right: 25px;
+    right: 15px;
     color: cyan;
     padding: 2px;
+    font-size: 18px;
 }
 
 .tbm-checklist-display-container .tbm-next-checklist-label.disabled {
