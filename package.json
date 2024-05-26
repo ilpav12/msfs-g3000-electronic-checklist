@@ -5,7 +5,7 @@
   "scripts": {
     "build": "npm run build:compile && npm run build:rollup",
     "build:compile": "npx tsc",
-    "build:rollup": "robocopy src/Plugins *.css build/Plugins /s & npx rollup -c rollup.config.js"
+    "build:rollup": "robocopy src *.css build /s & npx rollup -c rollup.config.js"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +18,7 @@
     "@microsoft/msfs-wtg3000-gtc": "^1.1.14",
     "@microsoft/msfs-wtg3000-mfd": "^1.1.14",
     "@microsoft/msfs-wtg3000-pfd": "^1.1.14",
-    "@rollup/plugin-image": "^3.0.3",
+    "@rollup/plugin-alias": "^5.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/node": "^20.12.12",

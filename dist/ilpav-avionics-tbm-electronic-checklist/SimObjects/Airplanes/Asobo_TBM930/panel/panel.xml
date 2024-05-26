@@ -224,6 +224,10 @@
     <Plugin>
       coui://SimObjects/Airplanes/Asobo_TBM930/panel/Instruments/G3000/Plugins/TbmPfdPlugins.js
     </Plugin>
+
+    <Plugin>
+      coui://html_ui/ChecklistPlugins/TbmChecklistPfdPlugins.js
+    </Plugin>
   </Instrument>
 
   <Instrument>
@@ -239,6 +243,10 @@
 
     <Plugin>
       coui://SimObjects/Airplanes/Asobo_TBM930/panel/Instruments/G3000/Plugins/TbmPfdPlugins.js
+    </Plugin>
+
+    <Plugin>
+      coui://html_ui/ChecklistPlugins/TbmChecklistPfdPlugins.js
     </Plugin>
   </Instrument>
 
@@ -258,7 +266,7 @@
     </Plugin>
 
     <Plugin>
-      coui://html_ui/TbmChecklistPlugins/TbmChecklistGtcPlugins.js
+      coui://html_ui/ChecklistPlugins/TbmChecklistGtcPlugins.js
     </Plugin>
   </Instrument>
 
@@ -278,7 +286,7 @@
     </Plugin>
 
     <Plugin>
-      coui://html_ui/TbmChecklistPlugins/TbmChecklistGtcPlugins.js
+      coui://html_ui/ChecklistPlugins/TbmChecklistGtcPlugins.js
     </Plugin>
   </Instrument>
 
@@ -301,7 +309,7 @@
     </Plugin>
 
     <Plugin>
-      coui://html_ui/TbmChecklistPlugins/TbmChecklistMfdPlugins.js
+      coui://html_ui/ChecklistPlugins/TbmChecklistMfdPlugins.js
     </Plugin>
   </Instrument>
 

@@ -8,7 +8,7 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "build/Plugins",
+    "outDir": "build",
     "declaration": false,
     "declarationMap": false,
     "removeComments": false,
@@ -19,6 +19,9 @@
     "paths": {
       "*": [
         "/*"
+      ],
+      "@base/*": [
+        "./src/Base/Plugins/*"
       ]
     }
   },
