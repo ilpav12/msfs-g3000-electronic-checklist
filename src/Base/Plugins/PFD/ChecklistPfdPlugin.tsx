@@ -24,11 +24,11 @@ export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
 
 registerPlugin(ChecklistPfdPlugin);
 
-export class PfdChecklistCssPlugin extends AbstractG3000PfdPlugin {
+export class ChecklistPfdCssPlugin extends AbstractG3000PfdPlugin {
   /** @inheritdoc */
   onInstalled() {
     this.loadCss(`${ChecklistFilePaths.PLUGINS_PATH}/ChecklistMfdPlugins.css`);
   }
 }
 
-registerPlugin(PfdChecklistCssPlugin);
+registerPlugin(ChecklistPfdCssPlugin);

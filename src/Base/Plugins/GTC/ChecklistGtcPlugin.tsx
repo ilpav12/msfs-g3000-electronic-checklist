@@ -58,7 +58,13 @@ export class ChecklistGtcPlugin extends AbstractG3000GtcPlugin {
   public getLabelBarHandlers(): Readonly<LabelBarPluginHandlers> | null {
     return {
       mapKnobLabel: knobState => {
-        return knobState === 'ChecklistKnobState' ? '↑Scroll↓\nPush:\nInteract' : null;
+        if (knobState !== 'ChecklistKnobState') {
+          return null;
+        }
+        if (this.binder.gtcService.orientation === 'vertical') {
+          return 'Select Item\nPush: Check';
+        }
+        return 'Select\nItem\nPush:\nCheck';
       }
     };
   }
@@ -96,11 +102,11 @@ export class ChecklistGtcPlugin extends AbstractG3000GtcPlugin {
 
 registerPlugin(ChecklistGtcPlugin);
 
-export class GtcChecklistGtcCssPlugin extends AbstractG3000GtcPlugin {
+export class ChecklistGtcCssPlugin extends AbstractG3000GtcPlugin {
   /** @inheritdoc */
   onInstalled() {
     this.loadCss(`${ChecklistFilePaths.PLUGINS_PATH}/ChecklistGtcPlugins.css`);
   }
 }
 
-registerPlugin(GtcChecklistGtcCssPlugin);
+registerPlugin(ChecklistGtcCssPlugin);
