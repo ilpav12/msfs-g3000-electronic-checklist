@@ -86,6 +86,9 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
           this.scroll('backward');
           return true;
         case ChecklistInteractionEventAction.ScrollDown:
+          if (this.props.focusedItemType.get() === ChecklistPageFocusableItemType.NextChecklist) {
+            return false;
+          }
           this.scroll('forward');
           return true;
         default:
@@ -260,7 +263,6 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
               }}
             />
           </div>
-
         </div>
       </div>
     );
