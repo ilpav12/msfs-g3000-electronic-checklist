@@ -77,19 +77,19 @@ export class ChecklistGtcPlugin extends AbstractG3000GtcPlugin {
 
     switch (event) {
       case GtcInteractionEvent.MapKnobDec:
-        this.binder.bus.getPublisher<ChecklistEvents>().pub('tbm_checklist_event', {
+        this.binder.bus.getPublisher<ChecklistEvents>().pub('checklist_event', {
           type: 'checklist_interaction',
           action: ChecklistInteractionEventAction.ScrollUp,
         }, true);
         return true;
       case GtcInteractionEvent.MapKnobInc:
-        this.binder.bus.getPublisher<ChecklistEvents>().pub('tbm_checklist_event', {
+        this.binder.bus.getPublisher<ChecklistEvents>().pub('checklist_event', {
           type: 'checklist_interaction',
           action: ChecklistInteractionEventAction.ScrollDown,
         }, true);
         return true;
       case GtcInteractionEvent.MapKnobPush:
-        this.binder.bus.getPublisher<ChecklistEvents>().pub('tbm_checklist_event', {
+        this.binder.bus.getPublisher<ChecklistEvents>().pub('checklist_event', {
           type: 'checklist_interaction',
           action: ChecklistInteractionEventAction.Interact,
         }, true);

@@ -1,23 +1,33 @@
-.tbm-checklist-page-container {
+.display-pane-container-mfd .checklist-page-container {
+    --checklist-container-width: 485px;
+    --checklist-container-height: 628px;
+}
+
+.display-pane-container-pfd .checklist-page-container {
+    --checklist-container-width: 498px;
+    --checklist-container-height: 658px;
+}
+
+.checklist-page-container {
     margin: 5px;
     width: 100%;
     height: 100%;
     font-size: 20px;
 }
 
-.tbm-checklist-page-container .checklist-selection-container,
-.tbm-checklist-page-container .checklist-container {
-    width: 485px;
+.checklist-page-container .checklist-selection-container,
+.checklist-page-container .checklist-container {
+    width: var(--checklist-container-width);
     background: black;
     border: 1px solid white;
     padding: 5px;
 }
 
-.tbm-checklist-page-container .checklist-selection-container {
+.checklist-page-container .checklist-selection-container {
     height: 100px;
 }
 
-.tbm-checklist-page-container .checklist-container {
+.checklist-page-container .checklist-container {
     margin-top: 10px;
-    height: 628px;
+    height: var(--checklist-container-height);
 }

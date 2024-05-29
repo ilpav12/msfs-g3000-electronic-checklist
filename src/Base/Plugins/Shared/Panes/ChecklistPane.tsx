@@ -40,7 +40,7 @@ export class ChecklistPane extends DisplayPaneView<TbmChecklistPageProps> {
   /** @inheritDoc */
   render(): VNode {
     return (
-      <div className="mfd-page">
+      <div>
         <ChecklistUiControl ref={this.uiRoot}>
           <ChecklistDisplay
             bus={this.props.bus}

@@ -12,11 +12,11 @@ import {ChecklistEvents} from "@base/Shared/ChecklistSystem/ChecklistEvents";
 
 export type FmsUiControlEvents = Record<keyof ChecklistEvents, UiControlEventHandler<ChecklistUiControl>>
 
-export interface TbmChecklistUiControlProps extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
+export interface ChecklistUiControlProps extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
 }
 
 
-export class ChecklistUiControl<P extends TbmChecklistUiControlProps=TbmChecklistUiControlProps> extends HardwareUiControl<FmsUiControlEvents, P> {
+export class ChecklistUiControl<P extends ChecklistUiControlProps=ChecklistUiControlProps> extends HardwareUiControl<FmsUiControlEvents, P> {
   onInteractionEvent(event: keyof FmsUiControlEvents): boolean {
     return false;
   }
@@ -25,7 +25,7 @@ export class ChecklistUiControl<P extends TbmChecklistUiControlProps=TbmChecklis
 export interface GarminControlListProps<T> extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps, HardwareControlListProps<T> {
 }
 
-export class TbmChecklistControlList<T> extends HardwareUiControlList<T, FmsUiControlEvents, GarminControlListProps<T>> {
+export class ChecklistControlList<T> extends HardwareUiControlList<T, FmsUiControlEvents, GarminControlListProps<T>> {
   onInteractionEvent(event: keyof FmsUiControlEvents): boolean {
     return false;
   }

@@ -16,7 +16,7 @@ export class ScrollBar extends DisplayComponent<ComponentProps> {
   private sizeChangeTimer: NodeJS.Timeout | null = null;
 
   private readonly arrowPadding = 6;
-  private readonly margin = 2;
+  private readonly margin = 3;
 
   private currentScrollHeight = 0;
   private currentThumbAreaHeight = 0;
@@ -103,7 +103,7 @@ export class ScrollBar extends DisplayComponent<ComponentProps> {
       <div class="scroll-bar" ref={this.scrollBarContainerRef}>
         <svg ref={this.svgRef}>
           <path ref={this.scrollBarRef} d="M 5 0 l 2 3 l -4 0 l 2 -3 m 0 6 l 0 135 m 0 6 l 2 -3 l -4 0 l 2 3" fill="white" stroke="white" stroke-width="1px"></path>
-          <rect ref={this.scrollThumbRef} x="3" y="6" width="4" fill="white" />
+          <rect ref={this.scrollThumbRef} x="2" y="6" width="6" fill="white" />
         </svg>
       </div>
     );

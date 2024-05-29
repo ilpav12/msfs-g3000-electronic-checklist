@@ -63,8 +63,8 @@ export enum ChecklistInteractionEventAction {
   Interact = 'checklist_interact',
 }
 
-/** Tbm checklist event. */
-export type TbmChecklistEvent =
+/** Checklist event. */
+export type ChecklistEvent =
   ActiveChecklistChangedEvent
   | ChecklistResetEvent
   | AllChecklistsResetEvent
@@ -73,8 +73,8 @@ export type TbmChecklistEvent =
   | NextChecklistInCategory
   | ChecklistInteractionEvent;
 
-/** Interface of the Tbm checklist events. */
+/** Interface of the checklist events. */
 export interface ChecklistEvents {
-  /** Tbm checklist event. */
-  readonly tbm_checklist_event: TbmChecklistEvent;
+  /** Checklist event. */
+  readonly checklist_event: ChecklistEvent;
 }

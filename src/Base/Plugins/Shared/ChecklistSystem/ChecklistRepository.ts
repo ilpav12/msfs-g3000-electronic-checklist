@@ -50,7 +50,7 @@ export class ChecklistRepository {
       this.isActiveChecklistCompletePipe = activeChecklist.isComplete.pipe(this.isActiveChecklistComplete);
     }, true);
 
-    sub.on('tbm_checklist_event').handle(event => {
+    sub.on('checklist_event').handle(event => {
       switch (event.type) {
         case 'active_checklist_changed':
           this.setActiveChecklist(event.newActiveChecklistName, false);
@@ -152,7 +152,7 @@ export class ChecklistRepository {
     this._activeChecklistName.set(name);
 
     if (notify) {
-      this.publisher.pub('tbm_checklist_event', {
+      this.publisher.pub('checklist_event', {
         type: 'active_checklist_changed',
         newActiveChecklistName: this._activeChecklistName.get(),
       }, true);
@@ -177,7 +177,7 @@ export class ChecklistRepository {
     }
 
     if (notify) {
-      this.publisher.pub('tbm_checklist_event', {
+      this.publisher.pub('checklist_event', {
         type: 'item_changed',
         checklistName,
         itemIndex,
@@ -196,7 +196,7 @@ export class ChecklistRepository {
     checklist.items.forEach(x => x.state.set(ChecklistItemState.Completed));
 
     if (notify) {
-      this.publisher.pub('tbm_checklist_event', {
+      this.publisher.pub('checklist_event', {
         type: 'check_all_items',
         checklistName,
       }, true);
@@ -253,7 +253,7 @@ export class ChecklistRepository {
     checklist.items.forEach(x => x.state.set(ChecklistItemState.Incomplete));
 
     if (notify) {
-      this.publisher.pub('tbm_checklist_event', {
+      this.publisher.pub('checklist_event', {
         type: 'checklist_reset',
         checklistName,
       }, true);

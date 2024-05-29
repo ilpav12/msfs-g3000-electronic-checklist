@@ -11,7 +11,7 @@ import {
   VNode
 } from "@microsoft/msfs-sdk";
 import {
-  ChecklistInteractionEventAction, TbmChecklistEvent,
+  ChecklistInteractionEventAction, ChecklistEvent,
   ChecklistEvents,
   ChecklistItem,
   ChecklistItemReadonly,
@@ -23,7 +23,7 @@ import {
 } from "@base/Shared/ChecklistSystem";
 import {
   FmsUiControlEvents,
-  TbmChecklistControlList,
+  ChecklistControlList,
   ChecklistUiControl
 } from "@base/Shared/UI/ChecklistUiControl";
 import {ChecklistItemDisplay} from "@base/Shared/Panes/Components/ChecklistItemDisplay";
@@ -32,7 +32,7 @@ import {NextChecklistControl} from "@base/Shared/Panes/Components/ChecklistNextB
 import './ChecklistDisplay.css';
 
 /** Component props for the {@link ChecklistDisplay} component */
-export interface TbmChecklistDisplayProps extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
+export interface ChecklistDisplayProps extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
   /** The event bus */
   bus: EventBus;
   /** The checklist repository */
@@ -45,9 +45,9 @@ export interface TbmChecklistDisplayProps extends UiControlPropEventHandlers<Fms
   focusedItemType: Subject<ChecklistPageFocusableItemType>;
 }
 
-export class ChecklistDisplay extends ChecklistUiControl<TbmChecklistDisplayProps> {
+export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> {
   private readonly scrollContainer = FSComponent.createRef<HTMLDivElement>();
-  protected readonly checklistItemListRef = FSComponent.createRef<TbmChecklistControlList<ChecklistItemReadonly>>();
+  protected readonly checklistItemListRef = FSComponent.createRef<ChecklistControlList<ChecklistItemReadonly>>();
 
   private items = ArraySubject.create<ChecklistItemReadonly>([]);
 
@@ -68,7 +68,7 @@ export class ChecklistDisplay extends ChecklistUiControl<TbmChecklistDisplayProp
     this.ensureIndexInView = this.checklistItemListRef.instance.ensureIndexInView.bind(this.checklistItemListRef.instance);
     this.checklistItemListRef.instance.ensureIndexInView = this.replaceEnsureIndexInView.bind(this);
 
-    this.props.bus.getSubscriber<ChecklistEvents>().on('tbm_checklist_event').handle(this.onChecklistInteraction.bind(this));
+    this.props.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle(this.onChecklistInteraction.bind(this));
   }
 
   /**
@@ -76,7 +76,7 @@ export class ChecklistDisplay extends ChecklistUiControl<TbmChecklistDisplayProp
    * @param event The checklist event.
    * @returns Whether the required action was successful.
    */
-  private onChecklistInteraction(event: TbmChecklistEvent): boolean {
+  private onChecklistInteraction(event: ChecklistEvent): boolean {
     if (event.type === 'checklist_interaction') {
       switch (event.action) {
         case ChecklistInteractionEventAction.Interact:
@@ -120,7 +120,7 @@ export class ChecklistDisplay extends ChecklistUiControl<TbmChecklistDisplayProp
       }
       if (itemIndex >= 0) {
         this.props.bus.getPublisher<ChecklistEvents>()
-          .pub('tbm_checklist_event', {
+          .pub('checklist_event', {
             type: 'item_changed',
             checklistName: checklist.name,
             itemIndex: itemIndex,
@@ -145,7 +145,7 @@ export class ChecklistDisplay extends ChecklistUiControl<TbmChecklistDisplayProp
       const itemIndex = checklist.items.indexOf(item);
       if (itemIndex >= 0) {
         this.props.bus.getPublisher<ChecklistEvents>()
-          .pub('tbm_checklist_event', {
+          .pub('checklist_event', {
             type: 'item_changed',
             checklistName: checklist.name,
             itemIndex: itemIndex,
@@ -161,7 +161,7 @@ export class ChecklistDisplay extends ChecklistUiControl<TbmChecklistDisplayProp
    */
   private goToNextChecklist(): boolean {
     this.props.bus.getPublisher<ChecklistEvents>()
-      .pub('tbm_checklist_event', {
+      .pub('checklist_event', {
         type: 'next_checklist',
         checklistName: this.props.checklist.get().name,
         category: this.props.checklist.get().category,
@@ -211,7 +211,7 @@ export class ChecklistDisplay extends ChecklistUiControl<TbmChecklistDisplayProp
   /** @inheritDoc */
   public render(): VNode {
     return (
-      <div class="tbm-checklist-page-container">
+      <div class="checklist-page-container">
         <div class="checklist-selection-container">
           <div class="checklist-category">
             <span>{this.props.repo.activeChecklist.map(v => v.category)}</span>
@@ -221,25 +221,24 @@ export class ChecklistDisplay extends ChecklistUiControl<TbmChecklistDisplayProp
           </div>
         </div>
         <div class="checklist-container">
-          <div class="tbm-checklist-display-container">
-            <div class="tbm-checklist-display" ref={this.scrollContainer}>
-              <TbmChecklistControlList
-                class="tbm-checklist-display-list"
+          <div class="checklist-display-container">
+            <div class="checklist-display" ref={this.scrollContainer}>
+              <ChecklistControlList
+                class="checklist-display-list"
                 ref={this.checklistItemListRef}
                 data={this.items}
                 renderItem={this.renderChecklistItem.bind(this)}
                 hideScrollbar={false}
-                scrollContainer={this.scrollContainer}
               />
             </div>
             <div class={{
-              'tbm-checklist-completed-label': true,
+              'checklist-completed-label': true,
               'hidden': this.props.isChecklistCompleted.map(v => !v)
             }}>
               * Checklist Finished *
             </div>
             <div class={{
-              'tbm-checklist-not-completed-label': true,
+              'checklist-not-completed-label': true,
               'hidden': this.warnChecklistNotCompleted.map(v => !v)
             }}>
               * Checklist Not Finished *
@@ -261,6 +260,7 @@ export class ChecklistDisplay extends ChecklistUiControl<TbmChecklistDisplayProp
               }}
             />
           </div>
+
         </div>
       </div>
     );

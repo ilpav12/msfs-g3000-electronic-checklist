@@ -48,7 +48,7 @@ export class ChecklistGtcPage extends GtcView {
     this._title.set('Checklist');
     this._activeComponent.set(this.listRef.instance);
 
-    this.bus.getSubscriber<ChecklistEvents>().on('tbm_checklist_event').handle((event) => {
+    this.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle((event) => {
       if (event.type === 'active_checklist_changed') {
         this.activeChecklistName.set(event.newActiveChecklistName);
       }
@@ -84,7 +84,7 @@ export class ChecklistGtcPage extends GtcView {
                       label={checklistName}
                       onPressed={() => {
                         this.bus.getPublisher<ChecklistEvents>()
-                          .pub('tbm_checklist_event', {
+                          .pub('checklist_event', {
                             type: 'active_checklist_changed',
                             newActiveChecklistName: checklistName,
                           }, true);

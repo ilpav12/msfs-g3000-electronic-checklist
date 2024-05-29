@@ -1,9 +1,9 @@
 import { FSComponent, Subject, VNode } from '@microsoft/msfs-sdk';
 import { ChecklistItemReadonly, ChecklistItemState, ChecklistItemType, ChecklistPageFocusableItemType } from "@base/Shared/ChecklistSystem";
-import {ChecklistUiControl, TbmChecklistUiControlProps} from "@base/Shared/UI/ChecklistUiControl";
+import {ChecklistUiControl, ChecklistUiControlProps} from "@base/Shared/UI/ChecklistUiControl";
 
 /** Component props for the {@link ChecklistItemDisplay} component */
-export interface TbmChecklistItemDisplayProps extends TbmChecklistUiControlProps {
+export interface ChecklistItemDisplayProps extends ChecklistUiControlProps {
   /** The checklist item to display. */
   item: ChecklistItemReadonly
   /** A function to toggle the completed status of the item. */
@@ -14,8 +14,8 @@ export interface TbmChecklistItemDisplayProps extends TbmChecklistUiControlProps
   focusedItemType: Subject<ChecklistPageFocusableItemType>;
 }
 
-/** A display component for a TBM checklist item. */
-export class ChecklistItemDisplay extends ChecklistUiControl<TbmChecklistItemDisplayProps> {
+/** A display component for a  checklist item. */
+export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDisplayProps> {
   private readonly itemRef = FSComponent.createRef<HTMLDivElement>();
 
   /** @inheritDoc */
@@ -84,25 +84,25 @@ export class ChecklistItemDisplay extends ChecklistUiControl<TbmChecklistItemDis
 
     return (
       <div class={{
-        'tbm-checklist-checkbox': true ,
+        'checklist-checkbox': true ,
         'level-2': level === 2,
         'level-3': level === 3,
         'completed': this.props.item.state.map(v => v === ChecklistItemState.Completed)
       }}>
         <svg width="32px" height="32px" viewBox="0 0 32 32" style="flex-shrink: 0">
-          <path class="tbm-checklist-checkbox-border" d="M 8.5 23.5 L 8.5 8.5 L 23.5 8.5" stroke="#CECECE" stroke-width="1" fill="none"/>
-          <path class="tbm-checklist-checkbox-border" d="M 23.5 8.5 L 23.5 24 M 23.5 23.5 L 8.5 23.5" stroke="#8B8B8B" stroke-width="1" fill="none"/>
-          <path class="tbm-checklist-checkbox-mark" d="M 9 15 L 15 22 L 23 12" stroke="#00FF00" stroke-width="3" fill="none"/>
+          <path class="checklist-checkbox-border" d="M 8.5 23.5 L 8.5 8.5 L 23.5 8.5" stroke="#CECECE" stroke-width="1" fill="none"/>
+          <path class="checklist-checkbox-border" d="M 23.5 8.5 L 23.5 24 M 23.5 23.5 L 8.5 23.5" stroke="#8B8B8B" stroke-width="1" fill="none"/>
+          <path class="checklist-checkbox-mark" d="M 9 15 L 15 22 L 23 12" stroke="#00FF00" stroke-width="3" fill="none"/>
         </svg>
-        <div class="tbm-checklist-checkbox-title">{title}</div>
+        <div class="checklist-checkbox-title">{title}</div>
         <div class={{
-          'tbm-checklist-checkbox-spacer': true,
+          'checklist-checkbox-spacer': true,
           'hidden': !this.props.item.action
         }}>
           <div>......................................................................</div>
         </div>
         <div class={{
-          'tbm-checklist-checkbox-action': true,
+          'checklist-checkbox-action': true,
           'hidden': !this.props.item.action
         }}>{action}</div>
       </div>
@@ -125,14 +125,14 @@ export class ChecklistItemDisplay extends ChecklistUiControl<TbmChecklistItemDis
    * @returns The section title item VNode.
    */
   private renderSectionTitleItem(): VNode {
-    return <div class="tbm-checklist-section-title">{this.props.item.title}</div>;
+    return <div class="checklist-section-title">{this.props.item.title}</div>;
   }
 
   /** @inheritDoc */
   public render(): VNode {
     return (
       <div class={{
-        'tbm-checklist-item-display': true,
+        'checklist-item-display': true,
         'extended-margin-below': !!this.props.item.extendedMarginBelow
       }} ref={this.itemRef}>{this.renderItem()}</div>
     );

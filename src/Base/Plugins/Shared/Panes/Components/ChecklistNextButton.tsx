@@ -2,7 +2,7 @@ import {EventBus, FSComponent, HardwareUiControl, Subscribable, VNode} from '@mi
 import {
   FmsUiControlEvents,
   ChecklistUiControl,
-  TbmChecklistUiControlProps
+  ChecklistUiControlProps
 } from "@base/Shared/UI/ChecklistUiControl";
 import {
   ChecklistInteractionEventAction,
@@ -10,7 +10,7 @@ import {
 } from "@base/Shared/ChecklistSystem/ChecklistEvents";
 
 /** Component props for the {@link NextChecklistControl} component */
-export interface NextChecklistControlProps extends TbmChecklistUiControlProps {
+export interface NextChecklistControlProps extends ChecklistUiControlProps {
   /** The event bus */
   bus: EventBus;
   /** The function to call when the next button is clicked. */
@@ -30,7 +30,7 @@ export class NextChecklistControl extends ChecklistUiControl<NextChecklistContro
       this.setDisabled(isLast);
     }, true);
 
-    this.props.bus.getSubscriber<ChecklistEvents>().on('tbm_checklist_event').handle((event) => {
+    this.props.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle((event) => {
       if (this.isFocused && event.type === 'checklist_interaction' && event.action === ChecklistInteractionEventAction.Interact) {
         this.props.onEnter();
       }
@@ -63,7 +63,7 @@ export class NextChecklistControl extends ChecklistUiControl<NextChecklistContro
 
   /** @inheritDoc */
   public render(): VNode {
-    return <div class="tbm-next-checklist-label" ref={this.labelRef}>
+    return <div class="next-checklist-label" ref={this.labelRef}>
       Go to Next Checklist?
     </div>;
   }

@@ -4,7 +4,7 @@ import {ChecklistEvents, ChecklistNames} from "@base/Shared/ChecklistSystem";
 
 import "./ChecklistGtcOptionsPopup.css";
 
-interface TbmChecklistGtcOptionsPopupProps extends GtcViewProps {
+interface ChecklistGtcOptionsPopupProps extends GtcViewProps {
   /** The active checklist name. */
   activeChecklistName: Subject<ChecklistNames>,
 }
@@ -12,7 +12,7 @@ interface TbmChecklistGtcOptionsPopupProps extends GtcViewProps {
 /**
  * A popup for checklist options.
  */
-export class ChecklistGtcOptionsPopup extends GtcView<TbmChecklistGtcOptionsPopupProps> {
+export class ChecklistGtcOptionsPopup extends GtcView<ChecklistGtcOptionsPopupProps> {
   /** @inheritdoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
@@ -30,7 +30,7 @@ export class ChecklistGtcOptionsPopup extends GtcView<TbmChecklistGtcOptionsPopu
             label={'Check All'}
             class='checklist-options-popup-button'
             onPressed={() => {
-              this.bus.getPublisher<ChecklistEvents>().pub('tbm_checklist_event', {
+              this.bus.getPublisher<ChecklistEvents>().pub('checklist_event', {
                 type: 'check_all_items',
                 checklistName: this.props.activeChecklistName.get(),
               }, true);
@@ -48,7 +48,7 @@ export class ChecklistGtcOptionsPopup extends GtcView<TbmChecklistGtcOptionsPopu
             label={'Reset Checklist'}
             class='checklist-options-popup-button'
             onPressed={() => {
-              this.bus.getPublisher<ChecklistEvents>().pub('tbm_checklist_event', {
+              this.bus.getPublisher<ChecklistEvents>().pub('checklist_event', {
                 type: 'checklist_reset',
                 checklistName: this.props.activeChecklistName.get(),
               }, true);
@@ -59,7 +59,7 @@ export class ChecklistGtcOptionsPopup extends GtcView<TbmChecklistGtcOptionsPopu
             label={'Reset All\nChecklists'}
             class='checklist-options-popup-button'
             onPressed={() => {
-              this.bus.getPublisher<ChecklistEvents>().pub('tbm_checklist_event', {
+              this.bus.getPublisher<ChecklistEvents>().pub('checklist_event', {
                 type: 'all_checklists_reset',
               }, true);
               this.gtcService.goBack();
