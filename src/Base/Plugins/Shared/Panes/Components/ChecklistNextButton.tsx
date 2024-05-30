@@ -65,6 +65,6 @@ export class NextChecklistControl extends ChecklistUiControl<NextChecklistContro
   public render(): VNode {
     return <div class="next-checklist-label" ref={this.labelRef}>
       Go to Next Checklist?
-    </div>;
+    </div>
   }
 }

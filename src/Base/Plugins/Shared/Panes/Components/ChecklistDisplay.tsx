@@ -69,6 +69,13 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
     this.checklistItemListRef.instance.ensureIndexInView = this.replaceEnsureIndexInView.bind(this);
 
     this.props.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle(this.onChecklistInteraction.bind(this));
+
+    // Needed to handle the case where the last item is a checkbox
+    this.props.isChecklistCompleted.sub(isComplete => {
+      if (isComplete) {
+        this.warnChecklistNotCompleted.set(false);
+      }
+    }, true);
   }
 
   /**
@@ -257,9 +264,7 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
                 }
               }}
               onBlurred={() => {
-                if (this.warnChecklistNotCompleted.get()) {
-                  this.warnChecklistNotCompleted.set(false);
-                }
+                this.warnChecklistNotCompleted.set(false);
               }}
             />
           </div>
