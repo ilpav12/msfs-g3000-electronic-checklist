@@ -14,6 +14,7 @@ import {
 } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistGtcOptionsPopup } from "@base/GTC/Pages/ChecklistPage/ChecklistGtcOptionsPopup";
 import {
+  ChecklistCategory,
   ChecklistEvents,
   ChecklistNames
 } from "@base/Shared/ChecklistSystem";
@@ -32,6 +33,9 @@ export class ChecklistGtcPage extends GtcView {
   private readonly optionsPopupKey = GtcChecklistPagePopupKeys.Options;
   private readonly listRef = FSComponent.createRef<GtcList<any>>();
   private readonly activeChecklistName = Subject.create<ChecklistNames>(ItemsShowcaseChecklistNames.ItemsTypes);
+  public readonly checklistCategories = [
+    { name: ChecklistCategory.ItemsShowcase, checklists: ItemsShowcaseChecklistNames},
+  ]
 
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
@@ -63,43 +67,45 @@ export class ChecklistGtcPage extends GtcView {
           initiallySelectedTabPosition={1}
           configuration={TabConfiguration.Left5}
         >
-          <TabbedContent
-            position={1}
-            label="Normal"
-          >
-            <GtcList
-              ref={this.listRef}
-              bus={this.bus}
-              listItemHeightPx={135}
-              itemsPerPage={5}
-              listItemSpacingPx={1}
-              sidebarState={this._sidebarState}
-              class='gtc-checklist-tab-list'
-            >
-              {Object.values(ItemsShowcaseChecklistNames).map((checklistName) => {
-                const isHighlighted = this.activeChecklistName.map(name => name === checklistName);
-                return (
-                  <GtcListItem>
-                    <GtcTouchButton
-                      label={checklistName}
-                      onPressed={() => {
-                        this.bus.getPublisher<ChecklistEvents>()
-                          .pub('checklist_event', {
-                            type: 'active_checklist_changed',
-                            newActiveChecklistName: checklistName,
-                          }, true);
-                      }}
-                      isHighlighted={isHighlighted}
-                      isInList
-                      class='gtc-checklist-list-button'
-                    />
-                  </GtcListItem>
-                );
-              })}
-            </GtcList>
-          </TabbedContent>
-
-          <TabbedContent position={2} label="Abnormal" disabled={true}>Abnormal checklist</TabbedContent>
+          { this.checklistCategories.map((category, index) => {
+            return (
+              <TabbedContent
+                position={index + 1}
+                label={category.name}
+              >
+                <GtcList
+                  ref={this.listRef}
+                  bus={this.bus}
+                  listItemHeightPx={135}
+                  itemsPerPage={5}
+                  listItemSpacingPx={1}
+                  sidebarState={this._sidebarState}
+                  class='gtc-checklist-tab-list'
+                >
+                  { Object.values(category.checklists).map((checklistName) => {
+                    const isHighlighted = this.activeChecklistName.map(name => name === checklistName);
+                    return (
+                      <GtcListItem>
+                        <GtcTouchButton
+                          label={checklistName}
+                          onPressed={() => {
+                            this.bus.getPublisher<ChecklistEvents>()
+                              .pub('checklist_event', {
+                                type: 'active_checklist_changed',
+                                newActiveChecklistName: checklistName,
+                              }, true);
+                          }}
+                          isHighlighted={isHighlighted}
+                          isInList
+                          class='gtc-checklist-list-button'
+                        />
+                      </GtcListItem>
+                    );
+                  })}
+                </GtcList>
+              </TabbedContent>
+            );
+          })}
         </TabbedContainer>
         <GtcTouchButton
           label={'Checklist\nOptions'}
