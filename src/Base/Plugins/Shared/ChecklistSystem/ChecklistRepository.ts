@@ -1,32 +1,21 @@
 import {EventBus, Subject, Subscribable, Subscription} from '@microsoft/msfs-sdk';
-import {
-  AbnormalChecklists,
-  ChecklistIdentification,
-  EmergencyChecklists,
-  NormalChecklists
-} from '@base/Shared/ChecklistSystem/Checklists';
+import { ItemsShowcaseChecklists } from '@base/Shared/ChecklistSystem/Checklists';
 import {
   Checklist,
   ChecklistCategory,
-  ChecklistItemState,
   ChecklistNames,
   ChecklistReadonly
 } from '@base/Shared/ChecklistSystem/Checklist';
+import {ChecklistItemState} from "@base/Shared/ChecklistSystem/ChecklistItem";
 import {ChecklistEvents} from '@base/Shared/ChecklistSystem/ChecklistEvents';
 
 /**
  * The Repo class for the checklists.
  */
 export class ChecklistRepository {
-  private readonly abnormalChecklists = AbnormalChecklists.getChecklists();
-  private readonly checklistIdentification = ChecklistIdentification.getChecklists();
-  private readonly emergencyChecklists = EmergencyChecklists.getChecklists();
-  private readonly normalChecklists = NormalChecklists.getChecklists();
-  // crew alerting and performance data checklist currently disabled
-  // private readonly crewAlertingChecklists = CrewAlertingChecklists.getChecklists();
-  // private readonly performanceDataChecklists = PerformanceDataChecklists.getChecklists();
+  private readonly itemsShowcaseChecklist = ItemsShowcaseChecklists.getChecklists();
 
-  private readonly _activeChecklistName = Subject.create(this.normalChecklists[2].name);
+  private readonly _activeChecklistName = Subject.create(this.itemsShowcaseChecklist[0].name);
   public readonly activeChecklistName = this._activeChecklistName as Subscribable<string>;
 
   public readonly activeChecklist = this._activeChecklistName.map(this.getChecklistByName.bind(this)) as Subscribable<ChecklistReadonly>;
@@ -101,15 +90,9 @@ export class ChecklistRepository {
    * @returns The Checklist that holds the given name.
    */
   private getChecklistByName(name: string): Checklist {
-    const checklist =
-      this.normalChecklists.find(x => x.name === name) ||
-      this.abnormalChecklists.find(x => x.name === name) ||
-      this.checklistIdentification.find(x => x.name === name) ||
-      this.emergencyChecklists.find(x => x.name === name);
-    // this.crewAlertingChecklists.find(x => x.name === name) ||
-    // this.performanceDataChecklists.find(x => x.name === name);
+    const checklist = this.itemsShowcaseChecklist.find(x => x.name === name);
 
-    return checklist ?? this.normalChecklists[0];
+    return checklist ?? this.itemsShowcaseChecklist[0];
   }
 
   /**
@@ -119,18 +102,8 @@ export class ChecklistRepository {
    */
   public getChecklistsByCategory(category: ChecklistCategory): Checklist[] {
     switch (category) {
-      case ChecklistCategory.Abnormal:
-        return this.abnormalChecklists;
-      case ChecklistCategory.ChecklistIdentification:
-        return this.checklistIdentification;
-      case ChecklistCategory.Emergency:
-        return this.emergencyChecklists;
-      case ChecklistCategory.Normal:
-        return this.normalChecklists;
-      // case ChecklistCategory.CrewAlerting:
-      //   return this.crewAlertingChecklists;
-      // case ChecklistCategory.PerformanceData:
-      //   return this.performanceDataChecklists;
+      case ChecklistCategory.ItemsShowcase:
+        return this.itemsShowcaseChecklist;
     }
   }
 
@@ -210,24 +183,9 @@ export class ChecklistRepository {
    */
   private nextChecklistInCategory(checklistName: ChecklistNames, category: ChecklistCategory): void {
     switch (category) {
-      case ChecklistCategory.Abnormal:
-        this.setActiveChecklist(this.findNextChecklist(checklistName, this.abnormalChecklists));
+      case ChecklistCategory.ItemsShowcase:
+        this.setActiveChecklist(this.findNextChecklist(checklistName, this.itemsShowcaseChecklist));
         break;
-      case ChecklistCategory.ChecklistIdentification:
-        this.setActiveChecklist(this.findNextChecklist(checklistName, this.checklistIdentification));
-        break;
-      case ChecklistCategory.Emergency:
-        this.setActiveChecklist(this.findNextChecklist(checklistName, this.emergencyChecklists));
-        break;
-      case ChecklistCategory.Normal:
-        this.setActiveChecklist(this.findNextChecklist(checklistName, this.normalChecklists));
-        break;
-      // case ChecklistCategory.CrewAlerting:
-      //   this.setActiveChecklist(this.findNextChecklist(checklistName, this.crewAlertingChecklists));
-      //   break;
-      // case ChecklistCategory.PerformanceData:
-      //   this.setActiveChecklist(this.findNextChecklist(checklistName, this.performanceDataChecklists));
-      //   break;
     }
   }
 
@@ -265,34 +223,14 @@ export class ChecklistRepository {
    */
   public resetChecklistByCategory(category: ChecklistCategory): void {
     switch (category) {
-      case ChecklistCategory.Abnormal:
-        this.abnormalChecklists.forEach(x => this.resetChecklist(x.name));
+      case ChecklistCategory.ItemsShowcase:
+        this.itemsShowcaseChecklist.forEach(x => this.resetChecklist(x.name));
         break;
-      case ChecklistCategory.ChecklistIdentification:
-        this.checklistIdentification.forEach(x => this.resetChecklist(x.name));
-        break;
-      case ChecklistCategory.Emergency:
-        this.emergencyChecklists.forEach(x => this.resetChecklist(x.name));
-        break;
-      case ChecklistCategory.Normal:
-        this.normalChecklists.forEach(x => this.resetChecklist(x.name));
-        break;
-      // case ChecklistCategory.CrewAlerting:
-      //   this.crewAlertingChecklists.forEach(x => this.resetChecklist(x.name));
-      //   break;
-      // case ChecklistCategory.PerformanceData:
-      //   this.performanceDataChecklists.forEach(x => this.resetChecklist(x.name));
-      //   break;
     }
   }
 
   /** Resets all checklists. */
   public resetAllChecklists(): void {
-    this.abnormalChecklists.forEach(x => this.resetChecklist(x.name));
-    this.checklistIdentification.forEach(x => this.resetChecklist(x.name));
-    this.emergencyChecklists.forEach(x => this.resetChecklist(x.name));
-    this.normalChecklists.forEach(x => this.resetChecklist(x.name));
-    // this.crewAlertingChecklists.forEach(x => this.resetChecklist(x.name));
-    // this.performanceDataChecklists.forEach(x => this.resetChecklist(x.name));
+    this.itemsShowcaseChecklist.forEach(x => this.resetChecklist(x.name));
   }
 }

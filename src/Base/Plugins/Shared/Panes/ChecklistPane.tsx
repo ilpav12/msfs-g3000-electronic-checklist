@@ -26,7 +26,7 @@ export interface TbmChecklistPageProps extends DisplayPaneViewProps {
 export class ChecklistPane extends DisplayPaneView<TbmChecklistPageProps> {
   private readonly uiRoot = FSComponent.createRef<ChecklistUiControl>();
   private readonly activeChecklist = this.props.repo.activeChecklist;
-  public readonly focusedItemType = Subject.create(ChecklistPageFocusableItemType.CheckboxUnchecked);
+  public readonly focusedItemType = Subject.create(ChecklistPageFocusableItemType.ChallengeUnchecked);
 
   private readonly checklistDisplayRef = FSComponent.createRef<ChecklistDisplay>();
 

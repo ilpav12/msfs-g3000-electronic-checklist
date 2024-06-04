@@ -13,7 +13,7 @@ import {
   GtcViewKeys,
   ImgTouchButton
 } from "@microsoft/msfs-wtg3000-gtc";
-import {ChecklistFilePaths} from "@base/Shared";
+import {ChecklistFilePaths, ChecklistPaneKeys} from "@base/Shared";
 
 /**
  * Checklist GTC View keys.
@@ -168,12 +168,12 @@ export class ChecklistGtcMfdHomePage extends GtcView<GtcMfdHomePageProps> {
           }
           <GtcDesignatedPaneButton
             displayPaneSettingManager={this.displayPaneSettingManager}
-            selectedPaneViewKeys={[ChecklistGtcViewKeys.Checklist]}
+            selectedPaneViewKeys={[ChecklistPaneKeys.Checklist]}
             label="Checklist"
             imgSrc={ChecklistFilePaths.ASSETS_PATH + "/icon_small_checklist.png"}
             onPressed={() => {
-              this.displayPaneSettingManager.getSetting('displayPaneDesignatedView').value = ChecklistGtcViewKeys.Checklist;
-              this.displayPaneSettingManager.getSetting('displayPaneView').value = ChecklistGtcViewKeys.Checklist;
+              this.displayPaneSettingManager.getSetting('displayPaneDesignatedView').value = ChecklistPaneKeys.Checklist;
+              this.displayPaneSettingManager.getSetting('displayPaneView').value = ChecklistPaneKeys.Checklist;
               this.props.gtcService.changePageTo(ChecklistGtcViewKeys.Checklist)
             }}
             class="gtc-directory-button"

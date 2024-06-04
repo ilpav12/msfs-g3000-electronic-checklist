@@ -1,4 +1,4 @@
-import { ChecklistCategory, ChecklistItemState, ChecklistNames } from '@base/Shared/ChecklistSystem/Checklist';
+import { ChecklistCategory, ChecklistItemState, ChecklistNames } from '@base/Shared/ChecklistSystem';
 
 /** Active checklist changed Event. */
 export interface ActiveChecklistChangedEvent {
@@ -33,6 +33,7 @@ export interface ChecklistItemChangedEvent {
   readonly itemState: ChecklistItemState;
 }
 
+/** Check all items event. */
 export interface CheckAllItemsEvent {
   /** The event type. */
   readonly type: 'check_all_items';
@@ -50,6 +51,7 @@ export interface NextChecklistInCategory {
   readonly category: ChecklistCategory;
 }
 
+/** Checklist interaction event. */
 export interface ChecklistInteractionEvent {
   /** The event type. */
   readonly type: 'checklist_interaction';
@@ -57,6 +59,7 @@ export interface ChecklistInteractionEvent {
   readonly action: ChecklistInteractionEventAction;
 }
 
+/** Checklist interaction event action. */
 export enum ChecklistInteractionEventAction {
   ScrollUp = 'checklist_scroll_up',
   ScrollDown = 'checklist_scroll_down',

@@ -102,8 +102,8 @@ export class ScrollBar extends DisplayComponent<ComponentProps> {
     return (
       <div class="scroll-bar" ref={this.scrollBarContainerRef}>
         <svg ref={this.svgRef}>
-          <path ref={this.scrollBarRef} d="M 5 0 l 2 3 l -4 0 l 2 -3 m 0 6 l 0 135 m 0 6 l 2 -3 l -4 0 l 2 3" fill="white" stroke="white" stroke-width="1px"></path>
-          <rect ref={this.scrollThumbRef} x="2" y="6" width="6" fill="white" />
+          <path ref={this.scrollBarRef} d="M 5 0 l 2 3 l -4 0 l 2 -3 m 0 6 l 0 135 m 0 6 l 2 -3 l -4 0 l 2 3" fill="white" stroke="white" stroke-width="2px"></path>
+          <rect ref={this.scrollThumbRef} x="1" y="6" width="8" fill="white" />
         </svg>
       </div>
     );

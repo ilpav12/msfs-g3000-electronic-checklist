@@ -2,53 +2,53 @@
   "content": [
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistGtcPlugins.css",
-      "size": 5698,
-      "date": 133612165243757644
+      "size": 7383,
+      "date": 133619331480860152
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistGtcPlugins.js",
-      "size": 32789,
-      "date": 133612165243747349
+      "size": 24583,
+      "date": 133619331480860152
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistMfdPlugins.css",
-      "size": 4111,
-      "date": 133612165241382590
+      "size": 5796,
+      "date": 133619331478705081
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistMfdPlugins.js",
-      "size": 158755,
-      "date": 133612165241372668
+      "size": 51932,
+      "date": 133619331478705081
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistPfdPlugins.css",
-      "size": 4111,
-      "date": 133612165238761136
+      "size": 5796,
+      "date": 133619331476524796
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistPfdPlugins.js",
-      "size": 158755,
-      "date": 133612165238761136
+      "size": 51932,
+      "date": 133619331476524796
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/icon_small_checklist.png",
       "size": 5069,
-      "date": 133610591050738164
+      "date": 133616457584298254
     },
     {
       "path": "SimObjects/Airplanes/Asobo_TBM930/model/TBM930_SplitScreen_Templates.xml",
       "size": 682,
-      "date": 133610591050705153
+      "date": 133610339298295740
     },
     {
       "path": "SimObjects/Airplanes/Asobo_TBM930/panel/panel.cfg",
       "size": 1771,
-      "date": 133610591050715247
+      "date": 133610339298305740
     },
     {
       "path": "SimObjects/Airplanes/Asobo_TBM930/panel/panel.xml",
       "size": 23460,
-      "date": 133611976858462073
+      "date": 133616457584288279
     }
   ]
 }

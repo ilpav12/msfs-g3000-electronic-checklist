@@ -17,7 +17,7 @@ import {
   ChecklistEvents,
   ChecklistNames
 } from "@base/Shared/ChecklistSystem";
-import {NormalChecklistNames} from "@base/Shared/ChecklistSystem/Checklists";
+import {ItemsShowcaseChecklistNames} from "@base/Shared/ChecklistSystem/Checklists";
 
 import "./ChecklistGtcPage.css";
 
@@ -31,7 +31,7 @@ enum GtcChecklistPagePopupKeys {
 export class ChecklistGtcPage extends GtcView {
   private readonly optionsPopupKey = GtcChecklistPagePopupKeys.Options;
   private readonly listRef = FSComponent.createRef<GtcList<any>>();
-  private readonly activeChecklistName = Subject.create<ChecklistNames>(NormalChecklistNames.BeforeStartingEngine);
+  private readonly activeChecklistName = Subject.create<ChecklistNames>(ItemsShowcaseChecklistNames.ItemsTypes);
 
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
@@ -76,7 +76,7 @@ export class ChecklistGtcPage extends GtcView {
               sidebarState={this._sidebarState}
               class='gtc-checklist-tab-list'
             >
-              {Object.values(NormalChecklistNames).map((checklistName) => {
+              {Object.values(ItemsShowcaseChecklistNames).map((checklistName) => {
                 const isHighlighted = this.activeChecklistName.map(name => name === checklistName);
                 return (
                   <GtcListItem>

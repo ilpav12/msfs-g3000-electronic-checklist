@@ -11,8 +11,9 @@ import {
   VNode
 } from "@microsoft/msfs-sdk";
 import {
-  ChecklistInteractionEventAction, ChecklistEvent,
+  ChecklistEvent,
   ChecklistEvents,
+  ChecklistInteractionEventAction,
   ChecklistItem,
   ChecklistItemReadonly,
   ChecklistItemState,
@@ -21,11 +22,7 @@ import {
   ChecklistReadonly,
   ChecklistRepository
 } from "@base/Shared/ChecklistSystem";
-import {
-  FmsUiControlEvents,
-  ChecklistControlList,
-  ChecklistUiControl
-} from "@base/Shared/UI/ChecklistUiControl";
+import {ChecklistControlList, ChecklistUiControl, FmsUiControlEvents} from "@base/Shared/UI/ChecklistUiControl";
 import {ChecklistItemDisplay} from "@base/Shared/Panes/Components/ChecklistItemDisplay";
 import {NextChecklistControl} from "@base/Shared/Panes/Components/ChecklistNextButton";
 
@@ -70,7 +67,7 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
 
     this.props.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle(this.onChecklistInteraction.bind(this));
 
-    // Needed to handle the case where the last item is a checkbox
+    // Needed to handle the case where the last item is a challenge
     this.props.isChecklistCompleted.sub(isComplete => {
       if (isComplete) {
         this.warnChecklistNotCompleted.set(false);
@@ -121,7 +118,7 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
    * @returns Whether the required action was successful.
    */
   private toggleItemCompletedStatus(item: ChecklistItemReadonly): boolean {
-    if (item && item.type === ChecklistItemType.Checkbox) {
+    if (item && item.type === ChecklistItemType.Challenge) {
       const checklist = this.props.checklist.get();
       const itemIndex = checklist.items.indexOf(item);
       // Scroll forward if we're completing the item, don't scroll if we're resetting the item to incomplete
@@ -138,7 +135,17 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
           });
         return true;
       }
-    } else if (item && item.type === ChecklistItemType.Text) {
+    } else if (item && this.props.focusedItemType.get() === ChecklistPageFocusableItemType.Link) {
+      if (item.linkTarget) {
+        this.props.bus.getPublisher<ChecklistEvents>()
+          .pub('checklist_event', {
+            type: 'active_checklist_changed',
+            newActiveChecklistName: item.linkTarget
+          }, true);
+        return true;
+      }
+      return false;
+    } else if (item && this.props.focusedItemType.get() === ChecklistPageFocusableItemType.Text) {
       this.scroll('forward');
       return true;
     }
@@ -150,7 +157,7 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
    * @param item The item to set to incomplete.
    */
   private setItemIncomplete(item: ChecklistItemReadonly): void {
-    if (item && item.type === ChecklistItemType.Checkbox && item.state.get() === ChecklistItemState.Completed) {
+    if (item && item.type === ChecklistItemType.Challenge && item.state.get() === ChecklistItemState.Completed) {
       const checklist = this.props.checklist.get();
       const itemIndex = checklist.items.indexOf(item);
       if (itemIndex >= 0) {
@@ -187,8 +194,9 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
   private renderChecklistItem(item: ChecklistItem): VNode {
     return (
       <ChecklistItemDisplay
+        bus={this.props.bus}
         item={item}
-        onRegistered={(control): void => control.setDisabled(item.type === ChecklistItemType.Section)}
+        onRegistered={(control): void => control.setDisabled(item.type === ChecklistItemType.Subtitle)}
         toggleItemCompleted={this.toggleItemCompletedStatus.bind(this)}
         setItemIncomplete={this.setItemIncomplete.bind(this)}
         focusedItemType={this.props.focusedItemType}
