@@ -75,23 +75,30 @@ export class ChecklistGtcPlugin extends AbstractG3000GtcPlugin {
       return false;
     }
 
+    if (this.binder.gtcService.selectedDisplayPane.get() === -1) {
+      return false;
+    }
+
     switch (event) {
       case GtcInteractionEvent.MapKnobDec:
         this.binder.bus.getPublisher<ChecklistEvents>().pub('checklist_event', {
           type: 'checklist_interaction',
           action: ChecklistInteractionEventAction.ScrollUp,
+          targetPaneIndex: this.binder.gtcService.selectedDisplayPane.get(),
         }, true);
         return true;
       case GtcInteractionEvent.MapKnobInc:
         this.binder.bus.getPublisher<ChecklistEvents>().pub('checklist_event', {
           type: 'checklist_interaction',
           action: ChecklistInteractionEventAction.ScrollDown,
+          targetPaneIndex: this.binder.gtcService.selectedDisplayPane.get(),
         }, true);
         return true;
       case GtcInteractionEvent.MapKnobPush:
         this.binder.bus.getPublisher<ChecklistEvents>().pub('checklist_event', {
           type: 'checklist_interaction',
           action: ChecklistInteractionEventAction.Interact,
+          targetPaneIndex: this.binder.gtcService.selectedDisplayPane.get(),
         }, true);
         return true;
       default:

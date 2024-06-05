@@ -1,4 +1,5 @@
 import { ChecklistCategory, ChecklistItemState, ChecklistNames } from '@base/Shared/ChecklistSystem';
+import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
 
 /** Active checklist changed Event. */
 export interface ActiveChecklistChangedEvent {
@@ -6,6 +7,8 @@ export interface ActiveChecklistChangedEvent {
   readonly type: 'active_checklist_changed';
   /** New active checklist. */
   readonly newActiveChecklistName: ChecklistNames;
+  /** The index of the target pane. */
+  readonly targetPaneIndex: ControllableDisplayPaneIndex | -1;
 }
 
 /** Checklist reset event. */
@@ -49,6 +52,8 @@ export interface NextChecklistInCategory {
   readonly checklistName: ChecklistNames;
   /** The category of the current checklist. */
   readonly category: ChecklistCategory;
+  /** The index of the target pane. */
+  readonly targetPaneIndex: ControllableDisplayPaneIndex | -1;
 }
 
 /** Checklist interaction event. */
@@ -57,6 +62,8 @@ export interface ChecklistInteractionEvent {
   readonly type: 'checklist_interaction';
   /** The event action. */
   readonly action: ChecklistInteractionEventAction;
+  /** The index of the target pane. */
+  readonly targetPaneIndex: ControllableDisplayPaneIndex | -1;
 }
 
 /** Checklist interaction event action. */

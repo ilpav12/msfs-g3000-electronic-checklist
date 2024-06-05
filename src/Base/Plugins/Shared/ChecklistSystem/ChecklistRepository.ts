@@ -1,6 +1,10 @@
 import {EventBus, Subject, Subscribable, Subscription} from '@microsoft/msfs-sdk';
 import { ItemsShowcaseChecklists } from '@base/Shared/ChecklistSystem/Checklists';
 import {
+  ControllableDisplayPaneIndex,
+  DisplayPaneIndex
+} from "@microsoft/msfs-wtg3000-common";
+import {
   Checklist,
   ChecklistCategory,
   ChecklistNames,
@@ -15,13 +19,33 @@ import {ChecklistEvents} from '@base/Shared/ChecklistSystem/ChecklistEvents';
 export class ChecklistRepository {
   private readonly itemsShowcaseChecklist = ItemsShowcaseChecklists.getChecklists();
 
-  private readonly _activeChecklistName = Subject.create(this.itemsShowcaseChecklist[0].name);
-  public readonly activeChecklistName = this._activeChecklistName as Subscribable<string>;
+  private readonly _activeChecklistNameLeftPfd = Subject.create(this.itemsShowcaseChecklist[0].name);
+  public readonly activeChecklistNameLeftPfd = this._activeChecklistNameLeftPfd as Subscribable<ChecklistNames>;
+  public readonly activeChecklistLeftPfd = this._activeChecklistNameLeftPfd.map(this.getChecklistByName.bind(this)) as Subscribable<ChecklistReadonly>;
 
-  public readonly activeChecklist = this._activeChecklistName.map(this.getChecklistByName.bind(this)) as Subscribable<ChecklistReadonly>;
+  private readonly _activeChecklistNameLeftMfd = Subject.create(this.itemsShowcaseChecklist[0].name);
+  public readonly activeChecklistNameLeftMfd = this._activeChecklistNameLeftMfd as Subscribable<ChecklistNames>;
+  public readonly activeChecklistLeftMfd = this._activeChecklistNameLeftMfd.map(this.getChecklistByName.bind(this)) as Subscribable<ChecklistReadonly>;
 
-  public readonly isActiveChecklistComplete = Subject.create(false);
-  private isActiveChecklistCompletePipe?: Subscription;
+  private readonly _activeChecklistNameRightMfd = Subject.create(this.itemsShowcaseChecklist[0].name);
+  public readonly activeChecklistNameRightMfd = this._activeChecklistNameRightMfd as Subscribable<ChecklistNames>;
+  public readonly activeChecklistRightMfd = this._activeChecklistNameRightMfd.map(this.getChecklistByName.bind(this)) as Subscribable<ChecklistReadonly>;
+
+  private readonly _activeChecklistNameRightPfd = Subject.create(this.itemsShowcaseChecklist[0].name);
+  public readonly activeChecklistNameRightPfd = this._activeChecklistNameRightPfd as Subscribable<ChecklistNames>;
+  public readonly activeChecklistRightPfd = this._activeChecklistNameRightPfd.map(this.getChecklistByName.bind(this)) as Subscribable<ChecklistReadonly>;
+
+  public readonly isActiveChecklistLeftPfdComplete = Subject.create(false);
+  private isActiveChecklistLeftPfdCompletePipe?: Subscription;
+
+  public readonly isActiveChecklistLeftMfdComplete = Subject.create(false);
+  private isActiveChecklistLeftMfdCompletePipe?: Subscription;
+
+  public readonly isActiveChecklistRighMfdComplete = Subject.create(false);
+  private isActiveChecklistRighMfdCompletePipe?: Subscription;
+
+  public readonly isActiveChecklistRightPfdComplete = Subject.create(false);
+  private isActiveChecklistRightPfdCompletePipe?: Subscription;
 
   private readonly incompleteChecklists = new Set<ChecklistNames>();
 
@@ -34,15 +58,30 @@ export class ChecklistRepository {
   public constructor(private readonly bus: EventBus) {
     const sub = this.bus.getSubscriber<ChecklistEvents>();
 
-    this.activeChecklist.sub(activeChecklist => {
-      this.isActiveChecklistCompletePipe?.destroy();
-      this.isActiveChecklistCompletePipe = activeChecklist.isComplete.pipe(this.isActiveChecklistComplete);
+    this.activeChecklistLeftPfd.sub(activeChecklist => {
+      this.isActiveChecklistLeftPfdCompletePipe?.destroy();
+      this.isActiveChecklistLeftPfdCompletePipe = activeChecklist.isComplete.pipe(this.isActiveChecklistLeftPfdComplete);
+    }, true);
+
+    this.activeChecklistLeftMfd.sub(activeChecklist => {
+      this.isActiveChecklistLeftMfdCompletePipe?.destroy();
+      this.isActiveChecklistLeftMfdCompletePipe = activeChecklist.isComplete.pipe(this.isActiveChecklistLeftMfdComplete);
+    }, true);
+
+    this.activeChecklistRightMfd.sub(activeChecklist => {
+      this.isActiveChecklistRighMfdCompletePipe?.destroy();
+      this.isActiveChecklistRighMfdCompletePipe = activeChecklist.isComplete.pipe(this.isActiveChecklistRighMfdComplete);
+    }, true);
+
+    this.activeChecklistRightPfd.sub(activeChecklist => {
+      this.isActiveChecklistRightPfdCompletePipe?.destroy();
+      this.isActiveChecklistRightPfdCompletePipe = activeChecklist.isComplete.pipe(this.isActiveChecklistRightPfdComplete);
     }, true);
 
     sub.on('checklist_event').handle(event => {
       switch (event.type) {
         case 'active_checklist_changed':
-          this.setActiveChecklist(event.newActiveChecklistName, false);
+          this.setActiveChecklist(event.newActiveChecklistName, event.targetPaneIndex, false);
           break;
         case 'checklist_reset':
           this.resetChecklist(event.checklistName, false);
@@ -57,7 +96,7 @@ export class ChecklistRepository {
           this.checkAllItems(event.checklistName, false);
           break;
         case 'next_checklist':
-          this.nextChecklistInCategory(event.checklistName, event.category);
+          this.nextChecklistInCategory(event.checklistName, event.category, event.targetPaneIndex);
           break;
       }
     });
@@ -82,6 +121,60 @@ export class ChecklistRepository {
       const indexB = checklists.findIndex(cl => cl.name === b);
       return indexA - indexB;
     });
+  }
+
+  /**
+   * Get the active checklist by pane index.
+   * @param paneIndex The index of the pane.
+   * @returns The active checklist.
+   */
+  public getActiveChecklistByPaneIndex(paneIndex: ControllableDisplayPaneIndex): Subscribable<ChecklistReadonly> {
+    switch (paneIndex) {
+      case DisplayPaneIndex.LeftPfd:
+        return this.activeChecklistLeftPfd;
+      case DisplayPaneIndex.LeftMfd:
+        return this.activeChecklistLeftMfd;
+      case DisplayPaneIndex.RightMfd:
+        return this.activeChecklistRightMfd;
+      case DisplayPaneIndex.RightPfd:
+        return this.activeChecklistRightPfd;
+    }
+  }
+
+  /**
+   * Get the active checklist name by pane index.
+   * @param paneIndex The index of the pane.
+   * @returns The active checklist name.
+   */
+  public getActiveChecklistNameByPaneIndex(paneIndex: ControllableDisplayPaneIndex): Subscribable<ChecklistNames> {
+    switch (paneIndex) {
+      case DisplayPaneIndex.LeftPfd:
+        return this.activeChecklistNameLeftPfd;
+      case DisplayPaneIndex.LeftMfd:
+        return this.activeChecklistNameLeftMfd;
+      case DisplayPaneIndex.RightMfd:
+        return this.activeChecklistNameRightMfd;
+      case DisplayPaneIndex.RightPfd:
+        return this.activeChecklistNameRightPfd;
+    }
+  }
+
+  /**
+   * Get the active checklist completion state by pane index.
+   * @param paneIndex The index of the pane.
+   * @returns The active checklist completion state.
+   */
+  public getIsActiveChecklistCompleteByPaneIndex(paneIndex: ControllableDisplayPaneIndex): Subscribable<boolean> {
+    switch (paneIndex) {
+      case DisplayPaneIndex.LeftPfd:
+        return this.isActiveChecklistLeftPfdComplete;
+      case DisplayPaneIndex.LeftMfd:
+        return this.isActiveChecklistLeftMfdComplete;
+      case DisplayPaneIndex.RightMfd:
+        return this.isActiveChecklistRighMfdComplete;
+      case DisplayPaneIndex.RightPfd:
+        return this.isActiveChecklistRightPfdComplete;
+    }
   }
 
   /**
@@ -119,15 +212,30 @@ export class ChecklistRepository {
   /**
    * Sets the new active checklist and sends the bus event.
    * @param name Name of new active checklist.
+   * @param targetPaneIndex The index of the target pane.
    * @param notify Whether to send the bus event. Defaults to true.
    */
-  public setActiveChecklist(name: ChecklistNames, notify = true): void {
-    this._activeChecklistName.set(name);
+  public setActiveChecklist(name: ChecklistNames, targetPaneIndex: ControllableDisplayPaneIndex | -1, notify = true): void {
+    switch (targetPaneIndex) {
+      case DisplayPaneIndex.LeftPfd:
+        this._activeChecklistNameLeftPfd.set(name);
+        break;
+      case DisplayPaneIndex.LeftMfd:
+        this._activeChecklistNameLeftMfd.set(name);
+        break;
+      case DisplayPaneIndex.RightMfd:
+        this._activeChecklistNameRightMfd.set(name);
+        break;
+      case DisplayPaneIndex.RightPfd:
+        this._activeChecklistNameRightPfd.set(name);
+        break;
+    }
 
     if (notify) {
       this.publisher.pub('checklist_event', {
         type: 'active_checklist_changed',
-        newActiveChecklistName: this._activeChecklistName.get(),
+        newActiveChecklistName: name,
+        targetPaneIndex: targetPaneIndex,
       }, true);
     }
   }
@@ -180,11 +288,12 @@ export class ChecklistRepository {
    * Changes the active checklist to the next checklist in the category.
    * @param checklistName The name of the current checklist.
    * @param category The category of the current checklist.
+   * @param targetPaneIndex The index of the target pane.
    */
-  private nextChecklistInCategory(checklistName: ChecklistNames, category: ChecklistCategory): void {
+  private nextChecklistInCategory(checklistName: ChecklistNames, category: ChecklistCategory, targetPaneIndex: ControllableDisplayPaneIndex | -1): void {
     switch (category) {
       case ChecklistCategory.ItemsShowcase:
-        this.setActiveChecklist(this.findNextChecklist(checklistName, this.itemsShowcaseChecklist));
+        this.setActiveChecklist(this.findNextChecklist(checklistName, this.itemsShowcaseChecklist), targetPaneIndex);
         break;
     }
   }

@@ -13,8 +13,6 @@ import {
 export interface NextChecklistControlProps extends ChecklistUiControlProps {
   /** The event bus */
   bus: EventBus;
-  /** The function to call when the next button is clicked. */
-  onEnter: () => boolean;
   /** Whether this is the last checklist. */
   isLast: Subscribable<boolean>;
 }
@@ -29,12 +27,6 @@ export class NextChecklistControl extends ChecklistUiControl<NextChecklistContro
     this.props.isLast.sub(isLast => {
       this.setDisabled(isLast);
     }, true);
-
-    this.props.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle((event) => {
-      if (this.isFocused && event.type === 'checklist_interaction' && event.action === ChecklistInteractionEventAction.Interact) {
-        this.props.onEnter();
-      }
-    });
   }
 
   /** @inheritDoc */

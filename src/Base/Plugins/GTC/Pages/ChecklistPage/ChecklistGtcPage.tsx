@@ -1,5 +1,9 @@
 import {FSComponent, Subject, VNode} from "@microsoft/msfs-sdk";
-import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common";
+import {
+  ControllableDisplayPaneIndex,
+  DisplayPaneControlEvents,
+  DisplayPaneControlGtcIndex,
+} from "@microsoft/msfs-wtg3000-common";
 import {
   GtcControlMode,
   GtcList,
@@ -16,7 +20,7 @@ import { ChecklistGtcOptionsPopup } from "@base/GTC/Pages/ChecklistPage/Checklis
 import {
   ChecklistCategory,
   ChecklistEvents,
-  ChecklistNames
+  ChecklistNames, ChecklistRepository,
 } from "@base/Shared/ChecklistSystem";
 import {ItemsShowcaseChecklistNames} from "@base/Shared/ChecklistSystem/Checklists";
 
@@ -29,10 +33,14 @@ enum GtcChecklistPagePopupKeys {
   Options = 'ChecklistOptions'
 }
 
+/**
+ * The checklist GTC page.
+ */
 export class ChecklistGtcPage extends GtcView {
   private readonly optionsPopupKey = GtcChecklistPagePopupKeys.Options;
   private readonly listRef = FSComponent.createRef<GtcList<any>>();
-  private readonly activeChecklistName = Subject.create<ChecklistNames>(ItemsShowcaseChecklistNames.ItemsTypes);
+  private readonly checklistRepository = new ChecklistRepository(this.props.gtcService.bus);
+  private readonly activeChecklistName = Subject.create(this.checklistRepository.getActiveChecklistNameByPaneIndex(this.gtcService.selectedDisplayPane.get() as ControllableDisplayPaneIndex).get());
   public readonly checklistCategories = [
     { name: ChecklistCategory.ItemsShowcase, checklists: ItemsShowcaseChecklistNames},
   ]
@@ -53,9 +61,13 @@ export class ChecklistGtcPage extends GtcView {
     this._activeComponent.set(this.listRef.instance);
 
     this.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle((event) => {
-      if (event.type === 'active_checklist_changed') {
+      if (event.type === 'active_checklist_changed' && event.targetPaneIndex === this.gtcService.selectedDisplayPane.get()) {
         this.activeChecklistName.set(event.newActiveChecklistName);
       }
+    });
+
+    this.gtcService.selectedDisplayPane.sub((paneIndex) => {
+      this.activeChecklistName.set(this.checklistRepository.getActiveChecklistNameByPaneIndex(paneIndex as ControllableDisplayPaneIndex).get());
     });
   }
 
@@ -93,6 +105,7 @@ export class ChecklistGtcPage extends GtcView {
                               .pub('checklist_event', {
                                 type: 'active_checklist_changed',
                                 newActiveChecklistName: checklistName,
+                                targetPaneIndex: this.gtcService.selectedDisplayPane.get(),
                               }, true);
                           }}
                           isHighlighted={isHighlighted}
