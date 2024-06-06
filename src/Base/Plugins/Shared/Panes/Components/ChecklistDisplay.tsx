@@ -11,6 +11,7 @@ import {
   VNode
 } from "@microsoft/msfs-sdk";
 import {
+  BaseChecklistRepository,
   ChecklistEvent,
   ChecklistEvents,
   ChecklistInteractionEventAction,
@@ -20,7 +21,6 @@ import {
   ChecklistItemType,
   ChecklistPageFocusableItemType,
   ChecklistReadonly,
-  ChecklistRepository
 } from "@base/Shared/ChecklistSystem";
 import {ChecklistControlList, ChecklistUiControl, FmsUiControlEvents} from "@base/Shared/UI/ChecklistUiControl";
 import {ChecklistItemDisplay} from "@base/Shared/Panes/Components/ChecklistItemDisplay";
@@ -34,7 +34,7 @@ export interface ChecklistDisplayProps extends UiControlPropEventHandlers<FmsUiC
   /** The event bus */
   bus: EventBus;
   /** The checklist repository */
-  repo: ChecklistRepository;
+  repo: BaseChecklistRepository<any, any, any, any>;
   /** The checklist to display. */
   checklist: Subscribable<ChecklistReadonly>;
   /** Whether the checklist is completed. */
@@ -83,7 +83,7 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
    * @param event The checklist event.
    * @returns Whether the required action was successful.
    */
-  private onChecklistInteraction(event: ChecklistEvent): boolean {
+  private onChecklistInteraction(event: ChecklistEvent<any, any>): boolean {
     if (event.type === 'checklist_interaction' && event.targetPaneIndex === this.props.paneIndex) {
       switch (event.action) {
         case ChecklistInteractionEventAction.Interact:

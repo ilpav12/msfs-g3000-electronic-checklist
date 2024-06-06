@@ -9,11 +9,9 @@ import {
   LabelBarPluginHandlers
 } from "@microsoft/msfs-wtg3000-gtc";
 import {ChecklistGtcMfdHomePage, ChecklistGtcPage, ChecklistGtcViewKeys} from "@base/GTC/Pages";
-import {
-  ChecklistInteractionEventAction,
-  ChecklistEvents
-} from "@base/Shared/ChecklistSystem/ChecklistEvents";
-import {ChecklistFilePaths} from "@base/Shared";
+import {ChecklistEvents, ChecklistInteractionEventAction} from "@base/Shared/ChecklistSystem/ChecklistEvents";
+import {ChecklistCategory, ChecklistFilePaths, ChecklistRepository} from "@base/Shared";
+import {ItemsShowcaseChecklistNames, ItemsShowcaseChecklists} from "@base/Shared/ChecklistSystem/Checklists";
 
 export class ChecklistGtcPlugin extends AbstractG3000GtcPlugin {
   /** @inheritdoc */
@@ -29,11 +27,21 @@ export class ChecklistGtcPlugin extends AbstractG3000GtcPlugin {
       );
     });
     gtcService.registerView(GtcViewLifecyclePolicy.Persistent, ChecklistGtcViewKeys.Checklist, 'MFD', function (service, mode, index) {
+      const itemsShowcaseChecklists = ItemsShowcaseChecklists.getChecklists();
+      const checklistRepository = new ChecklistRepository(
+        service.bus,
+        [...itemsShowcaseChecklists],
+        itemsShowcaseChecklists[0],
+      );
       return (
         <ChecklistGtcPage
           gtcService={service}
           controlMode={mode}
           displayPaneIndex={index}
+          checklistCategories={[
+            { name: ChecklistCategory.ItemsShowcase, checklistNames: ItemsShowcaseChecklistNames },
+          ]}
+          checklistRepository={checklistRepository}
         />
       );
     });
@@ -48,7 +56,7 @@ export class ChecklistGtcPlugin extends AbstractG3000GtcPlugin {
   );
 
   /** @inheritdoc */
-  public getKnobStateOverrides(gtcService: GtcService): Readonly<GtcKnobStatePluginOverrides> | null {
+  public getKnobStateOverrides(): Readonly<GtcKnobStatePluginOverrides> | null {
     return {
       mapKnobState: this.isChecklistPaneViewActive.map(isActive => isActive ? 'ChecklistKnobState' : null)
     };

@@ -4,9 +4,18 @@ import {AbstractG3000PfdPlugin} from "@microsoft/msfs-wtg3000-pfd";
 import {ChecklistPane, ChecklistPaneKeys} from "@base/Shared/Panes";
 import {ChecklistRepository} from "@base/Shared/ChecklistSystem";
 import {ChecklistFilePaths} from "@base/Shared";
+import {ItemsShowcaseChecklists} from "@base/Shared/ChecklistSystem/Checklists";
+
+const itemsShowcaseChecklists = ItemsShowcaseChecklists.getChecklists();
 
 export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
-  private readonly checklistRepository = new ChecklistRepository(this.binder.bus);
+  private readonly checklists = [...itemsShowcaseChecklists];
+  private readonly defaultChecklist = itemsShowcaseChecklists[0];
+  private readonly checklistRepository = new ChecklistRepository(
+    this.binder.bus,
+    this.checklists,
+    this.defaultChecklist
+  );
 
   registerDisplayPaneViews(viewFactory: DisplayPaneViewFactory) {
     viewFactory.registerView(ChecklistPaneKeys.Checklist, (index) => {

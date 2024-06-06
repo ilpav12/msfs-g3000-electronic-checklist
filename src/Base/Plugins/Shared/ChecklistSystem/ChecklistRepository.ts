@@ -1,5 +1,4 @@
 import {EventBus, Subject, Subscribable, Subscription} from '@microsoft/msfs-sdk';
-import { ItemsShowcaseChecklists } from '@base/Shared/ChecklistSystem/Checklists';
 import {
   ControllableDisplayPaneIndex,
   DisplayPaneIndex
@@ -13,25 +12,50 @@ import {
 import {ChecklistItemState} from "@base/Shared/ChecklistSystem/ChecklistItem";
 import {ChecklistEvents} from '@base/Shared/ChecklistSystem/ChecklistEvents';
 
+export interface BaseChecklistRepository<T, U, V, K> {
+  activeChecklistNameLeftPfd: Subscribable<T>;
+  activeChecklistLeftPfd: Subscribable<U>;
+  activeChecklistNameLeftMfd: Subscribable<T>;
+  activeChecklistLeftMfd: Subscribable<U>;
+  activeChecklistNameRightMfd: Subscribable<T>;
+  activeChecklistRightMfd: Subscribable<U>;
+  activeChecklistNameRightPfd: Subscribable<T>;
+  activeChecklistRightPfd: Subscribable<U>;
+  isActiveChecklistLeftPfdComplete: Subscribable<boolean>;
+  isActiveChecklistLeftMfdComplete: Subscribable<boolean>;
+  isActiveChecklistRightMfdComplete: Subscribable<boolean>;
+  isActiveChecklistRightPfdComplete: Subscribable<boolean>;
+  incompleteChecklistNames: T[];
+  getActiveChecklistByPaneIndex(paneIndex: ControllableDisplayPaneIndex): Subscribable<U>;
+  getActiveChecklistNameByPaneIndex(paneIndex: ControllableDisplayPaneIndex): Subscribable<T>;
+  getIsActiveChecklistCompleteByPaneIndex(paneIndex: ControllableDisplayPaneIndex): Subscribable<boolean>;
+  getChecklistsByCategory(category: K): V[];
+  getReadonlyChecklistByName(name: T): U;
+  setActiveChecklist(name: T, targetPaneIndex: ControllableDisplayPaneIndex | -1, notify?: boolean): void;
+  setChecklistItemState(checklistName: T, itemIndex: number, itemState: ChecklistItemState, notify?: boolean): void;
+  checkAllItems(checklistName: T, notify?: boolean): void;
+  resetChecklist(checklistName: T, notify?: boolean): void;
+  resetChecklistByCategory(category: K): void;
+  resetAllChecklists(): void;
+}
+
 /**
  * The Repo class for the checklists.
  */
-export class ChecklistRepository {
-  private readonly itemsShowcaseChecklist = ItemsShowcaseChecklists.getChecklists();
-
-  private readonly _activeChecklistNameLeftPfd = Subject.create(this.itemsShowcaseChecklist[0].name);
+export class ChecklistRepository implements BaseChecklistRepository<ChecklistNames, ChecklistReadonly, Checklist, ChecklistCategory>{
+  private readonly _activeChecklistNameLeftPfd = Subject.create(this.defaultChecklist.name);
   public readonly activeChecklistNameLeftPfd = this._activeChecklistNameLeftPfd as Subscribable<ChecklistNames>;
   public readonly activeChecklistLeftPfd = this._activeChecklistNameLeftPfd.map(this.getChecklistByName.bind(this)) as Subscribable<ChecklistReadonly>;
 
-  private readonly _activeChecklistNameLeftMfd = Subject.create(this.itemsShowcaseChecklist[0].name);
+  private readonly _activeChecklistNameLeftMfd = Subject.create(this.defaultChecklist.name);
   public readonly activeChecklistNameLeftMfd = this._activeChecklistNameLeftMfd as Subscribable<ChecklistNames>;
   public readonly activeChecklistLeftMfd = this._activeChecklistNameLeftMfd.map(this.getChecklistByName.bind(this)) as Subscribable<ChecklistReadonly>;
 
-  private readonly _activeChecklistNameRightMfd = Subject.create(this.itemsShowcaseChecklist[0].name);
+  private readonly _activeChecklistNameRightMfd = Subject.create(this.defaultChecklist.name);
   public readonly activeChecklistNameRightMfd = this._activeChecklistNameRightMfd as Subscribable<ChecklistNames>;
   public readonly activeChecklistRightMfd = this._activeChecklistNameRightMfd.map(this.getChecklistByName.bind(this)) as Subscribable<ChecklistReadonly>;
 
-  private readonly _activeChecklistNameRightPfd = Subject.create(this.itemsShowcaseChecklist[0].name);
+  private readonly _activeChecklistNameRightPfd = Subject.create(this.defaultChecklist.name);
   public readonly activeChecklistNameRightPfd = this._activeChecklistNameRightPfd as Subscribable<ChecklistNames>;
   public readonly activeChecklistRightPfd = this._activeChecklistNameRightPfd.map(this.getChecklistByName.bind(this)) as Subscribable<ChecklistReadonly>;
 
@@ -41,8 +65,8 @@ export class ChecklistRepository {
   public readonly isActiveChecklistLeftMfdComplete = Subject.create(false);
   private isActiveChecklistLeftMfdCompletePipe?: Subscription;
 
-  public readonly isActiveChecklistRighMfdComplete = Subject.create(false);
-  private isActiveChecklistRighMfdCompletePipe?: Subscription;
+  public readonly isActiveChecklistRightMfdComplete = Subject.create(false);
+  private isActiveChecklistRightMfdCompletePipe?: Subscription;
 
   public readonly isActiveChecklistRightPfdComplete = Subject.create(false);
   private isActiveChecklistRightPfdCompletePipe?: Subscription;
@@ -54,8 +78,14 @@ export class ChecklistRepository {
   /**
    * Builds the Repo for the checklists.
    * @param bus The event bus.
+   * @param checklists All the checklists available.
+   * @param defaultChecklist The default checklist.
    */
-  public constructor(private readonly bus: EventBus) {
+  public constructor(
+    private readonly bus: EventBus,
+    private readonly checklists: Checklist[],
+    public readonly defaultChecklist: Checklist,
+  ) {
     const sub = this.bus.getSubscriber<ChecklistEvents>();
 
     this.activeChecklistLeftPfd.sub(activeChecklist => {
@@ -69,8 +99,8 @@ export class ChecklistRepository {
     }, true);
 
     this.activeChecklistRightMfd.sub(activeChecklist => {
-      this.isActiveChecklistRighMfdCompletePipe?.destroy();
-      this.isActiveChecklistRighMfdCompletePipe = activeChecklist.isComplete.pipe(this.isActiveChecklistRighMfdComplete);
+      this.isActiveChecklistRightMfdCompletePipe?.destroy();
+      this.isActiveChecklistRightMfdCompletePipe = activeChecklist.isComplete.pipe(this.isActiveChecklistRightMfdComplete);
     }, true);
 
     this.activeChecklistRightPfd.sub(activeChecklist => {
@@ -171,7 +201,7 @@ export class ChecklistRepository {
       case DisplayPaneIndex.LeftMfd:
         return this.isActiveChecklistLeftMfdComplete;
       case DisplayPaneIndex.RightMfd:
-        return this.isActiveChecklistRighMfdComplete;
+        return this.isActiveChecklistRightMfdComplete;
       case DisplayPaneIndex.RightPfd:
         return this.isActiveChecklistRightPfdComplete;
     }
@@ -183,9 +213,9 @@ export class ChecklistRepository {
    * @returns The Checklist that holds the given name.
    */
   private getChecklistByName(name: string): Checklist {
-    const checklist = this.itemsShowcaseChecklist.find(x => x.name === name);
+    const checklist = this.checklists.find(x => x.name === name);
 
-    return checklist ?? this.itemsShowcaseChecklist[0];
+    return checklist ?? this.defaultChecklist;
   }
 
   /**
@@ -194,10 +224,7 @@ export class ChecklistRepository {
    * @returns The checklists in the given category.
    */
   public getChecklistsByCategory(category: ChecklistCategory): Checklist[] {
-    switch (category) {
-      case ChecklistCategory.ItemsShowcase:
-        return this.itemsShowcaseChecklist;
-    }
+    return this.checklists.filter(x => x.category === category);
   }
 
   /**
@@ -291,11 +318,7 @@ export class ChecklistRepository {
    * @param targetPaneIndex The index of the target pane.
    */
   private nextChecklistInCategory(checklistName: ChecklistNames, category: ChecklistCategory, targetPaneIndex: ControllableDisplayPaneIndex | -1): void {
-    switch (category) {
-      case ChecklistCategory.ItemsShowcase:
-        this.setActiveChecklist(this.findNextChecklist(checklistName, this.itemsShowcaseChecklist), targetPaneIndex);
-        break;
-    }
+    this.setActiveChecklist(this.findNextChecklist(checklistName, this.getChecklistsByCategory(category)), targetPaneIndex);
   }
 
   /**
@@ -331,15 +354,11 @@ export class ChecklistRepository {
    * @param category The category to reset.
    */
   public resetChecklistByCategory(category: ChecklistCategory): void {
-    switch (category) {
-      case ChecklistCategory.ItemsShowcase:
-        this.itemsShowcaseChecklist.forEach(x => this.resetChecklist(x.name));
-        break;
-    }
+    this.getChecklistsByCategory(category).forEach(x => this.resetChecklist(x.name));
   }
 
   /** Resets all checklists. */
   public resetAllChecklists(): void {
-    this.itemsShowcaseChecklist.forEach(x => this.resetChecklist(x.name));
+    this.checklists.forEach(x => this.resetChecklist(x.name));
   }
 }

@@ -1,9 +1,5 @@
 import {FSComponent, Subject, VNode} from "@microsoft/msfs-sdk";
-import {
-  ControllableDisplayPaneIndex,
-  DisplayPaneControlEvents,
-  DisplayPaneControlGtcIndex,
-} from "@microsoft/msfs-wtg3000-common";
+import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common";
 import {
   GtcControlMode,
   GtcList,
@@ -12,17 +8,16 @@ import {
   GtcTouchButton,
   GtcView,
   GtcViewLifecyclePolicy,
+  GtcViewProps,
   TabbedContainer,
   TabbedContent,
   TabConfiguration
 } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistGtcOptionsPopup } from "@base/GTC/Pages/ChecklistPage/ChecklistGtcOptionsPopup";
 import {
-  ChecklistCategory,
+  BaseChecklistRepository,
   ChecklistEvents,
-  ChecklistNames, ChecklistRepository,
 } from "@base/Shared/ChecklistSystem";
-import {ItemsShowcaseChecklistNames} from "@base/Shared/ChecklistSystem/Checklists";
 
 import "./ChecklistGtcPage.css";
 
@@ -34,16 +29,22 @@ enum GtcChecklistPagePopupKeys {
 }
 
 /**
+ * Props for the checklist GTC page.
+ */
+export interface ChecklistGtcPageProps extends GtcViewProps {
+  /** The checklist categories to display. */
+  checklistCategories: { name: string, checklistNames: Record<any, any> }[];
+  /** The checklist repository. */
+  checklistRepository: BaseChecklistRepository<any, any, any, any>;
+}
+
+/**
  * The checklist GTC page.
  */
-export class ChecklistGtcPage extends GtcView {
+export class ChecklistGtcPage extends GtcView<ChecklistGtcPageProps> {
   private readonly optionsPopupKey = GtcChecklistPagePopupKeys.Options;
   private readonly listRef = FSComponent.createRef<GtcList<any>>();
-  private readonly checklistRepository = new ChecklistRepository(this.props.gtcService.bus);
-  private readonly activeChecklistName = Subject.create(this.checklistRepository.getActiveChecklistNameByPaneIndex(this.gtcService.selectedDisplayPane.get() as ControllableDisplayPaneIndex).get());
-  public readonly checklistCategories = [
-    { name: ChecklistCategory.ItemsShowcase, checklists: ItemsShowcaseChecklistNames},
-  ]
+  private readonly activeChecklistName = Subject.create(this.props.checklistRepository.getActiveChecklistNameByPaneIndex(this.gtcService.selectedDisplayPane.get() as ControllableDisplayPaneIndex).get());
 
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
@@ -67,7 +68,7 @@ export class ChecklistGtcPage extends GtcView {
     });
 
     this.gtcService.selectedDisplayPane.sub((paneIndex) => {
-      this.activeChecklistName.set(this.checklistRepository.getActiveChecklistNameByPaneIndex(paneIndex as ControllableDisplayPaneIndex).get());
+      this.activeChecklistName.set(this.props.checklistRepository.getActiveChecklistNameByPaneIndex(paneIndex as ControllableDisplayPaneIndex).get());
     });
   }
 
@@ -79,7 +80,7 @@ export class ChecklistGtcPage extends GtcView {
           initiallySelectedTabPosition={1}
           configuration={TabConfiguration.Left5}
         >
-          { this.checklistCategories.map((category, index) => {
+          { this.props.checklistCategories.map((category, index) => {
             return (
               <TabbedContent
                 position={index + 1}
@@ -94,7 +95,7 @@ export class ChecklistGtcPage extends GtcView {
                   sidebarState={this._sidebarState}
                   class='gtc-checklist-tab-list'
                 >
-                  { Object.values(category.checklists).map((checklistName) => {
+                  { Object.values(category.checklistNames).map((checklistName) => {
                     const isHighlighted = this.activeChecklistName.map(name => name === checklistName);
                     return (
                       <GtcListItem>

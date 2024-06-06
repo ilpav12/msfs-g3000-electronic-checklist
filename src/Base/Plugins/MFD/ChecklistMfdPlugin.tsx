@@ -2,11 +2,26 @@ import {FSComponent, registerPlugin} from "@microsoft/msfs-sdk";
 import {DisplayPaneViewFactory} from "@microsoft/msfs-wtg3000-common";
 import {AbstractG3000MfdPlugin} from "@microsoft/msfs-wtg3000-mfd";
 import {ChecklistPane, ChecklistPaneKeys} from "@base/Shared/Panes";
-import {ChecklistRepository} from "@base/Shared/ChecklistSystem";
+import {
+  BaseChecklistRepository,
+  Checklist, ChecklistCategory,
+  ChecklistNames,
+  ChecklistReadonly,
+  ChecklistRepository
+} from "@base/Shared/ChecklistSystem";
 import {ChecklistFilePaths} from "@base/Shared";
+import {ItemsShowcaseChecklists} from "@base/Shared/ChecklistSystem/Checklists";
+
+const itemsShowcaseChecklists = ItemsShowcaseChecklists.getChecklists();
 
 export class ChecklistMfdPlugin extends AbstractG3000MfdPlugin {
-  private readonly checklistRepository = new ChecklistRepository(this.binder.bus);
+  private readonly checklists: Checklist[] = [...itemsShowcaseChecklists];
+  private readonly defaultChecklist: Checklist = itemsShowcaseChecklists[0];
+  private readonly checklistRepository: BaseChecklistRepository<ChecklistNames, ChecklistReadonly, Checklist, ChecklistCategory> = new ChecklistRepository(
+    this.binder.bus,
+    this.checklists,
+    this.defaultChecklist
+  );
 
   registerDisplayPaneViews(viewFactory: DisplayPaneViewFactory) {
     viewFactory.registerView(ChecklistPaneKeys.Checklist, (index) => {

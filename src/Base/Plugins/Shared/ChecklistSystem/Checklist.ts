@@ -24,7 +24,7 @@ export enum ChecklistCategory {
 
 /** The possible checklist names */
 export type ChecklistNames =
-  ItemsShowcaseChecklistNames
+  ItemsShowcaseChecklistNames;
 
 /** A checklist item that is readonly. */
 export type ChecklistItemReadonly = ChecklistItem & {
@@ -39,13 +39,13 @@ export type ChecklistReadonly = Pick<Checklist, 'isComplete'| 'anyItemChanged' |
 }
 
 /** Checklist */
-export class Checklist {
+export class Checklist<T = ChecklistNames, U = ChecklistCategory> {
   public readonly items: ChecklistItem[];
 
   private readonly _isComplete = Subject.create(false);
   public readonly isComplete = this._isComplete as Subscribable<boolean>;
-  private readonly _anyItemChanged = new SubEvent<this, Omit<ChecklistItemChangedEvent, 'type' | 'mfdIndex'>>();
-  public readonly anyItemChanged = this._anyItemChanged as ReadonlySubEvent<this, Omit<ChecklistItemChangedEvent, 'type' | 'mfdIndex'>>;
+  private readonly _anyItemChanged = new SubEvent<this, Omit<ChecklistItemChangedEvent<T>, 'type' | 'mfdIndex'>>();
+  public readonly anyItemChanged = this._anyItemChanged as ReadonlySubEvent<this, Omit<ChecklistItemChangedEvent<T>, 'type' | 'mfdIndex'>>;
 
   /**
    * Creates a new instance of a Checklist
@@ -56,8 +56,8 @@ export class Checklist {
    * @param isSubChecklist Whether this is a sub-checklist
    */
   public constructor(
-    public readonly name: ChecklistNames,
-    public readonly category: ChecklistCategory,
+    public readonly name: T,
+    public readonly category: U,
     itemData: Array<ChecklistItemData>,
     public readonly isLastChecklist = false,
     public readonly isSubChecklist = false,
