@@ -75,57 +75,85 @@ export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDispla
       'indent-4': this.props.item.justification === Justification.Indent4,
     }
 
+    const content = (this.props.item.content || '').replace(new RegExp('\n', "g"), '<br>');
     switch (this.props.item.type) {
       case ChecklistItemType.Challenge:
-        const content = (this.props.item.content || '').replace(new RegExp('\n', "g"), '<br>');
+        const firstContentLine = content.split('<br>')[0];
+        const remainingContent = content.split('<br>').slice(1).join('<br>');
         const response = this.props.item.response && this.props.item.response.replace(new RegExp('\n', "g"), '<br>');
+        const firstResponseLine = response && response.split('<br>')[0];
+        const remainingResponse = response && response.split('<br>').slice(1).join('<br>');
         return (
           <div class={{
             'checklist-challenge': true,
             'completed': this.props.item.state.map(v => v === ChecklistItemState.Completed),
           }}>
-            <svg width="28px" height="32px" viewBox="0 0 28 28">
-              <path
-                class="checklist-challenge-border"
-                d="M 8.5 23.5 L 8.5 8.5 L 23.5 8.5"
-                stroke="#CECECE"
-                stroke-width="1"
-                fill="none"
-              />
-              <path
-                class="checklist-challenge-border"
-                d="M 23.5 8.5 L 23.5 24 M 23.5 23.5 L 8.5 23.5"
-                stroke="#8B8B8B"
-                stroke-width="1"
-                fill="none"
-              />
-              <path
-                class="checklist-challenge-mark"
-                d="M 9 15 L 15 22 L 23 12"
-                stroke="#00FF00"
-                stroke-width="3"
-                fill="none"
-              />
-            </svg>
-            <div class={{
-              'checklist-challenge-title': true,
-              ...justificationClasses,
-
-            }}>
-              {content}
+            <div class='checklist-challenge-first-line'>
+              <svg width="36px" height="36px" viewBox="0 0 36 36">
+                <path
+                  class="checklist-challenge-border"
+                  d="M 8.5 23.5 L 8.5 8.5 L 23.5 8.5"
+                  transform="matrix(1.125,0,0,1.125,0,0)"
+                  stroke="#CECECE"
+                  stroke-width="1"
+                  fill="none"
+                />
+                <path
+                  class="checklist-challenge-border"
+                  d="M 23.5 8.5 L 23.5 24 M 23.5 23.5 L 8.5 23.5"
+                  transform="matrix(1.125,0,0,1.125,0,0)"
+                  stroke="#8B8B8B"
+                  stroke-width="1"
+                  fill="none"
+                />
+                <path
+                  class="checklist-challenge-mark"
+                  d="M 9 15 L 15 22 L 23 12"
+                  transform="matrix(1.125,0,0,1.125,0,0)"
+                  stroke="#00FF00"
+                  stroke-width="3"
+                  fill="none"
+                />
+              </svg>
+              <div class={{
+                'checklist-challenge-title': true,
+                ...justificationClasses,
+              }}>
+                {firstContentLine}
+              </div>
+              <div class={{
+                'checklist-challenge-spacer': true,
+                'hidden': !this.props.item.response,
+              }}>
+                <div>......................................................................</div>
+              </div>
+              <div class={{
+                'checklist-challenge-response': true,
+                'hidden': !this.props.item.response,
+              }}>
+                {firstResponseLine}
+              </div>
             </div>
-            <div class={{
-              'checklist-challenge-spacer': true,
-              'hidden': !this.props.item.response,
-            }}>
-              <div>......................................................................</div>
+            <div class='checklist-challenge-remaining-lines'>
+              <div class={{
+                'checklist-challenge-content': true,
+                ...justificationClasses,
+              }}>
+                {remainingContent}
+              </div>
+              <div class={{
+                'checklist-challenge-response': true,
+                ...justificationClasses,
+              }}>
+                {remainingResponse}
+              </div>
             </div>
-            <div class={{
-              'checklist-challenge-action': true,
-              'hidden': !this.props.item.response,
+            <img class={{
+              'checklist-challenge-image': true,
+              'hidden': !this.props.item.imagePath,
             }}>
-              {response}
-            </div>
+              {this.props.item.imagePath}
+            </img>
           </div>
         );
       case ChecklistItemType.Warning:
@@ -133,23 +161,27 @@ export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDispla
       case ChecklistItemType.Note:
       case ChecklistItemType.Subtitle:
       case ChecklistItemType.PlainText:
-        return (
-          <p class={{
-            'checklist-warning': this.props.item.type === ChecklistItemType.Warning,
-            'checklist-caution': this.props.item.type === ChecklistItemType.Caution,
-            'checklist-note': this.props.item.type === ChecklistItemType.Note,
-            'checklist-subtitle': this.props.item.type === ChecklistItemType.Subtitle,
-            'checklist-plain-text': this.props.item.type === ChecklistItemType.PlainText,
-            ...justificationClasses,
-          }}>
-            {this.props.item.content}
-          </p>
-        );
       case ChecklistItemType.Link:
         return (
-          <p class={{'checklist-link': true}}>
-            {this.props.item.content}
-          </p>
+          <>
+            <div class={{
+              'checklist-warning': this.props.item.type === ChecklistItemType.Warning,
+              'checklist-caution': this.props.item.type === ChecklistItemType.Caution,
+              'checklist-note': this.props.item.type === ChecklistItemType.Note,
+              'checklist-subtitle': this.props.item.type === ChecklistItemType.Subtitle,
+              'checklist-plain-text': this.props.item.type === ChecklistItemType.PlainText,
+              'checklist-link': this.props.item.type === ChecklistItemType.Link,
+              ...justificationClasses,
+            }}>
+              {content}
+            </div>
+            <img class={{
+              'checklist-challenge-image': true,
+              'hidden': !this.props.item.imagePath,
+            }}>
+              {this.props.item.imagePath}
+            </img>
+          </>
         );
       default:
         return <></>;

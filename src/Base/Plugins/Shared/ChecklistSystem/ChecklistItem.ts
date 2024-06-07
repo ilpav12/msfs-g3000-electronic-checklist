@@ -176,7 +176,7 @@ export interface ChecklistChallengeItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Warning Item */
@@ -199,7 +199,7 @@ export interface ChecklistWarningItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Caution Item */
@@ -222,7 +222,7 @@ export interface ChecklistCautionItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Note Item */
@@ -245,7 +245,7 @@ export interface ChecklistNoteItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Subtitle Item */
@@ -268,7 +268,7 @@ export interface ChecklistSubtitleItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Plain Text Item */
@@ -291,11 +291,11 @@ export interface ChecklistPlainTextItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Link Item */
-export interface ChecklistLinkItemData {
+export interface ChecklistLinkItemData<T = ChecklistNames> {
   /** The type of checklist item */
   type: ChecklistItemType.Link
   /**
@@ -306,7 +306,7 @@ export interface ChecklistLinkItemData {
   /**
    * The target checklist to link to.
    */
-  linkTarget: ChecklistNames;
+  linkTarget: T;
   /**
    * The number of blank lines to add below the item (optional, defaults to 0, max 10)
    */
@@ -337,7 +337,7 @@ export interface ChecklistBranchItemData {
 }
 
 /** An interface describing a Checklist Branch Item */
-export interface ChecklistBranchItemData {
+export interface ChecklistBranchItemData<T = ChecklistNames> {
   /** The type of checklist item */
   type: ChecklistItemType.Branch
   /**
@@ -348,17 +348,17 @@ export interface ChecklistBranchItemData {
   /**
    * The target sub-checklist to link to.
    */
-  linkTarget: ChecklistNames;
+  linkTarget: T;
 }
 
 /** An interface describing an checklist item */
-export type ChecklistItemData =
+export type ChecklistItemData<T = ChecklistNames> =
   (ChecklistChallengeItemData |
     ChecklistWarningItemData |
     ChecklistCautionItemData |
     ChecklistNoteItemData |
     ChecklistSubtitleItemData |
     ChecklistPlainTextItemData |
-    ChecklistLinkItemData |
-    ChecklistBranchItemData) &
+    ChecklistLinkItemData<T> |
+    ChecklistBranchItemData<T>) &
   { interactionType?: ChecklistItemInteractionType };

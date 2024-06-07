@@ -58,7 +58,7 @@ export class Checklist<T = ChecklistNames, U = ChecklistCategory> {
   public constructor(
     public readonly name: T,
     public readonly category: U,
-    itemData: Array<ChecklistItemData>,
+    itemData: Array<ChecklistItemData<T>>,
     public readonly isLastChecklist = false,
     public readonly isSubChecklist = false,
   ) {
@@ -67,6 +67,7 @@ export class Checklist<T = ChecklistNames, U = ChecklistCategory> {
         data.type,
         data.content,
         data.type === ChecklistItemType.Challenge ? data.response : undefined,
+        // @ts-ignore
         data.type === ChecklistItemType.Link ? data.linkTarget : undefined,
         data.blanksBelow,
         "justification" in data ? data.justification : undefined,
