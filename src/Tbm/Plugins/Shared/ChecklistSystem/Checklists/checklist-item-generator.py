@@ -154,10 +154,12 @@ while i < len(lines):
         i += 1
         continue
 
-    if len(checklist_items) and checklist_items[-1].item_type == ChecklistItemType.PlainText:
-        checklist_items[-1].content += f"\\n{lines[i].strip().replace(' :', ':')}"
+    level = (len(lines[i]) - len(lines[i].lstrip())) // 4
+    if level > 0:
+        justification = Justification[f"Indent{level}"]
     else:
-        checklist_items.append(ChecklistItem(ChecklistItemType.PlainText, lines[i].strip().replace(' :', ':')))
+        justification = Justification.Left
+    checklist_items.append(ChecklistItem(ChecklistItemType.PlainText, lines[i].strip().replace(' :', ':'), justification=justification))
     i += 1
 
 for i in range(len(checklist_items)):

@@ -173,5 +173,5 @@ html {
 
 .checklist-image {
     margin-left: 20px;
-    max-width: 100%;
+    max-width: calc(100% - 32px);
 }

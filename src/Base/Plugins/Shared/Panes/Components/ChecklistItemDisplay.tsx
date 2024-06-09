@@ -148,12 +148,13 @@ export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDispla
                 {remainingResponse}
               </div>
             </div>
-            <img class={{
-              'checklist-challenge-image': true,
-              'hidden': !this.props.item.imagePath,
-            }}>
-              {this.props.item.imagePath}
-            </img>
+            <img
+              class={{
+                'checklist-image': true,
+                'hidden': !this.props.item.imagePath,
+              }}
+              src={this.props.item.imagePath}
+            />
           </div>
         );
       case ChecklistItemType.Warning:
@@ -175,12 +176,13 @@ export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDispla
             }}>
               {content}
             </div>
-            <img class={{
-              'checklist-challenge-image': true,
-              'hidden': !this.props.item.imagePath,
-            }}>
-              {this.props.item.imagePath}
-            </img>
+            <img
+              class={{
+                'checklist-image': true,
+                'hidden': !this.props.item.imagePath,
+              }}
+              src={this.props.item.imagePath}
+            />
           </>
         );
       default:
