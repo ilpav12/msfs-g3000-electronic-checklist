@@ -16,6 +16,7 @@ import {
   ChecklistEvents,
   ChecklistInteractionEventAction,
   ChecklistItem,
+  ChecklistItemInteractionType,
   ChecklistItemReadonly,
   ChecklistItemState,
   ChecklistItemType,
@@ -203,7 +204,7 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
       <ChecklistItemDisplay
         bus={this.props.bus}
         item={item}
-        onRegistered={(control): void => control.setDisabled(item.type === ChecklistItemType.Subtitle)}
+        onRegistered={(control): void => control.setDisabled(item.interactionType === ChecklistItemInteractionType.NoScrollStop)}
         toggleItemCompleted={this.toggleItemCompletedStatus.bind(this)}
         setItemIncomplete={this.setItemIncomplete.bind(this)}
         focusedItemType={this.props.focusedItemType}
@@ -225,8 +226,24 @@ export class ChecklistDisplay extends ChecklistUiControl<ChecklistDisplayProps> 
       offsetIndex = index;
     } else if (index < this.previousIndex) {
       offsetIndex = index - 3;
+      let totalHeight = 0;
+      for (let i = 1; i <= Math.min(3, index); i++) {
+        totalHeight += this.props.checklist.get().items[index - i].height;
+        if (totalHeight >= 3) {
+          offsetIndex = index - i;
+          break;
+        }
+      }
     } else {
       offsetIndex = index + 8;
+      let totalHeight = 0;
+      for (let i = 1; i <= Math.min(8, this.items.length - index - 1); i++) {
+        totalHeight += this.props.checklist.get().items[index + i].height;
+        if (totalHeight >= 8) {
+          offsetIndex = index + i;
+          break;
+        }
+      }
     }
     offsetIndex = MathUtils.clamp(offsetIndex, 0, this.items.length - 1);
     this.ensureIndexInView && this.ensureIndexInView(offsetIndex, pinDirection);

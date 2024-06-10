@@ -41,6 +41,7 @@ export enum ChecklistItemInteractionType {
 /** A checklist item */
 export class ChecklistItem {
   public readonly state = Subject.create(this.type === ChecklistItemType.Challenge || this.type === ChecklistItemType.BranchItem ? ChecklistItemState.Incomplete : ChecklistItemState.NotApplicable);
+  public height = 1;
 
   /**
    * Creates a newChecklistItem
@@ -149,6 +150,26 @@ export class ChecklistItem {
         break;
     }
   }
+
+  /**
+   * Sets the height of the checklist item to be used in the calculation of the scroll position
+   * @param content The content of the checklist item
+   * @param response The response to a challenge (may be undefined or null)
+   * @param blanksBelow The number of blank lines to add below the item (optional, defaults to 0, max 10)
+   * @param imagePath The path of image to display below the item (optional)
+   */
+  public setHeight(content: string, response: string | undefined | null, blanksBelow: number | undefined = 0, imagePath: string | undefined): void {
+    let height: number;
+    const contentLines = content.split('\n').length;
+    const responseLines = response ? response.split('\n').length : 0;
+    height = Math.max(contentLines, responseLines);
+    height += blanksBelow;
+    if (imagePath) {
+      height += 4;
+    }
+
+    this.height = height;
+  }
 }
 
 /** An interface describing a Checklist Challenge Item */
@@ -176,7 +197,7 @@ export interface ChecklistChallengeItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Warning Item */
@@ -199,7 +220,7 @@ export interface ChecklistWarningItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Caution Item */
@@ -222,7 +243,7 @@ export interface ChecklistCautionItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Note Item */
@@ -245,7 +266,7 @@ export interface ChecklistNoteItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Subtitle Item */
@@ -268,7 +289,7 @@ export interface ChecklistSubtitleItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Plain Text Item */
@@ -291,11 +312,11 @@ export interface ChecklistPlainTextItemData {
   /**
    * The path of image to display below the item (optional)
    */
-  image?: string;
+  imagePath?: string;
 }
 
 /** An interface describing a Checklist Link Item */
-export interface ChecklistLinkItemData {
+export interface ChecklistLinkItemData<T = ChecklistNames> {
   /** The type of checklist item */
   type: ChecklistItemType.Link
   /**
@@ -306,7 +327,7 @@ export interface ChecklistLinkItemData {
   /**
    * The target checklist to link to.
    */
-  linkTarget: ChecklistNames;
+  linkTarget: T;
   /**
    * The number of blank lines to add below the item (optional, defaults to 0, max 10)
    */
@@ -337,7 +358,7 @@ export interface ChecklistBranchItemData {
 }
 
 /** An interface describing a Checklist Branch Item */
-export interface ChecklistBranchItemData {
+export interface ChecklistBranchItemData<T = ChecklistNames> {
   /** The type of checklist item */
   type: ChecklistItemType.Branch
   /**
@@ -348,17 +369,17 @@ export interface ChecklistBranchItemData {
   /**
    * The target sub-checklist to link to.
    */
-  linkTarget: ChecklistNames;
+  linkTarget: T;
 }
 
 /** An interface describing an checklist item */
-export type ChecklistItemData =
+export type ChecklistItemData<T = ChecklistNames> =
   (ChecklistChallengeItemData |
     ChecklistWarningItemData |
     ChecklistCautionItemData |
     ChecklistNoteItemData |
     ChecklistSubtitleItemData |
     ChecklistPlainTextItemData |
-    ChecklistLinkItemData |
-    ChecklistBranchItemData) &
+    ChecklistLinkItemData<T> |
+    ChecklistBranchItemData<T>) &
   { interactionType?: ChecklistItemInteractionType };

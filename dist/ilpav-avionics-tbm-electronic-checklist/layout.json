@@ -2,38 +2,48 @@
   "content": [
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistGtcPlugins.css",
-      "size": 7383,
-      "date": 133619331480860152
+      "size": 7494,
+      "date": 133622468685746492
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistGtcPlugins.js",
-      "size": 24583,
-      "date": 133619331480860152
+      "size": 101313,
+      "date": 133622468685746492
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistMfdPlugins.css",
-      "size": 5796,
-      "date": 133619331478705081
+      "size": 5907,
+      "date": 133622468683496328
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistMfdPlugins.js",
-      "size": 51932,
-      "date": 133619331478705081
+      "size": 88877,
+      "date": 133622468683496328
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistPfdPlugins.css",
-      "size": 5796,
-      "date": 133619331476524796
+      "size": 5907,
+      "date": 133622468681577111
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistPfdPlugins.js",
-      "size": 51932,
-      "date": 133619331476524796
+      "size": 88877,
+      "date": 133622468681577111
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/icon_small_checklist.png",
       "size": 5069,
       "date": 133616457584298254
+    },
+    {
+      "path": "html_ui/ChecklistPlugins/Assets/max-engine-values.png",
+      "size": 64009,
+      "date": 133622459468743038
+    },
+    {
+      "path": "html_ui/ChecklistPlugins/Assets/rotation-airspeed.png",
+      "size": 147924,
+      "date": 133622455558786720
     },
     {
       "path": "SimObjects/Airplanes/Asobo_TBM930/model/TBM930_SplitScreen_Templates.xml",

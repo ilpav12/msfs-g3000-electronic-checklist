@@ -1,5 +1,5 @@
 html {
-    --checklist-indent-spacing: 25px;
+    --checklist-indent-spacing: 30px;
     --checklist-line-height: 36px;
 }
 
@@ -87,7 +87,6 @@ html {
 
 .checklist-challenge {
     color: var(--checklist-color-white);
-    display: flex;
     padding-left: 7px;
     padding-right: 14px;
     line-height: var(--checklist-line-height);
@@ -95,6 +94,16 @@ html {
 
 .checklist-challenge.completed {
     color: var(--checklist-color-green);
+}
+
+.checklist-challenge .checklist-challenge-first-line {
+    display: flex;
+}
+
+.checklist-challenge .checklist-challenge-remaining-lines {
+    padding-left: 35px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .checklist-challenge svg {
@@ -113,7 +122,7 @@ html {
     stroke: var(--checklist-color-green) !important;
 }
 
-.checklist-challenge-title, .checklist-challenge-action {
+.checklist-challenge-title, .checklist-challenge-response {
     white-space: nowrap;
 }
 
@@ -133,12 +142,7 @@ html {
     word-break: break-all;
 }
 
-.checklist-challenge .checklist-challenge-title {
-    max-width: 330px;
-}
-
-.checklist-challenge .checklist-challenge-action {
-    max-width: 370px;
+.checklist-challenge .checklist-challenge-response {
     text-align: right;
 }
 
@@ -165,4 +169,9 @@ html {
 
 .checklist-link {
     color: var(--checklist-color-cyan);
+}
+
+.checklist-image {
+    margin-left: 20px;
+    max-width: calc(100% - 32px);
 }

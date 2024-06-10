@@ -39,7 +39,7 @@ export type ChecklistReadonly = Pick<Checklist, 'isComplete'| 'anyItemChanged' |
 }
 
 /** Checklist */
-export class Checklist<T = ChecklistNames, U = ChecklistCategory> {
+export class Checklist<T = ChecklistNames, U = ChecklistCategory, V = ChecklistNames> {
   public readonly items: ChecklistItem[];
 
   private readonly _isComplete = Subject.create(false);
@@ -58,19 +58,20 @@ export class Checklist<T = ChecklistNames, U = ChecklistCategory> {
   public constructor(
     public readonly name: T,
     public readonly category: U,
-    itemData: Array<ChecklistItemData>,
+    itemData: Array<ChecklistItemData<V>>,
     public readonly isLastChecklist = false,
     public readonly isSubChecklist = false,
   ) {
     this.items = itemData.map(data => {
-      return new ChecklistItem(
+      const item = new ChecklistItem(
         data.type,
         data.content,
         data.type === ChecklistItemType.Challenge ? data.response : undefined,
+        // @ts-ignore
         data.type === ChecklistItemType.Link ? data.linkTarget : undefined,
         data.blanksBelow,
         "justification" in data ? data.justification : undefined,
-        "image" in data ? data.image : undefined,
+        "imagePath" in data ? data.imagePath : undefined,
         data.interactionType,
         data.type === ChecklistItemType.Branch ? data.branchItems?.map(branchItemData => {
           return new ChecklistItem(
@@ -83,6 +84,13 @@ export class Checklist<T = ChecklistNames, U = ChecklistCategory> {
             undefined,
           )}) : undefined,
       );
+      item.setHeight(
+        data.content,
+        data.type === ChecklistItemType.Challenge ? data.response : undefined,
+        data.blanksBelow,
+        "imagePath" in data ? data.imagePath : undefined
+      );
+      return item;
     });
 
     this.items.forEach((v, i) => {
