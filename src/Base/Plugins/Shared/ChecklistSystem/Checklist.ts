@@ -35,15 +35,15 @@ export type ChecklistItemReadonly = ChecklistItem & {
 }
 
 /** Readonly checklist, with all items readonly. */
-export type ChecklistReadonly<Names = ChecklistNames, Category = ChecklistCategory, ItemNames = ChecklistNames> =
-  Pick<Checklist<Names, Category, ItemNames>, 'isComplete'| 'anyItemChanged' | 'name' | 'category' | 'isLastChecklist'> & {
+export type ChecklistReadonly<Names = ChecklistNames, Category = ChecklistCategory> =
+  Pick<Checklist<Names, Category>, 'isComplete'| 'anyItemChanged' | 'name' | 'category' | 'isLastChecklist'> & {
   /** readonly items. */
   readonly items: readonly ChecklistItem[];
 }
 
 /** Checklist */
-export class Checklist<Names = ChecklistNames, Category = ChecklistCategory, ItemNames = ChecklistNames> {
-  public readonly items: ChecklistItem[];
+export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
+  public readonly items: ChecklistItem<string, string>[];
 
   private readonly _isComplete = Subject.create(false);
   public readonly isComplete = this._isComplete as Subscribable<boolean>;
@@ -61,7 +61,7 @@ export class Checklist<Names = ChecklistNames, Category = ChecklistCategory, Ite
   public constructor(
     public readonly name: Names,
     public readonly category: Category,
-    itemData: Array<ChecklistItemData<ItemNames>>,
+    itemData: Array<ChecklistItemData<string, string>>,
     public readonly isLastChecklist = false,
     public readonly isSubChecklist = false,
   ) {
@@ -70,7 +70,6 @@ export class Checklist<Names = ChecklistNames, Category = ChecklistCategory, Ite
         data.type,
         data.content,
         data.type === ChecklistItemType.Challenge ? data.response : undefined,
-        // @ts-ignore
         data.type === ChecklistItemType.Link ? data.linkTarget : undefined,
         data.blanksBelow,
         "justification" in data ? data.justification : undefined,

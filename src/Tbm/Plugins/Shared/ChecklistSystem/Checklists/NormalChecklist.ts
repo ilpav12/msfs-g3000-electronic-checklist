@@ -115,7 +115,15 @@ export class NormalChecklists {
           { type: ChecklistItemType.Challenge, content: '9. Fuel on board', response: 'Check' },
           { type: ChecklistItemType.Challenge, content: '10. Residual ITT', response: 'Check' },
           { type: ChecklistItemType.PlainText, content: 'If residual ITT > 150°C:' },
-          { type: ChecklistItemType.Link, content: '11. Refer to Motoring procedure', linkTarget: NormalChecklistNames.Motoring, justification: Justification.Indent1 },
+          {
+            type: ChecklistItemType.Link,
+            content: '11. Refer to Motoring procedure',
+            linkTarget: {
+              checklistName: NormalChecklistNames.Motoring,
+              checklistCategory: TbmChecklistCategory.Normal,
+            },
+            justification: Justification.Indent1
+          },
           { type: ChecklistItemType.Challenge, content: '12. VOLTS:\nBATT> 24.5 V /\nGPU ~ 28 V', response: 'Check' },
           { type: ChecklistItemType.Challenge, content: '13. CAS', response: 'Check' },
         ],

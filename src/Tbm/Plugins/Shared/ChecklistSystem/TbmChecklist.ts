@@ -1,6 +1,5 @@
 import {Checklist} from "@base/Shared/ChecklistSystem/Checklist";
 import {NormalChecklistNames, AmplifiedChecklistNames} from "./Checklists";
-import {ChecklistItem} from "@base/Shared";
 
 /** The possible Tbm checklist categories, in the order they appear in the aircraft */
 export enum TbmChecklistCategory {
@@ -13,10 +12,4 @@ export type TbmChecklistNames =
   NormalChecklistNames |
   AmplifiedChecklistNames;
 
-/** Readonly Tbm checklist, with all items readonly. */
-export type TbmChecklistReadonly = Pick<TbmChecklist, 'isComplete'| 'anyItemChanged' | 'name' | 'category' | 'isLastChecklist'> & {
-  /** readonly items. */
-  readonly items: readonly ChecklistItem[];
-}
-
-export class TbmChecklist<T = TbmChecklistNames, U = TbmChecklistCategory, V = TbmChecklistNames> extends Checklist<T, U, V> {}
+export class TbmChecklist<N = TbmChecklistNames, C = TbmChecklistCategory> extends Checklist<N, C> {}

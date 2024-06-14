@@ -15,7 +15,7 @@ import {ChecklistEvents} from '@base/Shared/ChecklistSystem/ChecklistEvents';
 /**
  * The Repo class for the checklists.
  */
-export class ChecklistRepository<Names = ChecklistNames, Category = ChecklistCategory, ItemNames = ChecklistNames> {
+export class ChecklistRepository<Names = ChecklistNames, Category = ChecklistCategory> {
   private readonly _activeChecklist = Subject.create({
     leftPfd: this.defaultChecklist,
     leftMfd: this.defaultChecklist,
@@ -23,13 +23,13 @@ export class ChecklistRepository<Names = ChecklistNames, Category = ChecklistCat
     rightPfd: this.defaultChecklist,
   });
   public readonly activeChecklist = this._activeChecklist as Subscribable<{
-    leftPfd: ChecklistReadonly<Names, Category, ItemNames>,
-    leftMfd: ChecklistReadonly<Names, Category, ItemNames>,
-    rightMfd: ChecklistReadonly<Names, Category, ItemNames>,
-    rightPfd: ChecklistReadonly<Names, Category, ItemNames>,
+    leftPfd: ChecklistReadonly<Names, Category>,
+    leftMfd: ChecklistReadonly<Names, Category>,
+    rightMfd: ChecklistReadonly<Names, Category>,
+    rightPfd: ChecklistReadonly<Names, Category>,
   }>;
 
-  private readonly incompleteChecklists = new Set<Checklist<Names, Category, ItemNames>>();
+  private readonly incompleteChecklists = new Set<Checklist<Names, Category>>();
 
   private readonly publisher = this.bus.getPublisher<ChecklistEvents<Names, Category>>();
 
@@ -41,8 +41,8 @@ export class ChecklistRepository<Names = ChecklistNames, Category = ChecklistCat
    */
   public constructor(
     private readonly bus: EventBus,
-    private readonly checklists: Checklist<Names, Category, ItemNames>[],
-    public readonly defaultChecklist: Checklist<Names, Category, ItemNames>,
+    private readonly checklists: Checklist<Names, Category>[],
+    public readonly defaultChecklist: Checklist<Names, Category>,
   ) {
     const sub = this.bus.getSubscriber<ChecklistEvents<Names, Category>>();
 
@@ -71,11 +71,21 @@ export class ChecklistRepository<Names = ChecklistNames, Category = ChecklistCat
   }
 
   /**
+   * Get a list of all the categories of the checklists.
+   * @returns The categories of the checklists.
+   */
+  public getChecklistCategories(): Category[] {
+    return Array.from(new Set(this.checklists.map(x => x.category)));
+  }
+
+
+
+  /**
    * Get the active checklist by pane index.
    * @param paneIndex The index of the pane.
    * @returns The active checklist.
    */
-  public getActiveChecklistByPaneIndex(paneIndex: ControllableDisplayPaneIndex): Subscribable<ChecklistReadonly<Names, Category, ItemNames>> {
+  public getActiveChecklistByPaneIndex(paneIndex: ControllableDisplayPaneIndex): Subscribable<ChecklistReadonly<Names, Category>> {
     switch (paneIndex) {
       case DisplayPaneIndex.LeftPfd:
         return this.activeChecklist.map(x => x.leftPfd);
@@ -94,7 +104,7 @@ export class ChecklistRepository<Names = ChecklistNames, Category = ChecklistCat
    * @param category The category of the checklist.
    * @returns The Checklist that holds the given name and category.
    */
-  private getChecklistByNameAndCategory(name: Names, category: Category): Checklist<Names, Category, ItemNames> {
+  private getChecklistByNameAndCategory(name: Names, category: Category): Checklist<Names, Category> {
     const checklist = this.checklists.find(x => x.name === name && x.category === category);
 
     return checklist ?? this.defaultChecklist;
@@ -105,7 +115,7 @@ export class ChecklistRepository<Names = ChecklistNames, Category = ChecklistCat
    * @param category The category of the checklists.
    * @returns The checklists in the given category.
    */
-  public getChecklistsByCategory(category: Category): Checklist<Names, Category, ItemNames>[] {
+  public getChecklistsByCategory(category: Category): Checklist<Names, Category>[] {
     return this.checklists.filter(x => x.category === category);
   }
 
@@ -225,7 +235,7 @@ export class ChecklistRepository<Names = ChecklistNames, Category = ChecklistCat
    * @param checklists The array of checklists.
    * @returns The next checklist, or if there is none, the last checklist.
    */
-  private findNextChecklist(currentName: Names, currentCategory: Category, checklists: Checklist<Names, Category, ItemNames>[]): Checklist<Names, Category, ItemNames> {
+  private findNextChecklist(currentName: Names, currentCategory: Category, checklists: Checklist<Names, Category>[]): Checklist<Names, Category> {
     const currentChecklistIndex = checklists.findIndex(x => x.name === currentName && x.category === currentCategory);
     // Find the next checklists, or if there is none, the last checklist.
     return checklists[currentChecklistIndex + 1] ?? checklists[checklists.length - 1];

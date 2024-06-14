@@ -26,7 +26,14 @@ export class ItemsShowcaseChecklists {
           { type: ChecklistItemType.Note, content: 'Note' },
           { type: ChecklistItemType.Subtitle, content: 'Subtitle' },
           { type: ChecklistItemType.PlainText, content: 'Plain Text' },
-          { type: ChecklistItemType.Link, content: 'Link to checklist (Justifications)', linkTarget: ItemsShowcaseChecklistNames.Justifications },
+          {
+            type: ChecklistItemType.Link,
+            content: 'Link to checklist (Justifications)',
+            linkTarget: {
+              checklistName: ItemsShowcaseChecklistNames.Justifications,
+              checklistCategory: ChecklistCategory.ItemsShowcase,
+            }
+          },
         ],
       ),
       new Checklist(

@@ -15,22 +15,22 @@ import {
 } from "@base/Shared/ChecklistSystem";
 import {ChecklistControlList, ChecklistUiControl, FmsUiControlEvents} from "@base/Shared/UI";
 
-export interface ChecklistSelectionListProps<Names, Category, ItemNames> extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
+export interface ChecklistSelectionListProps<Names, Category> extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
   /** The event bus */
   readonly bus: EventBus;
   /** The pane index */
   readonly paneIndex: ControllableDisplayPaneIndex;
   /** The checklist repository */
-  readonly repo: ChecklistRepository<Names, Category, ItemNames>;
+  readonly repo: ChecklistRepository<Names, Category>;
   /** The popup type */
   readonly type: 'category' | 'checklist';
   /** The items to display */
-  readonly items: ArraySubject<Names | Category>;
+  readonly items: ArraySubject<Names> | ArraySubject<Category>;
   /** Whether the popup is open. */
   readonly isOpen: Subject<boolean>;
 }
 
-export class ChecklistSelectionList<Names, Category, ItemNames> extends ChecklistUiControl<ChecklistSelectionListProps<Names, Category, ItemNames>> {
+export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<ChecklistSelectionListProps<Names, Category>> {
   protected readonly selectionItemListRef = FSComponent.createRef<ChecklistControlList<Names | Category>>();
   protected readonly scrollContainer = FSComponent.createRef<HTMLDivElement>();
 
@@ -122,7 +122,7 @@ export class ChecklistSelectionList<Names, Category, ItemNames> extends Checklis
         <ChecklistControlList
           class="checklist-selection-list"
           ref={this.selectionItemListRef}
-          data={this.props.items}
+          data={this.props.items as ArraySubject<Names | Category>}
           renderItem={this.renderSelectionItem.bind(this)}
           hideScrollbar={false}
         />

@@ -4,15 +4,15 @@ import {ChecklistEvents, ChecklistReadonly} from "@base/Shared/ChecklistSystem";
 
 import "./ChecklistGtcOptionsPopup.css";
 
-interface ChecklistGtcOptionsPopupProps<Names, Category, ItemNames> extends GtcViewProps {
+interface ChecklistGtcOptionsPopupProps<Names, Category> extends GtcViewProps {
   /** The active checklist name. */
-  activeChecklist: Subject<ChecklistReadonly<Names, Category, ItemNames>>,
+  activeChecklist: Subject<ChecklistReadonly<Names, Category>>,
 }
 
 /**
  * A popup for checklist options.
  */
-export class ChecklistGtcOptionsPopup<Names, Category, ItemNames> extends GtcView<ChecklistGtcOptionsPopupProps<Names, Category, ItemNames>> {
+export class ChecklistGtcOptionsPopup<Names, Category> extends GtcView<ChecklistGtcOptionsPopupProps<Names, Category>> {
   /** @inheritdoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);

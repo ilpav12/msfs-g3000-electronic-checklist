@@ -17,19 +17,19 @@ export enum ChecklistPaneKeys {
   Checklist = 'Checklist',
 }
 
-export interface ChecklistPageProps<Names, Category, ItemNames> extends DisplayPaneViewProps {
+export interface ChecklistPageProps<Names, Category> extends DisplayPaneViewProps {
   /** The event bus. */
   bus: EventBus;
   /** The checklist repository */
-  repo: ChecklistRepository<Names, Category, ItemNames>;
+  repo: ChecklistRepository<Names, Category>;
 }
 
-export class ChecklistPane<Names, Category, ItemNames> extends DisplayPaneView<ChecklistPageProps<Names, Category, ItemNames>> {
+export class ChecklistPane<Names, Category> extends DisplayPaneView<ChecklistPageProps<Names, Category>> {
   private readonly uiRoot = FSComponent.createRef<ChecklistUiControl>();
   private readonly activeChecklist = this.props.repo.getActiveChecklistByPaneIndex(this.props.index as ControllableDisplayPaneIndex);
   public readonly focusedItemType = Subject.create(ChecklistPageFocusableItemType.ChallengeUnchecked);
 
-  private readonly checklistDisplayRef = FSComponent.createRef<ChecklistDisplay<Names, Category, ItemNames>>();
+  private readonly checklistDisplayRef = FSComponent.createRef<ChecklistDisplay<Names, Category>>();
 
   /** @inheritDoc */
   onAfterRender(node: VNode) {
@@ -43,7 +43,7 @@ export class ChecklistPane<Names, Category, ItemNames> extends DisplayPaneView<C
     return (
       <div>
         <ChecklistUiControl ref={this.uiRoot}>
-          <ChecklistDisplay<Names, Category, ItemNames>
+          <ChecklistDisplay<Names, Category>
             bus={this.props.bus}
             ref={this.checklistDisplayRef}
             focusedItemType={this.focusedItemType}

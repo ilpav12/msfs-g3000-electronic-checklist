@@ -14,23 +14,23 @@ import {ChecklistRepository} from "@base/Shared/ChecklistSystem";
 
 import './ChecklistSelectionPopup.css';
 
-export interface ChecklistSelectionPopupProps<Names, Category, ItemNames> extends ComponentProps {
+export interface ChecklistSelectionPopupProps<Names, Category> extends ComponentProps {
   /** The event bus. */
   readonly bus: EventBus;
   /** The pane index. */
   readonly paneIndex: ControllableDisplayPaneIndex;
   /** The checklist repository */
-  readonly repo: ChecklistRepository<Names, Category, ItemNames>;
+  readonly repo: ChecklistRepository<Names, Category>;
   /** The popup type. */
   readonly type: 'category' | 'checklist',
   /** The items to display. */
-  readonly items: ArraySubject<Names | Category>;
+  readonly items: ArraySubject<Names> | ArraySubject<Category>;
   /** Whether the popup is open. */
   readonly isOpen: Subject<boolean>;
 }
 
 /** A popup for selecting a checklist. */
-export class ChecklistSelectionPopup<Names, Category, ItemNames> extends DisplayComponent<ChecklistSelectionPopupProps<Names, Category, ItemNames>> {
+export class ChecklistSelectionPopup<Names, Category> extends DisplayComponent<ChecklistSelectionPopupProps<Names, Category>> {
   protected readonly controlRef = FSComponent.createRef<ChecklistUiControl>();
 
   /** @inheritDoc */
@@ -40,7 +40,7 @@ export class ChecklistSelectionPopup<Names, Category, ItemNames> extends Display
         "checklist-popup-dialog": true,
         "hidden": this.props.isOpen.map(v => !v)
       }}>
-        <ChecklistSelectionList<Names, Category, ItemNames>
+        <ChecklistSelectionList<Names, Category>
           ref={this.controlRef}
           bus={this.props.bus}
           paneIndex={this.props.paneIndex}

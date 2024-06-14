@@ -7,13 +7,13 @@ import {ChecklistSelectionPopup} from "@base/Shared/Panes/Components/ChecklistSe
 import './ChecklistSelection.css';
 
 /** Component props for the {@link ChecklistSelectionUiControl} component */
-export interface ChecklistSelectionProps<Names, Category, ItemNames> extends ChecklistUiControlProps {
+export interface ChecklistSelectionProps<Names, Category> extends ChecklistUiControlProps {
   /** The event bus */
   bus: EventBus;
   /** The pane paneIndex. */
   paneIndex: ControllableDisplayPaneIndex;
   /** The checklist repository */
-  repo: ChecklistRepository<Names, Category, ItemNames>;
+  repo: ChecklistRepository<Names, Category>;
   /** The focused item type. */
   focusedItemType: Subject<ChecklistPageFocusableItemType>;
   /** Whether the popup is open. */
@@ -21,7 +21,7 @@ export interface ChecklistSelectionProps<Names, Category, ItemNames> extends Che
 }
 
 /** A base component for the checklist/category selection. */
-class ChecklistSelectionUiControl<Names, Category, ItemNames> extends ChecklistUiControl<ChecklistSelectionProps<Names, Category, ItemNames>> {
+class ChecklistSelectionUiControl<Names, Category> extends ChecklistUiControl<ChecklistSelectionProps<Names, Category>> {
   protected readonly ref = FSComponent.createRef<HTMLSpanElement>();
 
   /**
@@ -45,7 +45,7 @@ class ChecklistSelectionUiControl<Names, Category, ItemNames> extends ChecklistU
 }
 
 /** A component which displays the selected category, and opens the category selection popup. */
-export class ChecklistCategorySelectionControl<Names, Category, ItemNames> extends ChecklistSelectionUiControl<Names, Category, ItemNames> {
+export class ChecklistCategorySelectionControl<Names, Category> extends ChecklistSelectionUiControl<Names, Category> {
   /** @inheritDoc */
   public onFocused(): void {
     super.onFocused();
@@ -73,7 +73,7 @@ export class ChecklistCategorySelectionControl<Names, Category, ItemNames> exten
 }
 
 /** A component which displays the selected checklist, and opens the checklist selection popup. */
-export class ChecklistSelectionControl<Names, Category, ItemNames> extends ChecklistSelectionUiControl<Names, Category, ItemNames> {
+export class ChecklistSelectionControl<Names, Category> extends ChecklistSelectionUiControl<Names, Category> {
   /** @inheritDoc */
   public onFocused(): void {
     super.onFocused();
@@ -91,7 +91,7 @@ export class ChecklistSelectionControl<Names, Category, ItemNames> extends Check
             paneIndex={this.props.paneIndex}
             repo={this.props.repo}
             type={'checklist'}
-            items={ArraySubject.create(this.props.repo.getChecklistNames())}
+            items={ArraySubject.create(this.props.repo.getChecklistsByCategory(this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).get().category).map(v => v.name))}
             isOpen={this.props.isPopupOpen}
           />
         </div>

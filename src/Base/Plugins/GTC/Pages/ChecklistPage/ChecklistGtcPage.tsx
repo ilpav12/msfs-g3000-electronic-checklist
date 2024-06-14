@@ -15,8 +15,8 @@ import {
 } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistGtcOptionsPopup } from "@base/GTC/Pages/ChecklistPage/ChecklistGtcOptionsPopup";
 import {
-  ChecklistRepository, ChecklistCategory,
-  ChecklistEvents, ChecklistNames,
+  ChecklistRepository,
+  ChecklistEvents,
 } from "@base/Shared/ChecklistSystem";
 
 import "./ChecklistGtcPage.css";
@@ -36,17 +36,17 @@ export interface ChecklistListItems<Names, Category> extends DynamicListData {
 /**
  * Props for the checklist GTC page.
  */
-export interface ChecklistGtcPageProps<Names, Category, ItemNames> extends GtcViewProps {
+export interface ChecklistGtcPageProps<Names, Category> extends GtcViewProps {
   /** The checklist categories to display. */
   checklistCategories: Category[];
   /** The checklist repository. */
-  checklistRepository: ChecklistRepository<Names, Category, ItemNames>;
+  checklistRepository: ChecklistRepository<Names, Category>;
 }
 
 /**
  * The checklist GTC page.
  */
-export class ChecklistGtcPage<Names, Category, ItemNames> extends GtcView<ChecklistGtcPageProps<Names, Category, ItemNames>> {
+export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageProps<Names, Category>> {
   private readonly optionsPopupKey = GtcChecklistPagePopupKeys.Options;
   private readonly activeChecklist = Subject.create(this.props.checklistRepository.getActiveChecklistByPaneIndex(this.gtcService.selectedDisplayPane.get() as ControllableDisplayPaneIndex).get());
 
@@ -142,7 +142,7 @@ export class ChecklistGtcPage<Names, Category, ItemNames> extends GtcView<Checkl
           return (
             <GtcListItem>
               <GtcTouchButton
-                label={listItem.checklistName}
+                label={listItem.checklistName as string}
                 onPressed={() => {
                   this.bus.getPublisher<ChecklistEvents<Names, Category>>()
                     .pub('checklist_event', {

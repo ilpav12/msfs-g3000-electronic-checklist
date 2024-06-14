@@ -1,5 +1,5 @@
 import {Subject} from "@microsoft/msfs-sdk";
-import {ChecklistNames} from "@base/Shared";
+import {ChecklistCategory, ChecklistNames} from "@base/Shared";
 
 /** The possible checklist item types */
 export enum ChecklistItemType {
@@ -38,8 +38,13 @@ export enum ChecklistItemInteractionType {
   Link,
 }
 
+export type LinkTarget<Names, Category> = {
+  checklistName: Names;
+  checklistCategory: Category;
+};
+
 /** A checklist item */
-export class ChecklistItem {
+export class ChecklistItem<Names = ChecklistNames, Category = ChecklistCategory> {
   public readonly state = Subject.create(this.type === ChecklistItemType.Challenge || this.type === ChecklistItemType.BranchItem ? ChecklistItemState.Incomplete : ChecklistItemState.NotApplicable);
   public height = 1;
 
@@ -59,7 +64,7 @@ export class ChecklistItem {
     public readonly type: ChecklistItemType,
     public readonly content: string,
     public readonly response: string | undefined | null = undefined,
-    public readonly linkTarget: ChecklistNames | undefined = undefined,
+    public readonly linkTarget: LinkTarget<Names, Category> | undefined = undefined,
     public readonly blanksBelow: number = 0,
     public readonly justification: Justification | undefined,
     public readonly imagePath: string | undefined = undefined,
@@ -316,7 +321,7 @@ export interface ChecklistPlainTextItemData {
 }
 
 /** An interface describing a Checklist Link Item */
-export interface ChecklistLinkItemData<T = ChecklistNames> {
+export interface ChecklistLinkItemData<Names = ChecklistNames, Category = ChecklistCategory> {
   /** The type of checklist item */
   type: ChecklistItemType.Link
   /**
@@ -327,7 +332,7 @@ export interface ChecklistLinkItemData<T = ChecklistNames> {
   /**
    * The target checklist to link to.
    */
-  linkTarget: T;
+  linkTarget: LinkTarget<Names, Category>;
   /**
    * The number of blank lines to add below the item (optional, defaults to 0, max 10)
    */
@@ -358,7 +363,7 @@ export interface ChecklistBranchItemData {
 }
 
 /** An interface describing a Checklist Branch Item */
-export interface ChecklistBranchItemData<T = ChecklistNames> {
+export interface ChecklistBranchItemData<Names = ChecklistNames, Category = ChecklistCategory> {
   /** The type of checklist item */
   type: ChecklistItemType.Branch
   /**
@@ -369,17 +374,17 @@ export interface ChecklistBranchItemData<T = ChecklistNames> {
   /**
    * The target sub-checklist to link to.
    */
-  linkTarget: T;
+  linkTarget: LinkTarget<Names, Category>;
 }
 
 /** An interface describing an checklist item */
-export type ChecklistItemData<T = ChecklistNames> =
+export type ChecklistItemData<Names = ChecklistNames, Category = ChecklistCategory> =
   (ChecklistChallengeItemData |
     ChecklistWarningItemData |
     ChecklistCautionItemData |
     ChecklistNoteItemData |
     ChecklistSubtitleItemData |
     ChecklistPlainTextItemData |
-    ChecklistLinkItemData<T> |
-    ChecklistBranchItemData<T>) &
+    ChecklistLinkItemData<Names, Category> |
+    ChecklistBranchItemData<Names, Category>) &
   { interactionType?: ChecklistItemInteractionType };

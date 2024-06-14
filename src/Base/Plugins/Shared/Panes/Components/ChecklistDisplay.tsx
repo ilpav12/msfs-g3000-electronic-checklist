@@ -35,13 +35,13 @@ import {
 import './ChecklistDisplay.css';
 
 /** Component props for the {@link ChecklistDisplay} component */
-export interface ChecklistDisplayProps<Names, Category, ItemNames> extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
+export interface ChecklistDisplayProps<Names, Category> extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
   /** The event bus */
   bus: EventBus;
   /** The checklist repository */
-  repo: ChecklistRepository<Names, Category, ItemNames>;
+  repo: ChecklistRepository<Names, Category>;
   /** The checklist to display. */
-  checklist: Subscribable<ChecklistReadonly<Names, Category, ItemNames>>;
+  checklist: Subscribable<ChecklistReadonly<Names, Category>>;
   /** Whether the checklist is completed. */
   isChecklistCompleted: Subscribable<boolean>;
   /** The focused item type. */
@@ -50,7 +50,7 @@ export interface ChecklistDisplayProps<Names, Category, ItemNames> extends UiCon
   paneIndex: ControllableDisplayPaneIndex;
 }
 
-export class ChecklistDisplay<Names, Category, ItemNames> extends ChecklistUiControl<ChecklistDisplayProps<Names, Category, ItemNames>> {
+export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<ChecklistDisplayProps<Names, Category>> {
   private readonly scrollContainer = FSComponent.createRef<HTMLDivElement>();
   protected readonly checklistItemListRef = FSComponent.createRef<ChecklistControlList<ChecklistItemReadonly>>();
 
@@ -167,7 +167,8 @@ export class ChecklistDisplay<Names, Category, ItemNames> extends ChecklistUiCon
         this.props.bus.getPublisher<ChecklistEvents<Names, Category>>()
           .pub('checklist_event', {
             type: 'active_checklist_changed',
-            newActiveChecklistName: item.linkTarget,
+            newActiveChecklistName: item.linkTarget.checklistName as Names,
+            newActiveChecklistCategory: item.linkTarget.checklistCategory as Category,
             targetPaneIndex: this.props.paneIndex,
           }, true);
         return true;

@@ -138,7 +138,15 @@ export class AmplifiedChecklists {
           { type: ChecklistItemType.Challenge, content: 'b. FUEL TANK\nSELECTOR', response: 'L or R', justification: Justification.Indent1 },
           { type: ChecklistItemType.Challenge, content: '22. Residual ITT', response: 'Check' },
           { type: ChecklistItemType.PlainText, content: 'If residual ITT > 150°C:' },
-          { type: ChecklistItemType.Link, content: '23. Perform Motoring procedure', linkTarget: AmplifiedChecklistNames.Motoring, justification: Justification.Indent1 },
+          {
+            type: ChecklistItemType.Link,
+            content: '23. Perform Motoring procedure',
+            linkTarget: {
+              checklistName: AmplifiedChecklistNames.Motoring,
+              checklistCategory: TbmChecklistCategory.Amplified,
+            },
+            justification: Justification.Indent1
+          },
           { type: ChecklistItemType.Note, content: 'NOTE: A start up procedure with an engine residual ITT above 150°C may generate\nan ITT exceedance.\nParticular monitoring of ITT will have to be performed during start up to ensure\nto keep the temperature within ITT envelope.' },
           { type: ChecklistItemType.Challenge, content: '24. VOLTS:\nBAT > 24.5 V /\nGPU ≈ 28 V', response: 'Check' },
           { type: ChecklistItemType.Challenge, content: '25. CAS display', response: 'Check' },
@@ -311,7 +319,15 @@ export class AmplifiedChecklists {
           { type: ChecklistItemType.Challenge, content: '11. A/C switch', response: 'As required' },
           { type: ChecklistItemType.Challenge, content: '12. BLEED switch', response: 'AUTO or MAX DIFF' },
           { type: ChecklistItemType.PlainText, content: 'When ground personnel is cleared from propeller area:' },
-          { type: ChecklistItemType.Link, content: '13. Perform After engine start procedure', linkTarget: AmplifiedChecklistNames.AfterEngineStart, justification: Justification.Indent1 },
+          {
+            type: ChecklistItemType.Link,
+            content: '13. Perform After engine start procedure',
+            linkTarget: {
+              checklistName: AmplifiedChecklistNames.AfterEngineStart,
+              checklistCategory: TbmChecklistCategory.Amplified,
+            },
+            justification: Justification.Indent1
+          },
         ],
       ),
     ];
