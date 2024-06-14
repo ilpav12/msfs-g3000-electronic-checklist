@@ -1,4 +1,4 @@
-import {Checklist, ChecklistNames} from "@base/Shared/ChecklistSystem/Checklist";
+import {Checklist} from "@base/Shared/ChecklistSystem/Checklist";
 import {NormalChecklistNames, AmplifiedChecklistNames} from "./Checklists";
 import {ChecklistItem} from "@base/Shared";
 

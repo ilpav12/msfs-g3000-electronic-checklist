@@ -4,8 +4,8 @@ import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common/Compo
 import {ChecklistUiControl} from "@base/Shared/UI/ChecklistUiControl";
 import {ChecklistDisplay} from "@base/Shared/Panes/Components";
 import {
-  BaseChecklistRepository,
   ChecklistPageFocusableItemType,
+  ChecklistRepository
 } from "@base/Shared/ChecklistSystem";
 
 import "./ChecklistPane.css";
@@ -17,19 +17,19 @@ export enum ChecklistPaneKeys {
   Checklist = 'Checklist',
 }
 
-export interface ChecklistPageProps extends DisplayPaneViewProps {
+export interface ChecklistPageProps<Names, Category, ItemNames> extends DisplayPaneViewProps {
   /** The event bus. */
   bus: EventBus;
   /** The checklist repository */
-  repo: BaseChecklistRepository<any, any, any, any>;
+  repo: ChecklistRepository<Names, Category, ItemNames>;
 }
 
-export class ChecklistPane extends DisplayPaneView<ChecklistPageProps> {
+export class ChecklistPane<Names, Category, ItemNames> extends DisplayPaneView<ChecklistPageProps<Names, Category, ItemNames>> {
   private readonly uiRoot = FSComponent.createRef<ChecklistUiControl>();
   private readonly activeChecklist = this.props.repo.getActiveChecklistByPaneIndex(this.props.index as ControllableDisplayPaneIndex);
   public readonly focusedItemType = Subject.create(ChecklistPageFocusableItemType.ChallengeUnchecked);
 
-  private readonly checklistDisplayRef = FSComponent.createRef<ChecklistDisplay>();
+  private readonly checklistDisplayRef = FSComponent.createRef<ChecklistDisplay<Names, Category, ItemNames>>();
 
   /** @inheritDoc */
   onAfterRender(node: VNode) {
@@ -43,13 +43,13 @@ export class ChecklistPane extends DisplayPaneView<ChecklistPageProps> {
     return (
       <div>
         <ChecklistUiControl ref={this.uiRoot}>
-          <ChecklistDisplay
+          <ChecklistDisplay<Names, Category, ItemNames>
             bus={this.props.bus}
             ref={this.checklistDisplayRef}
             focusedItemType={this.focusedItemType}
             repo={this.props.repo}
             checklist={this.activeChecklist}
-            isChecklistCompleted={this.props.repo.getIsActiveChecklistCompleteByPaneIndex(this.props.index as ControllableDisplayPaneIndex)}
+            isChecklistCompleted={this.props.repo.getActiveChecklistByPaneIndex(this.props.index as ControllableDisplayPaneIndex).get().isComplete}
             paneIndex={this.props.index as ControllableDisplayPaneIndex}
           />
         </ChecklistUiControl>

@@ -38,9 +38,7 @@ export class ChecklistGtcPlugin extends AbstractG3000GtcPlugin {
           gtcService={service}
           controlMode={mode}
           displayPaneIndex={index}
-          checklistCategories={[
-            { name: ChecklistCategory.ItemsShowcase, checklistNames: ItemsShowcaseChecklistNames },
-          ]}
+          checklistCategories={Object.values(ChecklistCategory)}
           checklistRepository={checklistRepository}
         />
       );

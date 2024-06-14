@@ -1,12 +1,3 @@
-.checklist-title, .checklist-category {
-    color: cyan;
-}
-
-.checklist-title {
-    margin-left: 15px;
-    margin-top: 5px;
-}
-
 .ui-control-list-content {
     height: calc(var(--checklist-container-height) - 40px);
     overflow: hidden;

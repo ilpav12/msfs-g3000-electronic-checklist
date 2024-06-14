@@ -1,18 +1,18 @@
 import {FSComponent, Subject, VNode} from "@microsoft/msfs-sdk";
 import {GtcTouchButton, GtcView, GtcViewProps} from "@microsoft/msfs-wtg3000-gtc";
-import {ChecklistEvents, ChecklistNames} from "@base/Shared/ChecklistSystem";
+import {ChecklistEvents, ChecklistReadonly} from "@base/Shared/ChecklistSystem";
 
 import "./ChecklistGtcOptionsPopup.css";
 
-interface ChecklistGtcOptionsPopupProps extends GtcViewProps {
+interface ChecklistGtcOptionsPopupProps<Names, Category, ItemNames> extends GtcViewProps {
   /** The active checklist name. */
-  activeChecklistName: Subject<ChecklistNames>,
+  activeChecklist: Subject<ChecklistReadonly<Names, Category, ItemNames>>,
 }
 
 /**
  * A popup for checklist options.
  */
-export class ChecklistGtcOptionsPopup extends GtcView<ChecklistGtcOptionsPopupProps> {
+export class ChecklistGtcOptionsPopup<Names, Category, ItemNames> extends GtcView<ChecklistGtcOptionsPopupProps<Names, Category, ItemNames>> {
   /** @inheritdoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
@@ -30,9 +30,10 @@ export class ChecklistGtcOptionsPopup extends GtcView<ChecklistGtcOptionsPopupPr
             label={'Check All'}
             class='checklist-options-popup-button'
             onPressed={() => {
-              this.bus.getPublisher<ChecklistEvents>().pub('checklist_event', {
+              this.bus.getPublisher<ChecklistEvents<Names, Category>>().pub('checklist_event', {
                 type: 'check_all_items',
-                checklistName: this.props.activeChecklistName.get(),
+                checklistName: this.props.activeChecklist.get().name,
+                checklistCategory: this.props.activeChecklist.get().category,
               }, true);
               this.gtcService.goBack();
             }}
@@ -48,9 +49,10 @@ export class ChecklistGtcOptionsPopup extends GtcView<ChecklistGtcOptionsPopupPr
             label={'Reset Checklist'}
             class='checklist-options-popup-button'
             onPressed={() => {
-              this.bus.getPublisher<ChecklistEvents>().pub('checklist_event', {
+              this.bus.getPublisher<ChecklistEvents<Names, Category>>().pub('checklist_event', {
                 type: 'checklist_reset',
-                checklistName: this.props.activeChecklistName.get(),
+                checklistName: this.props.activeChecklist.get().name,
+                checklistCategory: this.props.activeChecklist.get().category,
               }, true);
               this.gtcService.goBack();
             }}

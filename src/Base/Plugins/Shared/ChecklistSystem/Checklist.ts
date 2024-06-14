@@ -10,6 +10,8 @@ import {ItemsShowcaseChecklistNames} from "@base/Shared/ChecklistSystem/Checklis
 
 /** The possible item types to focus on the softkey menu  */
 export enum ChecklistPageFocusableItemType {
+  ChecklistCategorySelectionList,
+  ChecklistSelectionList,
   ChallengeChecked,
   ChallengeUnchecked,
   Text,
@@ -33,19 +35,20 @@ export type ChecklistItemReadonly = ChecklistItem & {
 }
 
 /** Readonly checklist, with all items readonly. */
-export type ChecklistReadonly = Pick<Checklist, 'isComplete'| 'anyItemChanged' | 'name' | 'category' | 'isLastChecklist'> & {
+export type ChecklistReadonly<Names = ChecklistNames, Category = ChecklistCategory, ItemNames = ChecklistNames> =
+  Pick<Checklist<Names, Category, ItemNames>, 'isComplete'| 'anyItemChanged' | 'name' | 'category' | 'isLastChecklist'> & {
   /** readonly items. */
   readonly items: readonly ChecklistItem[];
 }
 
 /** Checklist */
-export class Checklist<T = ChecklistNames, U = ChecklistCategory, V = ChecklistNames> {
+export class Checklist<Names = ChecklistNames, Category = ChecklistCategory, ItemNames = ChecklistNames> {
   public readonly items: ChecklistItem[];
 
   private readonly _isComplete = Subject.create(false);
   public readonly isComplete = this._isComplete as Subscribable<boolean>;
-  private readonly _anyItemChanged = new SubEvent<this, Omit<ChecklistItemChangedEvent<T>, 'type' | 'mfdIndex'>>();
-  public readonly anyItemChanged = this._anyItemChanged as ReadonlySubEvent<this, Omit<ChecklistItemChangedEvent<T>, 'type' | 'mfdIndex'>>;
+  private readonly _anyItemChanged = new SubEvent<this, Omit<ChecklistItemChangedEvent<Names, Category>, 'type' | 'mfdIndex'>>();
+  public readonly anyItemChanged = this._anyItemChanged as ReadonlySubEvent<this, Omit<ChecklistItemChangedEvent<Names>, 'type' | 'mfdIndex'>>;
 
   /**
    * Creates a new instance of a Checklist
@@ -56,9 +59,9 @@ export class Checklist<T = ChecklistNames, U = ChecklistCategory, V = ChecklistN
    * @param isSubChecklist Whether this is a sub-checklist
    */
   public constructor(
-    public readonly name: T,
-    public readonly category: U,
-    itemData: Array<ChecklistItemData<V>>,
+    public readonly name: Names,
+    public readonly category: Category,
+    itemData: Array<ChecklistItemData<ItemNames>>,
     public readonly isLastChecklist = false,
     public readonly isSubChecklist = false,
   ) {
@@ -106,6 +109,7 @@ export class Checklist<T = ChecklistNames, U = ChecklistCategory, V = ChecklistN
 
     this._anyItemChanged.notify(this, {
       checklistName: this.name,
+      checklistCategory: this.category,
       itemIndex,
       itemState,
     });

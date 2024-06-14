@@ -3,8 +3,7 @@ import {
   AbstractG3000GtcPlugin,
   GtcService,
   GtcViewKeys,
-  GtcViewLifecyclePolicy,
-  GtcViewProps
+  GtcViewLifecyclePolicy
 } from "@microsoft/msfs-wtg3000-gtc";
 import {ChecklistFilePaths} from "@base/Shared";
 import {
@@ -14,7 +13,7 @@ import {
   ChecklistGtcViewKeys
 } from "@base/GTC";
 import {TbmChecklistCategory} from "../Shared/ChecklistSystem/TbmChecklist";
-import {NormalChecklistNames, NormalChecklists} from "../Shared/ChecklistSystem/Checklists";
+import {AmplifiedChecklists, NormalChecklists} from "../Shared/ChecklistSystem/Checklists";
 import {TbmChecklistRepository} from "../Shared/ChecklistSystem/TbmChecklistRepository";
 
 export class TbmChecklistGtcPlugin extends ChecklistGtcPlugin {
@@ -32,10 +31,14 @@ export class TbmChecklistGtcPlugin extends ChecklistGtcPlugin {
     });
     gtcService.registerView(GtcViewLifecyclePolicy.Persistent, ChecklistGtcViewKeys.Checklist, 'MFD', function (service, mode, index) {
       const normalChecklists = NormalChecklists.getChecklists();
+      const amplifiedChecklists = AmplifiedChecklists.getChecklists();
       const checklistRepository = new TbmChecklistRepository(
         service.bus,
-        [...normalChecklists],
-        normalChecklists[0],
+        [
+          ...normalChecklists,
+          ...amplifiedChecklists,
+        ],
+        normalChecklists[1],
       );
       return (
         <ChecklistGtcPage
@@ -43,7 +46,8 @@ export class TbmChecklistGtcPlugin extends ChecklistGtcPlugin {
           controlMode={mode}
           displayPaneIndex={index}
           checklistCategories={[
-            { name: TbmChecklistCategory.Normal, checklistNames: NormalChecklistNames },
+            TbmChecklistCategory.Normal,
+            TbmChecklistCategory.Amplified,
           ]}
           checklistRepository={checklistRepository}
         />

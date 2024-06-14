@@ -1,5 +1,6 @@
 html {
     --checklist-color-amber: #ffdc24;
+    --checklist-color-black: black;
     --checklist-color-cyan: cyan;
     --checklist-color-green: lime;
     --checklist-color-red: red;
