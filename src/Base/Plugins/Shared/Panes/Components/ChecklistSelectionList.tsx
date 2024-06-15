@@ -3,7 +3,7 @@ import {
   EventBus,
   FocusPosition,
   FSComponent,
-  HardwareUiControlProps, Subject,
+  HardwareUiControlProps, NodeReference, Subject,
   UiControlPropEventHandlers,
   VNode
 } from "@microsoft/msfs-sdk";
@@ -28,22 +28,18 @@ export interface ChecklistSelectionListProps<Names, Category> extends UiControlP
   readonly items: ArraySubject<Names> | ArraySubject<Category>;
   /** Whether the popup is open. */
   readonly isOpen: Subject<boolean>;
+  /** The scroll container reference */
+  readonly scrollContainerRef: NodeReference<HTMLDivElement>;
 }
 
 export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<ChecklistSelectionListProps<Names, Category>> {
   protected readonly selectionItemListRef = FSComponent.createRef<ChecklistControlList<Names | Category>>();
-  protected readonly scrollContainer = FSComponent.createRef<HTMLDivElement>();
 
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
-    this.selectionItemListRef.instance.focus(FocusPosition.First);
 
     this.props.isOpen.sub((isOpen) => {
-      if (isOpen) {
-        this.selectionItemListRef.instance.focus(FocusPosition.First);
-      }
-
       for (let i = 0; i < this.props.items.length; i++) {
         this.selectionItemListRef.instance.getChild(i)?.setDisabled(!isOpen);
       }
@@ -51,7 +47,6 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
 
     this.props.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle((event) => {
       if (this.props.isOpen.get() && event.type === 'checklist_interaction' && event.targetPaneIndex === this.props.paneIndex) {
-        console.log('ChecklistSelectionList: checklist_interaction', event.action);
         switch (event.action) {
           case ChecklistInteractionEventAction.Interact:
             if (this.props.type === 'category') {
@@ -118,15 +113,14 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
 
   public render(): VNode {
     return (
-      <div class="checklist-popup-selection-container" ref={this.scrollContainer}>
-        <ChecklistControlList
-          class="checklist-selection-list"
-          ref={this.selectionItemListRef}
-          data={this.props.items as ArraySubject<Names | Category>}
-          renderItem={this.renderSelectionItem.bind(this)}
-          hideScrollbar={false}
-        />
-      </div>
+      <ChecklistControlList
+        class="checklist-selection-list"
+        ref={this.selectionItemListRef}
+        data={this.props.items as ArraySubject<Names | Category>}
+        renderItem={this.renderSelectionItem.bind(this)}
+        scrollContainer={this.props.scrollContainerRef}
+        hideScrollbar={false}
+      />
     );
   }
 }

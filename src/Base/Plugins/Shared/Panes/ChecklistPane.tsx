@@ -1,4 +1,4 @@
-import {EventBus, FSComponent, Subject, VNode} from "@microsoft/msfs-sdk";
+import {EventBus, FSComponent, Subject, Subscription, VNode} from "@microsoft/msfs-sdk";
 import {DisplayPaneView, DisplayPaneViewProps} from "@microsoft/msfs-wtg3000-common";
 import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
 import {ChecklistUiControl} from "@base/Shared/UI/ChecklistUiControl";
@@ -28,8 +28,18 @@ export class ChecklistPane<Names, Category> extends DisplayPaneView<ChecklistPag
   private readonly uiRoot = FSComponent.createRef<ChecklistUiControl>();
   private readonly activeChecklist = this.props.repo.getActiveChecklistByPaneIndex(this.props.index as ControllableDisplayPaneIndex);
   public readonly focusedItemType = Subject.create(ChecklistPageFocusableItemType.ChallengeUnchecked);
-
   private readonly checklistDisplayRef = FSComponent.createRef<ChecklistDisplay<Names, Category>>();
+  public readonly isActiveChecklistComplete = Subject.create(false);
+  private isActiveChecklistCompletePipe?: Subscription;
+
+  constructor(props: ChecklistPageProps<Names, Category>) {
+    super(props);
+
+    this.activeChecklist.sub(activeChecklist => {
+      this.isActiveChecklistCompletePipe?.destroy();
+      this.isActiveChecklistCompletePipe = activeChecklist.isComplete.pipe(this.isActiveChecklistComplete);
+    }, true);
+  }
 
   /** @inheritDoc */
   onAfterRender(node: VNode) {
@@ -49,11 +59,20 @@ export class ChecklistPane<Names, Category> extends DisplayPaneView<ChecklistPag
             focusedItemType={this.focusedItemType}
             repo={this.props.repo}
             checklist={this.activeChecklist}
-            isChecklistCompleted={this.props.repo.getActiveChecklistByPaneIndex(this.props.index as ControllableDisplayPaneIndex).get().isComplete}
+            isChecklistCompleted={this.isActiveChecklistComplete}
             paneIndex={this.props.index as ControllableDisplayPaneIndex}
           />
         </ChecklistUiControl>
       </div>
     );
+  }
+
+  /** @inheritDoc */
+  destroy() {
+    this.uiRoot.getOrDefault()?.destroy();
+    this.checklistDisplayRef.getOrDefault()?.destroy();
+    this.isActiveChecklistCompletePipe?.destroy();
+
+    super.destroy();
   }
 }

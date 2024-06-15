@@ -1,6 +1,6 @@
 import {ArraySubject, EventBus, FSComponent, Subject, VNode} from '@microsoft/msfs-sdk';
 import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
-import {ChecklistRepository, ChecklistPageFocusableItemType} from "@base/Shared/ChecklistSystem";
+import {ChecklistRepository, ChecklistPageFocusableItemType, ChecklistEvents} from "@base/Shared/ChecklistSystem";
 import {ChecklistUiControl, ChecklistUiControlProps} from "@base/Shared/UI";
 import {ChecklistSelectionPopup} from "@base/Shared/Panes/Components/ChecklistSelectionPopup";
 
@@ -24,6 +24,17 @@ export interface ChecklistSelectionProps<Names, Category> extends ChecklistUiCon
 class ChecklistSelectionUiControl<Names, Category> extends ChecklistUiControl<ChecklistSelectionProps<Names, Category>> {
   protected readonly ref = FSComponent.createRef<HTMLSpanElement>();
 
+  /** @inheritDoc */
+  public onAfterRender(node: VNode): void {
+    super.onAfterRender(node);
+
+    this.props.isPopupOpen.sub((isOpen) => {
+      if (isOpen) {
+        this.ref.instance.classList.remove('highlight-select')
+      }
+    });
+  }
+
   /**
    * Adds the highlight to the item and sets the currently focused item type.
    */
@@ -46,6 +57,8 @@ class ChecklistSelectionUiControl<Names, Category> extends ChecklistUiControl<Ch
 
 /** A component which displays the selected category, and opens the category selection popup. */
 export class ChecklistCategorySelectionControl<Names, Category> extends ChecklistSelectionUiControl<Names, Category> {
+  private readonly items = ArraySubject.create(this.props.repo.getChecklistCategories());
+
   /** @inheritDoc */
   public onFocused(): void {
     super.onFocused();
@@ -63,7 +76,7 @@ export class ChecklistCategorySelectionControl<Names, Category> extends Checklis
             paneIndex={this.props.paneIndex}
             repo={this.props.repo}
             type={'category'}
-            items={ArraySubject.create(this.props.repo.getChecklistCategories())}
+            items={this.items}
             isOpen={this.props.isPopupOpen}
           />
         </div>
@@ -74,10 +87,18 @@ export class ChecklistCategorySelectionControl<Names, Category> extends Checklis
 
 /** A component which displays the selected checklist, and opens the checklist selection popup. */
 export class ChecklistSelectionControl<Names, Category> extends ChecklistSelectionUiControl<Names, Category> {
+  private readonly items = ArraySubject.create(this.props.repo.getChecklistsByCategory(this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).get().category).map(v => v.name));
+
   /** @inheritDoc */
   public onFocused(): void {
     super.onFocused();
     this.props.focusedItemType.set(ChecklistPageFocusableItemType.ChecklistSelectionList);
+
+    this.props.bus.getSubscriber<ChecklistEvents<Names, Category>>().on('checklist_event').handle((event) => {
+      if (event.type === 'active_checklist_changed' && event.targetPaneIndex === this.props.paneIndex) {
+        this.items.set(this.props.repo.getChecklistsByCategory(event.newActiveChecklistCategory).map(v => v.name));
+      }
+    });
   }
 
   /** @inheritDoc */
@@ -85,13 +106,13 @@ export class ChecklistSelectionControl<Names, Category> extends ChecklistSelecti
     return (
       <>
         <div class="checklist-title">
-          <span ref={this.ref}>{this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).get().name}</span>
+          <span ref={this.ref}>{this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).map(v => v.name)}</span>
           <ChecklistSelectionPopup
             bus={this.props.bus}
             paneIndex={this.props.paneIndex}
             repo={this.props.repo}
             type={'checklist'}
-            items={ArraySubject.create(this.props.repo.getChecklistsByCategory(this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).get().category).map(v => v.name))}
+            items={this.items}
             isOpen={this.props.isPopupOpen}
           />
         </div>

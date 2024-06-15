@@ -437,6 +437,7 @@ export class NormalChecklists {
           { type: ChecklistItemType.Note, content: 'NOTE: Be careful of exhaust stubs temperature before installing covers.' },
           { type: ChecklistItemType.Note, content: 'NOTE: 15 to 20 minutes after the engine shutdown, check engine oil level.' },
         ],
+        true,
       ),
     ];
   }

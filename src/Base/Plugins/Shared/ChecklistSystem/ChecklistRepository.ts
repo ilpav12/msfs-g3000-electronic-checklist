@@ -78,8 +78,6 @@ export class ChecklistRepository<Names = ChecklistNames, Category = ChecklistCat
     return Array.from(new Set(this.checklists.map(x => x.category)));
   }
 
-
-
   /**
    * Get the active checklist by pane index.
    * @param paneIndex The index of the pane.

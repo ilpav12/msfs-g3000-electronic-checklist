@@ -196,7 +196,7 @@ export class AmplifiedChecklists {
           { type: ChecklistItemType.Caution, content: 'CAUTION: If the starter does not go off automatically, disengage it using the\nABORT position of the STARTER switch.' },
           { type: ChecklistItemType.Challenge, content: '16. Starter', response: 'Check OFF\nautomatically', justification: Justification.Indent1 },
           { type: ChecklistItemType.Challenge, content: '17. STARTER', response: 'Check OFF', justification: Justification.Indent1 },
-          { type: ChecklistItemType.Challenge, content: '18. Engine\nparameters', response: 'Check\nCheck 54 % ≤ Ng ≤ 58 %, oil pressure and ITT in green sector' },
+          { type: ChecklistItemType.Challenge, content: '18. Engine\nparameters', response: 'Check\n54 % ≤ Ng ≤ 58 %,\noil pressure and ITT\nin green sector' },
         ],
       ),
       new TbmChecklist(
