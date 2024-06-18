@@ -2,21 +2,25 @@ import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common/Compo
 import { ChecklistCategory, ChecklistItemState, ChecklistNames } from '@base/Shared/ChecklistSystem';
 
 /** Active checklist changed Event. */
-export interface ActiveChecklistChangedEvent<T = ChecklistNames> {
+export interface ActiveChecklistChangedEvent<Names = ChecklistNames, Category = ChecklistCategory> {
   /** The event type. */
   readonly type: 'active_checklist_changed';
-  /** New active checklist. */
-  readonly newActiveChecklistName: T;
+  /** New active checklist name. */
+  readonly newActiveChecklistName: Names;
+  /** New active checklist category. */
+  readonly newActiveChecklistCategory: Category;
   /** The index of the target pane. */
-  readonly targetPaneIndex: ControllableDisplayPaneIndex | -1;
+  readonly targetPaneIndex: ControllableDisplayPaneIndex;
 }
 
 /** Checklist reset event. */
-export interface ChecklistResetEvent<T = ChecklistNames> {
+export interface ChecklistResetEvent<Names = ChecklistNames, Category = ChecklistCategory> {
   /** The event type. */
   readonly type: 'checklist_reset';
-  /** Name of the checklist that was reset. */
-  readonly checklistName: T;
+  /** The name of the checklist that was reset. */
+  readonly checklistName: Names;
+  /** The category of the checklist that was reset. */
+  readonly checklistCategory: Category;
 }
 
 export interface AllChecklistsResetEvent {
@@ -25,11 +29,13 @@ export interface AllChecklistsResetEvent {
 }
 
 /** Checklist item changed event. */
-export interface ChecklistItemChangedEvent<T = ChecklistNames> {
+export interface ChecklistItemChangedEvent<Names = ChecklistNames, Category = ChecklistCategory> {
   /** The event type. */
   readonly type: 'item_changed';
   /** The name of the checklist containing the changed item. */
-  readonly checklistName: T;
+  readonly checklistName: Names;
+  /** The category of the checklist containing the changed item. */
+  readonly checklistCategory: Category;
   /** The index of the checklist item. */
   readonly itemIndex: number;
   /** The state of the checklist item. */
@@ -37,23 +43,25 @@ export interface ChecklistItemChangedEvent<T = ChecklistNames> {
 }
 
 /** Check all items event. */
-export interface CheckAllItemsEvent<T = ChecklistNames> {
+export interface CheckAllItemsEvent<Names = ChecklistNames, Category = ChecklistCategory> {
   /** The event type. */
   readonly type: 'check_all_items';
   /** The name of the checklist. */
-  readonly checklistName: T;
+  readonly checklistName: Names;
+  /** The category of the checklist. */
+  readonly checklistCategory: Category;
 }
 
 /** Next checklist in category event. */
-export interface NextChecklistInCategory<T = ChecklistNames, U = ChecklistCategory> {
+export interface NextChecklistInCategory<Names = ChecklistNames, Category = ChecklistCategory> {
   /** The event type. */
   readonly type: 'next_checklist';
   /** The name of the current checklist. */
-  readonly checklistName: T;
+  readonly checklistName: Names;
   /** The category of the current checklist. */
-  readonly category: U;
+  readonly checklistCategory: Category;
   /** The index of the target pane. */
-  readonly targetPaneIndex: ControllableDisplayPaneIndex | -1;
+  readonly targetPaneIndex: ControllableDisplayPaneIndex;
 }
 
 /** Checklist interaction event. */
@@ -74,17 +82,17 @@ export enum ChecklistInteractionEventAction {
 }
 
 /** Checklist event. */
-export type ChecklistEvent<T, U> =
-  ActiveChecklistChangedEvent<T>
-  | ChecklistResetEvent<T>
+export type ChecklistEvent<Names, Category> =
+  ActiveChecklistChangedEvent<Names, Category>
+  | ChecklistResetEvent<Names, Category>
   | AllChecklistsResetEvent
-  | ChecklistItemChangedEvent<T>
-  | CheckAllItemsEvent<T>
-  | NextChecklistInCategory<T, U>
+  | ChecklistItemChangedEvent<Names, Category>
+  | CheckAllItemsEvent<Names, Category>
+  | NextChecklistInCategory<Names, Category>
   | ChecklistInteractionEvent;
 
 /** Interface of the checklist events. */
-export interface ChecklistEvents<T = ChecklistNames, U = ChecklistCategory> {
+export interface ChecklistEvents<Names = ChecklistNames, Category = ChecklistCategory> {
   /** Checklist event. */
-  readonly checklist_event: ChecklistEvent<T, U>;
+  readonly checklist_event: ChecklistEvent<Names, Category>;
 }

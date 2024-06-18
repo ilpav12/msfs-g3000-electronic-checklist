@@ -115,7 +115,15 @@ export class NormalChecklists {
           { type: ChecklistItemType.Challenge, content: '9. Fuel on board', response: 'Check' },
           { type: ChecklistItemType.Challenge, content: '10. Residual ITT', response: 'Check' },
           { type: ChecklistItemType.PlainText, content: 'If residual ITT > 150°C:' },
-          { type: ChecklistItemType.Link, content: '11. Refer to Motoring procedure', linkTarget: NormalChecklistNames.Motoring, justification: Justification.Indent1 },
+          {
+            type: ChecklistItemType.Link,
+            content: '11. Refer to Motoring procedure',
+            linkTarget: {
+              checklistName: NormalChecklistNames.Motoring,
+              checklistCategory: TbmChecklistCategory.Normal,
+            },
+            justification: Justification.Indent1
+          },
           { type: ChecklistItemType.Challenge, content: '12. VOLTS:\nBATT> 24.5 V /\nGPU ~ 28 V', response: 'Check' },
           { type: ChecklistItemType.Challenge, content: '13. CAS', response: 'Check' },
         ],
@@ -140,7 +148,7 @@ export class NormalChecklists {
         NormalChecklistNames.EngineStart,
         TbmChecklistCategory.Normal,
         [
-          { type: ChecklistItemType.Caution, content: 'CAUTION: After aborted engine starts, wait:\n1 min / 5 min / 30 min before 2nd / 3rd / 4th new engine start.' },
+          { type: ChecklistItemType.Caution, content: 'CAUTION: After aborted engine starts, wait: 1 min / 5 min / 30 min before 2nd / 3rd / 4th new engine start.' },
           { type: ChecklistItemType.Challenge, content: '1. IGNITION', response: 'AUTO' },
           { type: ChecklistItemType.Challenge, content: '2. AUX BP', response: 'ON' },
           { type: ChecklistItemType.Challenge, content: '3. AUX BOOST\nPMP ON', response: 'Check ON' },
@@ -251,7 +259,7 @@ export class NormalChecklists {
             type: ChecklistItemType.Challenge,
             content: '5. Rotation airspeed',
             response: null,
-            imagePath: ChecklistFilePaths.ASSETS_PATH + '/rotation-airspeed.png'
+            imagePath: ChecklistFilePaths.ASSETS_PATH + '/rotation-airspeed.png',
           },
           { type: ChecklistItemType.Challenge, content: '6. Attitude', response: '10° Up' },
           { type: ChecklistItemType.PlainText, content: 'When vertical speed is positive:' },
@@ -273,7 +281,7 @@ export class NormalChecklists {
             type: ChecklistItemType.Challenge,
             content: '5. Rotation airspeed',
             response: null,
-            imagePath: ChecklistFilePaths.ASSETS_PATH + '/rotation-airspeed.png'
+            imagePath: ChecklistFilePaths.ASSETS_PATH + '/rotation-airspeed.png',
           },
           { type: ChecklistItemType.PlainText, content: 'Weight < 6579 lbs (2984 kg):' },
           { type: ChecklistItemType.Challenge, content: '6. Attitude', response: '15° Up' },
@@ -429,6 +437,7 @@ export class NormalChecklists {
           { type: ChecklistItemType.Note, content: 'NOTE: Be careful of exhaust stubs temperature before installing covers.' },
           { type: ChecklistItemType.Note, content: 'NOTE: 15 to 20 minutes after the engine shutdown, check engine oil level.' },
         ],
+        true,
       ),
     ];
   }

@@ -1,5 +1,5 @@
 import {Subject} from "@microsoft/msfs-sdk";
-import {ChecklistNames} from "@base/Shared";
+import {ChecklistCategory, ChecklistNames} from "@base/Shared";
 
 /** The possible checklist item types */
 export enum ChecklistItemType {
@@ -38,8 +38,13 @@ export enum ChecklistItemInteractionType {
   Link,
 }
 
+export type LinkTarget<Names, Category> = {
+  checklistName: Names;
+  checklistCategory: Category;
+};
+
 /** A checklist item */
-export class ChecklistItem {
+export class ChecklistItem<Names = ChecklistNames, Category = ChecklistCategory> {
   public readonly state = Subject.create(this.type === ChecklistItemType.Challenge || this.type === ChecklistItemType.BranchItem ? ChecklistItemState.Incomplete : ChecklistItemState.NotApplicable);
   public height = 1;
 
@@ -59,7 +64,7 @@ export class ChecklistItem {
     public readonly type: ChecklistItemType,
     public readonly content: string,
     public readonly response: string | undefined | null = undefined,
-    public readonly linkTarget: ChecklistNames | undefined = undefined,
+    public readonly linkTarget: LinkTarget<Names, Category> | undefined = undefined,
     public readonly blanksBelow: number = 0,
     public readonly justification: Justification | undefined,
     public readonly imagePath: string | undefined = undefined,
@@ -149,6 +154,8 @@ export class ChecklistItem {
         this.interactionType = ChecklistItemInteractionType.ScrollStop;
         break;
     }
+
+    this.setHeight(this.content, this.response, this.blanksBelow, this.imagePath);
   }
 
   /**
@@ -160,12 +167,16 @@ export class ChecklistItem {
    */
   public setHeight(content: string, response: string | undefined | null, blanksBelow: number | undefined = 0, imagePath: string | undefined): void {
     let height: number;
-    const contentLines = content.split('\n').length;
+    let contentLines = content.split('\n').length;
+    // if the content is height is not defined by '\n', approximate the number of lines based on the length of the content
+    if (contentLines === 1) {
+      contentLines = Math.ceil(content.length / 45);
+    }
     const responseLines = response ? response.split('\n').length : 0;
     height = Math.max(contentLines, responseLines);
     height += blanksBelow;
     if (imagePath) {
-      height += 4;
+      height += 5;
     }
 
     this.height = height;
@@ -185,7 +196,7 @@ export interface ChecklistChallengeItemData {
    * The response to the challenge (optional)
    * Add \n to create a new line.
    */
-  response?: string | null;
+  response: string | null;
   /**
    * The number of blank lines to add below the item (optional, defaults to 0, max 10)
    */
@@ -316,7 +327,7 @@ export interface ChecklistPlainTextItemData {
 }
 
 /** An interface describing a Checklist Link Item */
-export interface ChecklistLinkItemData<T = ChecklistNames> {
+export interface ChecklistLinkItemData<Names = ChecklistNames, Category = ChecklistCategory> {
   /** The type of checklist item */
   type: ChecklistItemType.Link
   /**
@@ -327,7 +338,7 @@ export interface ChecklistLinkItemData<T = ChecklistNames> {
   /**
    * The target checklist to link to.
    */
-  linkTarget: T;
+  linkTarget: LinkTarget<Names, Category>;
   /**
    * The number of blank lines to add below the item (optional, defaults to 0, max 10)
    */
@@ -358,7 +369,7 @@ export interface ChecklistBranchItemData {
 }
 
 /** An interface describing a Checklist Branch Item */
-export interface ChecklistBranchItemData<T = ChecklistNames> {
+export interface ChecklistBranchItemData<Names = ChecklistNames, Category = ChecklistCategory> {
   /** The type of checklist item */
   type: ChecklistItemType.Branch
   /**
@@ -369,17 +380,17 @@ export interface ChecklistBranchItemData<T = ChecklistNames> {
   /**
    * The target sub-checklist to link to.
    */
-  linkTarget: T;
+  linkTarget: LinkTarget<Names, Category>;
 }
 
 /** An interface describing an checklist item */
-export type ChecklistItemData<T = ChecklistNames> =
+export type ChecklistItemData<Names = ChecklistNames, Category = ChecklistCategory> =
   (ChecklistChallengeItemData |
     ChecklistWarningItemData |
     ChecklistCautionItemData |
     ChecklistNoteItemData |
     ChecklistSubtitleItemData |
     ChecklistPlainTextItemData |
-    ChecklistLinkItemData<T> |
-    ChecklistBranchItemData<T>) &
+    ChecklistLinkItemData<Names, Category> |
+    ChecklistBranchItemData<Names, Category>) &
   { interactionType?: ChecklistItemInteractionType };

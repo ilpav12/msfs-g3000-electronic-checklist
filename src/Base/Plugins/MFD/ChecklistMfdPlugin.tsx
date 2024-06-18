@@ -3,8 +3,8 @@ import {DisplayPaneViewFactory} from "@microsoft/msfs-wtg3000-common";
 import {AbstractG3000MfdPlugin} from "@microsoft/msfs-wtg3000-mfd";
 import {ChecklistPane, ChecklistPaneKeys} from "@base/Shared/Panes";
 import {
-  BaseChecklistRepository,
-  Checklist, ChecklistCategory,
+  Checklist,
+  ChecklistCategory,
   ChecklistNames,
   ChecklistReadonly,
   ChecklistRepository
@@ -17,7 +17,7 @@ const itemsShowcaseChecklists = ItemsShowcaseChecklists.getChecklists();
 export class ChecklistMfdPlugin extends AbstractG3000MfdPlugin {
   private readonly checklists: Checklist[] = [...itemsShowcaseChecklists];
   private readonly defaultChecklist: Checklist = itemsShowcaseChecklists[0];
-  private readonly checklistRepository: BaseChecklistRepository<ChecklistNames, ChecklistReadonly, Checklist, ChecklistCategory> = new ChecklistRepository(
+  private readonly checklistRepository: ChecklistRepository = new ChecklistRepository(
     this.binder.bus,
     this.checklists,
     this.defaultChecklist

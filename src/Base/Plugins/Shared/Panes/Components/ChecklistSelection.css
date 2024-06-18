@@ -1,0 +1,15 @@
+.checklist-category, .checklist-title {
+    position: relative;
+}
+
+.checklist-title {
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+.checklist-category span,
+.checklist-title span {
+    color: var(--checklist-color-cyan);
+    padding-left: 1px;
+    padding-right: 1px;
+}

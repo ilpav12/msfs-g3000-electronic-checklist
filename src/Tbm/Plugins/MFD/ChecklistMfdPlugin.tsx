@@ -3,13 +3,17 @@ import {DisplayPaneViewFactory} from "@microsoft/msfs-wtg3000-common";
 import {AbstractG3000MfdPlugin} from "@microsoft/msfs-wtg3000-mfd";
 import {ChecklistFilePaths, ChecklistPane, ChecklistPaneKeys} from "@base/Shared";
 import {TbmChecklistRepository} from "../Shared/ChecklistSystem/TbmChecklistRepository";
-import {NormalChecklists} from "../Shared/ChecklistSystem/Checklists";
+import {AmplifiedChecklists, NormalChecklists} from "../Shared/ChecklistSystem/Checklists";
 
 const normalChecklist = NormalChecklists.getChecklists();
+const amplifiedChecklist = AmplifiedChecklists.getChecklists();
 
 export class ChecklistMfdPlugin extends AbstractG3000MfdPlugin {
-  private readonly checklists = [...normalChecklist];
-  private readonly defaultChecklist = normalChecklist[0];
+  private readonly checklists = [
+    ...amplifiedChecklist,
+    ...normalChecklist,
+  ];
+  private readonly defaultChecklist = normalChecklist[1];
   private readonly checklistRepository = new TbmChecklistRepository(
     this.binder.bus,
     this.checklists,
