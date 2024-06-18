@@ -2,33 +2,33 @@
   "content": [
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistGtcPlugins.css",
-      "size": 7494,
-      "date": 133622468685746492
+      "size": 8168,
+      "date": 133629424364950697
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistGtcPlugins.js",
-      "size": 101313,
-      "date": 133622468685746492
+      "size": 125138,
+      "date": 133629424364940675
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistMfdPlugins.css",
-      "size": 5907,
-      "date": 133622468683496328
+      "size": 6581,
+      "date": 133629424362153369
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistMfdPlugins.js",
-      "size": 88877,
-      "date": 133622468683496328
+      "size": 137071,
+      "date": 133629424362153369
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistPfdPlugins.css",
-      "size": 5907,
-      "date": 133622468681577111
+      "size": 6581,
+      "date": 133629424359411866
     },
     {
       "path": "html_ui/ChecklistPlugins/TbmChecklistPfdPlugins.js",
-      "size": 88877,
-      "date": 133622468681577111
+      "size": 137071,
+      "date": 133629424359411866
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/icon_small_checklist.png",
@@ -38,12 +38,27 @@
     {
       "path": "html_ui/ChecklistPlugins/Assets/max-engine-values.png",
       "size": 64009,
-      "date": 133622459468743038
+      "date": 133625769994680575
+    },
+    {
+      "path": "html_ui/ChecklistPlugins/Assets/oxygen-duration.png",
+      "size": 75926,
+      "date": 133630117605889660
+    },
+    {
+      "path": "html_ui/ChecklistPlugins/Assets/preflight-inspection-locations.png",
+      "size": 63243,
+      "date": 133630060164890994
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/rotation-airspeed.png",
       "size": 147924,
-      "date": 133622455558786720
+      "date": 133625769994710577
+    },
+    {
+      "path": "html_ui/ChecklistPlugins/Assets/usable-oxygen.png",
+      "size": 116001,
+      "date": 133630108964830145
     },
     {
       "path": "SimObjects/Airplanes/Asobo_TBM930/model/TBM930_SplitScreen_Templates.xml",

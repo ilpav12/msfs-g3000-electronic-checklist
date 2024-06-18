@@ -43,6 +43,10 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
       for (let i = 0; i < this.props.items.length; i++) {
         this.selectionItemListRef.instance.getChild(i)?.setDisabled(!isOpen);
       }
+
+      if (isOpen) {
+        this.selectionItemListRef.instance.scroll('forward');
+      }
     });
 
     this.props.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle((event) => {
@@ -51,7 +55,8 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
           case ChecklistInteractionEventAction.Interact:
             if (this.props.type === 'category') {
               const newChecklist = this.props.repo.getChecklistsByCategory(this.props.items.get(this.selectionItemListRef.instance.getSelectedIndex()) as Category)[0];
-              this.props.bus.getPublisher<ChecklistEvents<Names, Category>>().pub('checklist_event',
+              this.props.bus.getPublisher<ChecklistEvents<Names, Category>>()
+                .pub('checklist_event',
                 {
                   type: 'active_checklist_changed',
                   newActiveChecklistName: newChecklist.name,
@@ -60,7 +65,8 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
                 }, true);
             } else {
               const currentActiveChecklist = this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).get();
-              this.props.bus.getPublisher<ChecklistEvents<Names, Category>>().pub('checklist_event',
+              this.props.bus.getPublisher<ChecklistEvents<Names, Category>>()
+                .pub('checklist_event',
                 {
                   type: 'active_checklist_changed',
                   newActiveChecklistName: this.props.items.get(this.selectionItemListRef.instance.getSelectedIndex()) as Names,
@@ -114,7 +120,7 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
   public render(): VNode {
     return (
       <ChecklistControlList
-        class="checklist-selection-list"
+        class="checklist-popup-selection-list"
         ref={this.selectionItemListRef}
         data={this.props.items as ArraySubject<Names | Category>}
         renderItem={this.renderSelectionItem.bind(this)}

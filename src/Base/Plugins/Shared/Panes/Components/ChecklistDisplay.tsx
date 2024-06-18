@@ -70,7 +70,7 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
     this.props.checklist.sub(checklist => {
       this.items.set([...checklist.items]);
       this.previousIndex = 0;
-      this.checklistItemListRef.instance.focus(FocusPosition.MostRecent);
+      this.checklistItemListRef.instance.focus(FocusPosition.First);
     }, true);
 
     this.ensureIndexInView = this.checklistItemListRef.instance.ensureIndexInView.bind(this.checklistItemListRef.instance);
@@ -124,7 +124,6 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
           }
           return this.toggleItemCompletedStatus(this.items.get(this.previousIndex));
         case ChecklistInteractionEventAction.ScrollUp:
-          console.log('ChecklistDisplay: ScrollUp')
           this.scroll('backward');
           return true;
         case ChecklistInteractionEventAction.ScrollDown:
@@ -270,11 +269,12 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
         }
       }
     } else {
-      offsetIndex = index + 8;
+      const selectedHeight = this.props.checklist.get().items[index].height;
+      offsetIndex = index + 8 - (selectedHeight - 1);
       let totalHeight = 0;
-      for (let i = 1; i <= Math.min(8, this.items.length - index - 1); i++) {
+      for (let i = 1; i <= Math.min(8 - (selectedHeight - 1), this.items.length - index - 1); i++) {
         totalHeight += this.props.checklist.get().items[index + i].height;
-        if (totalHeight >= 8) {
+        if (totalHeight >= 8 - (selectedHeight - 1)) {
           offsetIndex = index + i;
           break;
         }

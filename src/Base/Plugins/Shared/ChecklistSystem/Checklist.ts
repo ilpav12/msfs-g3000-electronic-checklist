@@ -66,7 +66,7 @@ export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
     public readonly isSubChecklist = false,
   ) {
     this.items = itemData.map(data => {
-      const item = new ChecklistItem(
+      return new ChecklistItem(
         data.type,
         data.content,
         data.type === ChecklistItemType.Challenge ? data.response : undefined,
@@ -86,13 +86,6 @@ export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
             undefined,
           )}) : undefined,
       );
-      item.setHeight(
-        data.content,
-        data.type === ChecklistItemType.Challenge ? data.response : undefined,
-        data.blanksBelow,
-        "imagePath" in data ? data.imagePath : undefined
-      );
-      return item;
     });
 
     this.items.forEach((v, i) => {

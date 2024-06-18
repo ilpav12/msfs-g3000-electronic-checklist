@@ -72,7 +72,7 @@ while i < len(lines):
                 content += f"WARNING: {lines[i].strip()}"
                 first = False
             else:
-                content += f"\\n{lines[i].strip()}"
+                content += f" {lines[i].strip()}"
             i += 1
 
         checklist_items.append(ChecklistItem(item_type, content))
@@ -89,7 +89,7 @@ while i < len(lines):
                 content += f"CAUTION: {lines[i].strip()}"
                 first = False
             else:
-                content += f"\\n{lines[i].strip()}"
+                content += f" {lines[i].strip()}"
             i += 1
 
         checklist_items.append(ChecklistItem(item_type, content))
@@ -106,7 +106,7 @@ while i < len(lines):
                 content += f"NOTE: {lines[i].strip()}"
                 first = False
             else:
-                content += f"\\n{lines[i].strip()}"
+                content += f" {lines[i].strip()}"
             i += 1
 
         checklist_items.append(ChecklistItem(item_type, content))
@@ -137,6 +137,8 @@ while i < len(lines):
             last_space = 0
             line_len = 0
             for k in range(len(content[j])):
+                if content[j][k] == '\\':
+                    line_len = -1
                 line_len += 1
                 if content[j][k] == ' ':
                     last_space = k

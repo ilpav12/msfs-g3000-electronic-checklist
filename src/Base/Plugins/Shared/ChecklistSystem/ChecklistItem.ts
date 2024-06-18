@@ -154,6 +154,8 @@ export class ChecklistItem<Names = ChecklistNames, Category = ChecklistCategory>
         this.interactionType = ChecklistItemInteractionType.ScrollStop;
         break;
     }
+
+    this.setHeight(this.content, this.response, this.blanksBelow, this.imagePath);
   }
 
   /**
@@ -165,12 +167,16 @@ export class ChecklistItem<Names = ChecklistNames, Category = ChecklistCategory>
    */
   public setHeight(content: string, response: string | undefined | null, blanksBelow: number | undefined = 0, imagePath: string | undefined): void {
     let height: number;
-    const contentLines = content.split('\n').length;
+    let contentLines = content.split('\n').length;
+    // if the content is height is not defined by '\n', approximate the number of lines based on the length of the content
+    if (contentLines === 1) {
+      contentLines = Math.ceil(content.length / 45);
+    }
     const responseLines = response ? response.split('\n').length : 0;
     height = Math.max(contentLines, responseLines);
     height += blanksBelow;
     if (imagePath) {
-      height += 4;
+      height += 5;
     }
 
     this.height = height;
@@ -190,7 +196,7 @@ export interface ChecklistChallengeItemData {
    * The response to the challenge (optional)
    * Add \n to create a new line.
    */
-  response?: string | null;
+  response: string | null;
   /**
    * The number of blank lines to add below the item (optional, defaults to 0, max 10)
    */

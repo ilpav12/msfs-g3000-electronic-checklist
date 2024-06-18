@@ -148,7 +148,7 @@ export class NormalChecklists {
         NormalChecklistNames.EngineStart,
         TbmChecklistCategory.Normal,
         [
-          { type: ChecklistItemType.Caution, content: 'CAUTION: After aborted engine starts, wait:\n1 min / 5 min / 30 min before 2nd / 3rd / 4th new engine start.' },
+          { type: ChecklistItemType.Caution, content: 'CAUTION: After aborted engine starts, wait: 1 min / 5 min / 30 min before 2nd / 3rd / 4th new engine start.' },
           { type: ChecklistItemType.Challenge, content: '1. IGNITION', response: 'AUTO' },
           { type: ChecklistItemType.Challenge, content: '2. AUX BP', response: 'ON' },
           { type: ChecklistItemType.Challenge, content: '3. AUX BOOST\nPMP ON', response: 'Check ON' },
@@ -259,7 +259,7 @@ export class NormalChecklists {
             type: ChecklistItemType.Challenge,
             content: '5. Rotation airspeed',
             response: null,
-            imagePath: ChecklistFilePaths.ASSETS_PATH + '/rotation-airspeed.png'
+            imagePath: ChecklistFilePaths.ASSETS_PATH + '/rotation-airspeed.png',
           },
           { type: ChecklistItemType.Challenge, content: '6. Attitude', response: '10° Up' },
           { type: ChecklistItemType.PlainText, content: 'When vertical speed is positive:' },
@@ -281,7 +281,7 @@ export class NormalChecklists {
             type: ChecklistItemType.Challenge,
             content: '5. Rotation airspeed',
             response: null,
-            imagePath: ChecklistFilePaths.ASSETS_PATH + '/rotation-airspeed.png'
+            imagePath: ChecklistFilePaths.ASSETS_PATH + '/rotation-airspeed.png',
           },
           { type: ChecklistItemType.PlainText, content: 'Weight < 6579 lbs (2984 kg):' },
           { type: ChecklistItemType.Challenge, content: '6. Attitude', response: '15° Up' },

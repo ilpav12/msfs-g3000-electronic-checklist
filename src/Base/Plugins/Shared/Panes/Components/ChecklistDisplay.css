@@ -1,4 +1,4 @@
-.ui-control-list-content {
+.checklist-display-list > div {
     height: calc(var(--checklist-container-height) - 40px);
     overflow: hidden;
     margin-right: 10px;
