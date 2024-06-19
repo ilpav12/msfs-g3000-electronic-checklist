@@ -6,7 +6,7 @@ Checklist functionalities.
 ## Pilots
 
 Download the current version on the 
-[releases page](https://github.com/ilpav/msfs-g3000-electronic-checklist/releases/latest). Unzip the file and copy the
+[releases page](https://github.com/ilpav12/msfs-g3000-electronic-checklist/releases/latest). Unzip the file and copy the
 content to the `Community` folder of your MSFS installation.
 
 Documentation for the Daher TBM 930 Garmin G3000:
