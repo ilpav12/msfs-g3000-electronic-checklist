@@ -40,6 +40,7 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
     super.onAfterRender(thisNode);
 
     this.props.isOpen.sub((isOpen) => {
+      console.log('isOpen', isOpen);
       for (let i = 0; i < this.props.items.length; i++) {
         this.selectionItemListRef.instance.getChild(i)?.setDisabled(!isOpen);
       }

@@ -1,0 +1,54 @@
+{
+  "content": [
+    {
+      "path": "html_ui/ChecklistPlugins/LongitudeChecklistGtcPlugins.css",
+      "size": 8223,
+      "date": 133632230040375342
+    },
+    {
+      "path": "html_ui/ChecklistPlugins/LongitudeChecklistGtcPlugins.js",
+      "size": 156391,
+      "date": 133632230040385354
+    },
+    {
+      "path": "html_ui/ChecklistPlugins/LongitudeChecklistMfdPlugins.css",
+      "size": 6636,
+      "date": 133632230037076859
+    },
+    {
+      "path": "html_ui/ChecklistPlugins/LongitudeChecklistMfdPlugins.js",
+      "size": 168358,
+      "date": 133632230037066784
+    },
+    {
+      "path": "html_ui/ChecklistPlugins/LongitudeChecklistPfdPlugins.css",
+      "size": 6636,
+      "date": 133632230034209145
+    },
+    {
+      "path": "html_ui/ChecklistPlugins/LongitudeChecklistPfdPlugins.js",
+      "size": 168358,
+      "date": 133632230034209145
+    },
+    {
+      "path": "html_ui/ChecklistPlugins/Assets/icon_small_checklist.png",
+      "size": 5069,
+      "date": 133616457584298254
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_Longitude/model/CessnaLongitude_SplitScreen_Templates.xml",
+      "size": 504,
+      "date": 133463770870862305
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_Longitude/panel/panel.cfg",
+      "size": 1989,
+      "date": 133463770870872300
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_Longitude/panel/PANEL.XML",
+      "size": 13417,
+      "date": 133632222415165206
+    }
+  ]
+}

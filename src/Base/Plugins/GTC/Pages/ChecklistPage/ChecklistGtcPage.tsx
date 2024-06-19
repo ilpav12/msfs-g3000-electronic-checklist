@@ -55,6 +55,8 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
   private readonly activeChecklist = Subject.create(this.props.checklistRepository.getActiveChecklistByPaneIndex(this.gtcService.selectedDisplayPane.get() as ControllableDisplayPaneIndex).get());
   private readonly tabbedContainerRef = FSComponent.createRef<TabbedContainer>();
 
+  private readonly listItemHeight = this.props.gtcService.orientation === 'horizontal' ? 135 : 72;
+
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
@@ -161,7 +163,7 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
       <GtcList
         ref={listRef}
         bus={this.bus}
-        listItemHeightPx={135}
+        listItemHeightPx={this.listItemHeight}
         itemsPerPage={5}
         listItemSpacingPx={1}
         sidebarState={sidebarState}

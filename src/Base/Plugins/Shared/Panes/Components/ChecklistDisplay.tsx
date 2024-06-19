@@ -84,18 +84,6 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
         this.warnChecklistNotCompleted.set(false);
       }
     }, true);
-
-    this.isChecklistCategoryPopupOpen.sub((isOpen) => {
-      for (let i = 0; i < this.items.length; i++) {
-        this.checklistItemListRef.instance.getChild(i)?.setDisabled(isOpen);
-      }
-    });
-
-    this.isChecklistPopupOpen.sub((isOpen) => {
-      for (let i = 0; i < this.items.length; i++) {
-        this.checklistItemListRef.instance.getChild(i)?.setDisabled(isOpen);
-      }
-    });
   }
 
   /**
@@ -104,9 +92,9 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
    * @returns Whether the required action was successful.
    */
   private onChecklistInteraction(event: ChecklistEvent<any, any>): boolean {
-    if (this.isChecklistCategoryPopupOpen.get() || this.isChecklistPopupOpen.get()) {
-      return false;
-    }
+    // if (this.isChecklistCategoryPopupOpen.get() || this.isChecklistPopupOpen.get()) {
+    //   return false;
+    // }
 
     if (event.type === 'checklist_interaction' && event.targetPaneIndex === this.props.paneIndex) {
       switch (event.action) {

@@ -1,5 +1,5 @@
 .scroll-bar {
     position: absolute;
-    right: 6px;
+    right: -5px;
     width: 10px;
 }

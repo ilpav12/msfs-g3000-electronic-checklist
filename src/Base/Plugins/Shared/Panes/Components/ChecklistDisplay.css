@@ -1,7 +1,7 @@
 .checklist-display-list > div {
     height: calc(var(--checklist-container-height) - 40px);
     overflow: hidden;
-    margin-right: 10px;
+    margin-right: 12px;
 }
 
 .checklist-display-container .checklist-completed-label,

@@ -1,0 +1,15 @@
+<ModelBehaviors>
+  <Include RelativeFile="CessnaLongitude_Templates.xml"/>
+
+  <Template Name="WT_Longitude_SplitScreen_Displays_Template">
+    <UseTemplate Name="WT_Longitude_Displays_Template">
+      <SPLIT_SCREENS>True</SPLIT_SCREENS>
+    </UseTemplate>
+  </Template>
+
+  <Template Name="WT_Longitude_SplitScreen_Course_Knobs_Template">
+    <UseTemplate Name="WT_Longitude_Course_Knobs_Template">
+      <SPLIT_SCREENS>True</SPLIT_SCREENS>
+    </UseTemplate>
+  </Template>
+</ModelBehaviors>

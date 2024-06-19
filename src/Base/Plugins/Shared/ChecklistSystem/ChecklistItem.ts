@@ -137,22 +137,24 @@ export class ChecklistItem<Names = ChecklistNames, Category = ChecklistCategory>
     }
 
     // assign default interaction type
-    switch (type) {
-      case ChecklistItemType.Challenge:
-        this.interactionType = ChecklistItemInteractionType.Checkbox;
-        break;
-      case ChecklistItemType.Warning || ChecklistItemType.Caution || ChecklistItemType.Note || ChecklistItemType.PlainText || ChecklistItemType.Branch:
-        this.interactionType = ChecklistItemInteractionType.ScrollStop;
-        break;
-      case ChecklistItemType.Subtitle:
-        this.interactionType = ChecklistItemInteractionType.NoScrollStop;
-        break;
-      case ChecklistItemType.Link || ChecklistItemType.BranchItem:
-        this.interactionType = ChecklistItemInteractionType.Link;
-        break;
-      default:
-        this.interactionType = ChecklistItemInteractionType.ScrollStop;
-        break;
+    if (interactionType === undefined) {
+      switch (type) {
+        case ChecklistItemType.Challenge:
+          this.interactionType = ChecklistItemInteractionType.Checkbox;
+          break;
+        case ChecklistItemType.Warning || ChecklistItemType.Caution || ChecklistItemType.Note || ChecklistItemType.PlainText || ChecklistItemType.Branch:
+          this.interactionType = ChecklistItemInteractionType.ScrollStop;
+          break;
+        case ChecklistItemType.Subtitle:
+          this.interactionType = ChecklistItemInteractionType.NoScrollStop;
+          break;
+        case ChecklistItemType.Link || ChecklistItemType.BranchItem:
+          this.interactionType = ChecklistItemInteractionType.Link;
+          break;
+        default:
+          this.interactionType = ChecklistItemInteractionType.ScrollStop;
+          break;
+      }
     }
 
     this.setHeight(this.content, this.response, this.blanksBelow, this.imagePath);

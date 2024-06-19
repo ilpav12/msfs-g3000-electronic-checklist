@@ -5,7 +5,7 @@ import path from "node:path";
 
 const aircraft = [
   'Tbm',
-  // 'Longitude',
+  'Longitude',
 ];
 
 let config = [];
