@@ -27,10 +27,6 @@ import {ChecklistControlList, ChecklistUiControl, FmsUiControlEvents} from "@bas
 import {ChecklistItemDisplay} from "@base/Shared/Panes/Components/ChecklistItemDisplay";
 import {NextChecklistControl} from "@base/Shared/Panes/Components/ChecklistNextButton";
 import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
-import {
-  ChecklistCategorySelectionControl,
-  ChecklistSelectionControl
-} from "@base/Shared/Panes/Components/ChecklistSelectionUiControl";
 
 import './ChecklistDisplay.css';
 
@@ -92,10 +88,6 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
    * @returns Whether the required action was successful.
    */
   private onChecklistInteraction(event: ChecklistEvent<any, any>): boolean {
-    // if (this.isChecklistCategoryPopupOpen.get() || this.isChecklistPopupOpen.get()) {
-    //   return false;
-    // }
-
     if (event.type === 'checklist_interaction' && event.targetPaneIndex === this.props.paneIndex) {
       switch (event.action) {
         case ChecklistInteractionEventAction.Interact:
@@ -278,20 +270,12 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
     return (
       <div class="checklist-page-container">
         <div class="checklist-selection-container">
-          <ChecklistCategorySelectionControl
-            bus={this.props.bus}
-            paneIndex={this.props.paneIndex}
-            repo={this.props.repo}
-            focusedItemType={this.props.focusedItemType}
-            isPopupOpen={this.isChecklistCategoryPopupOpen}
-          />
-          <ChecklistSelectionControl
-            bus={this.props.bus}
-            paneIndex={this.props.paneIndex}
-            repo={this.props.repo}
-            focusedItemType={this.props.focusedItemType}
-            isPopupOpen={this.isChecklistPopupOpen}
-          />
+          <div class="checklist-category">
+            <span>{this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).map(v => v.category)}</span>
+          </div>
+          <div class="checklist-title">
+            <span>{this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).map(v => v.name)}</span>
+          </div>
         </div>
         <div class="checklist-container">
           <div class="checklist-display-container">
