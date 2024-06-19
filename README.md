@@ -13,6 +13,12 @@ Documentation for the Daher TBM 930 Garmin G3000:
 - [Pilot's Guide](https://static.garmin.com/pumac/190-02046-02_a.pdf)
 - [Cockpit Reference Guide](https://static.garmin.com/pumac/190-02047-02_a.pdf)
 
+In the TBM 930 Normal and Amplified Procedures are available. The source of the procedures is the official [pilot's
+information manual](https://www.tbm.aero/medias_front/documents/154203PIM-TBM-930-FromSN1227.pdf) from Daher.
+
+In the Longitude Normal and Abbreviated Procedures are available. The source of the procedures is the official Garmin 
+Checklist [GCL file](https://ww2.txtav.com/TechnicalPublications/Downloads/MFDCheckLists?Brand=Cessna).
+
 ## Contributors
 
 Feel free to open issues or send pull requests.
