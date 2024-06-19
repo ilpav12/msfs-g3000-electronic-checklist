@@ -24,10 +24,9 @@ jobs:
         run: npm run build
       - name: Create zips
         run: |
-          for dir in dist/*; do
-            zip -r "${dir}.zip" "$dir"
-          done
+          Get-ChildItem "dist" | 
+          ForEach-Object { Compress-Archive -path "dist/$($_.Name)" -destinationPath "$($_.Name).zip"}
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/*.zip
+          files: ./*.zip
