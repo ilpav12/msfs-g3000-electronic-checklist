@@ -1,0 +1,110 @@
+import {FSComponent, registerPlugin} from "@microsoft/msfs-sdk";
+import {
+  AbstractG3000GtcPlugin,
+  GtcService,
+  GtcViewKeys,
+  GtcViewLifecyclePolicy
+} from "@microsoft/msfs-wtg3000-gtc";
+import {ChecklistFilePaths} from "@base/Shared";
+import {
+  ChecklistGtcMfdHomePage,
+  ChecklistGtcPage,
+  ChecklistGtcPlugin,
+  ChecklistGtcViewKeys
+} from "@base/GTC";
+import {LongitudeChecklistCategory, TbmChecklistCategory} from "../Shared/ChecklistSystem/Checklist";
+import {
+  LongitudeAbbrevChecklists,
+  LongitudeNormalChecklists,
+  TbmAmplifiedChecklists,
+  TbmNormalChecklists
+} from "../Shared/ChecklistSystem/Checklists";
+import {LongitudeChecklistRepository, TbmChecklistRepository} from "../Shared/ChecklistSystem/ChecklistRepository";
+import {AircraftModel} from "../Shared/Common/AircraftModel";
+
+const aircraftType = SimVar.GetSimVarValue("ATC MODEL", "string");
+const isAircraftSupported = Object.values(AircraftModel).includes(aircraftType);
+
+export class LongitudeChecklistGtcPlugin extends ChecklistGtcPlugin {
+  /** @inheritdoc */
+  public registerGtcViews(gtcService: GtcService) {
+    if (!isAircraftSupported) {
+      return;
+    }
+
+    gtcService.registerView(GtcViewLifecyclePolicy.Static, GtcViewKeys.MfdHome, 'MFD', function (service, mode, index) {
+      return (
+        <ChecklistGtcMfdHomePage
+          gtcService={service}
+          controlMode={mode}
+          displayPaneIndex={index}
+          supportPerfPage={aircraftType === AircraftModel.Longitude}
+        />
+      );
+    });
+
+    gtcService.registerView(GtcViewLifecyclePolicy.Persistent, ChecklistGtcViewKeys.Checklist, 'MFD', function (service, mode, index) {
+      if (aircraftType === AircraftModel.Longitude) {
+        return (
+          <ChecklistGtcPage
+            gtcService={service}
+            controlMode={mode}
+            displayPaneIndex={index}
+            checklistCategories={[
+              LongitudeChecklistCategory.Normal,
+              LongitudeChecklistCategory.Abbrev,
+            ]}
+            checklistRepository={
+              new LongitudeChecklistRepository(
+                service.bus,
+                [
+                  ...LongitudeNormalChecklists.getChecklists(),
+                  ...LongitudeAbbrevChecklists.getChecklists(),
+                ],
+                LongitudeNormalChecklists.getChecklists()[0],
+              )
+            }
+          />
+        );
+      } else if (aircraftType === AircraftModel.Tbm) {
+        return (
+          <ChecklistGtcPage
+            gtcService={service}
+            controlMode={mode}
+            displayPaneIndex={index}
+            checklistCategories={[
+              TbmChecklistCategory.Normal,
+              TbmChecklistCategory.Amplified,
+            ]}
+            checklistRepository={
+              new TbmChecklistRepository(
+                service.bus,
+                [
+                  ...TbmNormalChecklists.getChecklists(),
+                  ...TbmAmplifiedChecklists.getChecklists(),
+                ],
+                TbmNormalChecklists.getChecklists()[0],
+              )
+            }
+          />
+        );
+      }
+    });
+  }
+}
+
+console.log('isAircraftSupported', isAircraftSupported);
+if (isAircraftSupported) {
+  registerPlugin(LongitudeChecklistGtcPlugin);
+}
+
+export class ChecklistGtcCssPlugin extends AbstractG3000GtcPlugin {
+  /** @inheritdoc */
+  onInstalled() {
+    this.loadCss(`${ChecklistFilePaths.PLUGINS_PATH}/ChecklistGtcPlugins.css`);
+  }
+}
+
+if (isAircraftSupported) {
+  registerPlugin(ChecklistGtcCssPlugin);
+}

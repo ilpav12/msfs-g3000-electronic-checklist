@@ -30,6 +30,10 @@ utilizes their Avionics Frameworks.
 In order to build the project, install the dependencies with `npm install` and run `npm run build` to generate the
 plugin files in the `dist` folder. Then symlink or copy the files to the `Community` folder of your MSFS installation.
 
+Inside `src/Global/Plugins/Shared/ChecklistSystem/Checklists` there is a useful python script to convert either PDF
+guides pasted in a text file or a json file directly export from the CheckSet software into the format used by the
+plugin.
+
 ## License
 
 This project is licensed under MIT License.

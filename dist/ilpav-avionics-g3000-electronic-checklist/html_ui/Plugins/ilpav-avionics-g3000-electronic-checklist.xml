@@ -1,0 +1,11 @@
+<Plugins>
+  <Plugin target="WTG3000_GTC">
+    coui://html_ui/ChecklistPlugins/ChecklistGtcPlugins.js
+  </Plugin>
+  <Plugin target="WTG3000_MFD">
+    coui://html_ui/ChecklistPlugins/ChecklistMfdPlugins.js
+  </Plugin>
+  <Plugin target="WTG3000_PFD">
+    coui://html_ui/ChecklistPlugins/ChecklistPfdPlugins.js
+  </Plugin>
+</Plugins>

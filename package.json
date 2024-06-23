@@ -1,15 +1,14 @@
 {
-  "name": "tbm-checklist",
-  "version": "1.0.0",
-  "description": "",
+  "name": "msfs-g3000-electronic-checklist",
+  "version": "0.2.0",
+  "description": "A WorkingTitle G3000 Plugin adding Electronic Checklist functionalities",
   "scripts": {
     "build": "npm run build:compile && npm run build:rollup",
     "build:compile": "npx tsc",
     "build:rollup": "robocopy src *.css build /s & npx rollup -c rollup.config.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "ilpav12",
+  "license": "MIT",
   "devDependencies": {
     "@microsoft/msfs-garminsdk": "^0.6.0-beta3",
     "@microsoft/msfs-sdk": "^0.8.0-beta3",
@@ -25,6 +24,6 @@
     "rollup": "^2.79.1",
     "rollup-plugin-import-css": "^3.5.0",
     "tslib": "^2.6.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.2"
   }
 }
