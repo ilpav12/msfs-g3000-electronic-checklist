@@ -9,7 +9,7 @@ import {ChecklistFilePaths} from "@base/Shared";
 import {
   ChecklistGtcMfdHomePage,
   ChecklistGtcPage,
-  ChecklistGtcPlugin,
+  BaseChecklistGtcPlugin,
   ChecklistGtcViewKeys
 } from "@base/GTC";
 import {LongitudeChecklistCategory, TbmChecklistCategory} from "../Shared/ChecklistSystem/Checklist";
@@ -25,7 +25,7 @@ import {AircraftModel} from "../Shared/Common/AircraftModel";
 const aircraftType = SimVar.GetSimVarValue("ATC MODEL", "string");
 const isAircraftSupported = Object.values(AircraftModel).includes(aircraftType);
 
-export class LongitudeChecklistGtcPlugin extends ChecklistGtcPlugin {
+export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
   /** @inheritdoc */
   public registerGtcViews(gtcService: GtcService) {
     if (!isAircraftSupported) {
@@ -93,9 +93,8 @@ export class LongitudeChecklistGtcPlugin extends ChecklistGtcPlugin {
   }
 }
 
-console.log('isAircraftSupported', isAircraftSupported);
 if (isAircraftSupported) {
-  registerPlugin(LongitudeChecklistGtcPlugin);
+  registerPlugin(ChecklistGtcPlugin);
 }
 
 export class ChecklistGtcCssPlugin extends AbstractG3000GtcPlugin {

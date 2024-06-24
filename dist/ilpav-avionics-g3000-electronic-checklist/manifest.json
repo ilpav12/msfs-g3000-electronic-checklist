@@ -17,7 +17,7 @@
   "title": "G3000 Integrated Checklist Plugin v0.0.1",
   "manufacturer": "Garmin",
   "creator": "ilpav",
-  "package_version": "0.2.0",
+  "package_version": "0.2.1",
   "minimum_game_version": "1.29.21",
   "release_notes": {
     "neutral": {
@@ -25,5 +25,5 @@
       "OlderHistory": ""
     }
   },
-  "total_package_size": "00000000000001578173"
+  "total_package_size": "00000000000001572585"
 }

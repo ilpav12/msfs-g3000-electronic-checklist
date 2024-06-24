@@ -1,50 +1,14 @@
-import {FSComponent, MappedSubject, registerPlugin} from "@microsoft/msfs-sdk";
+import {MappedSubject} from "@microsoft/msfs-sdk";
 import {
   AbstractG3000GtcPlugin,
   GtcInteractionEvent,
   GtcKnobStatePluginOverrides,
-  GtcService,
-  GtcViewKeys,
-  GtcViewLifecyclePolicy,
   LabelBarPluginHandlers
 } from "@microsoft/msfs-wtg3000-gtc";
-import {ChecklistGtcMfdHomePage, ChecklistGtcPage, ChecklistGtcViewKeys} from "@base/GTC/Pages";
+import {ChecklistGtcViewKeys} from "@base/GTC/Pages";
 import {ChecklistEvents, ChecklistInteractionEventAction} from "@base/Shared/ChecklistSystem/ChecklistEvents";
-import {ChecklistCategory, ChecklistFilePaths, ChecklistRepository} from "@base/Shared";
-import {ItemsShowcaseChecklistNames, ItemsShowcaseChecklists} from "@base/Shared/ChecklistSystem/Checklists";
 
-export class ChecklistGtcPlugin extends AbstractG3000GtcPlugin {
-  /** @inheritdoc */
-  public registerGtcViews(gtcService: GtcService) {
-    gtcService.registerView(GtcViewLifecyclePolicy.Static, GtcViewKeys.MfdHome, 'MFD', function (service, mode, index) {
-      return (
-        <ChecklistGtcMfdHomePage
-          gtcService={service}
-          controlMode={mode}
-          displayPaneIndex={index}
-          supportPerfPage={false}
-        />
-      );
-    });
-    gtcService.registerView(GtcViewLifecyclePolicy.Persistent, ChecklistGtcViewKeys.Checklist, 'MFD', function (service, mode, index) {
-      const itemsShowcaseChecklists = ItemsShowcaseChecklists.getChecklists();
-      const checklistRepository = new ChecklistRepository(
-        service.bus,
-        [...itemsShowcaseChecklists],
-        itemsShowcaseChecklists[0],
-      );
-      return (
-        <ChecklistGtcPage
-          gtcService={service}
-          controlMode={mode}
-          displayPaneIndex={index}
-          checklistCategories={Object.values(ChecklistCategory)}
-          checklistRepository={checklistRepository}
-        />
-      );
-    });
-  }
-
+export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
   private readonly isChecklistPaneViewActive = MappedSubject.create(
     ([selectedPaneIndex, viewKey]) => {
       return selectedPaneIndex !== -1 && viewKey === ChecklistGtcViewKeys.Checklist;
@@ -112,14 +76,3 @@ export class ChecklistGtcPlugin extends AbstractG3000GtcPlugin {
     }
   }
 }
-
-registerPlugin(ChecklistGtcPlugin);
-
-export class ChecklistGtcCssPlugin extends AbstractG3000GtcPlugin {
-  /** @inheritdoc */
-  onInstalled() {
-    this.loadCss(`${ChecklistFilePaths.PLUGINS_PATH}/ChecklistGtcPlugins.css`);
-  }
-}
-
-registerPlugin(ChecklistGtcCssPlugin);

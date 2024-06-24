@@ -1,6 +1,6 @@
 {
   "name": "msfs-g3000-electronic-checklist",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A WorkingTitle G3000 Plugin adding Electronic Checklist functionalities",
   "scripts": {
     "build": "npm run build:compile && npm run build:rollup",
