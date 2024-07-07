@@ -1,61 +1,61 @@
 .gtc-horizontal .checklist-options-popup {
-    --checklist-font-size-large: 29px;
+  --checklist-font-size-large: 29px;
 
-    --checklist-popup-top: 35px;
-    --checklist-popup-right: 50px;
-    --checklist-popup-width: 390px;
-    --checklist-popup-height: 720px;
+  --checklist-popup-top: 35px;
+  --checklist-popup-right: 50px;
+  --checklist-popup-width: 390px;
+  --checklist-popup-height: 720px;
 
-    --checklist-popup-title-margin-bottom: 20px;
+  --checklist-popup-title-margin-bottom: 20px;
 
-    --checklist-popup-button-margin-width: 280px;
-    --checklist-popup-button-margin-bottom: 25px;
+  --checklist-popup-button-margin-width: 280px;
+  --checklist-popup-button-margin-bottom: 25px;
 }
 
 .gtc-vertical .checklist-options-popup {
-    --checklist-font-size-large: 16px;
+  --checklist-font-size-large: 16px;
 
-    --checklist-popup-top: 20px;
-    --checklist-popup-right: 5px;
-    --checklist-popup-width: 175px;
-    --checklist-popup-height: 390px;
+  --checklist-popup-top: 20px;
+  --checklist-popup-right: 5px;
+  --checklist-popup-width: 175px;
+  --checklist-popup-height: 390px;
 
-    --checklist-popup-title-margin-bottom: 10px;
+  --checklist-popup-title-margin-bottom: 10px;
 
-    --checklist-popup-button-margin-width: 150px;
-    --checklist-popup-button-margin-bottom: 12px;
+  --checklist-popup-button-margin-width: 150px;
+  --checklist-popup-button-margin-bottom: 12px;
 }
 
 .checklist-options-popup {
-    position: absolute;
-    background: var(--gtc-black-background-gradient);
-    border: var(--gtc-black-background-border);
-    border-radius: var(--gtc-popup-border-radius);
-    color: var(--g3000-color-white);
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: stretch;
-    top: var(--checklist-popup-top);
-    right: var(--checklist-popup-right);
-    width: var(--checklist-popup-width);
-    height: var(--checklist-popup-height);
-    padding: 12px 7px 0 7px;
-    font-size: var(--checklist-font-size-large);
+  position: absolute;
+  background: var(--gtc-black-background-gradient);
+  border: var(--gtc-black-background-border);
+  border-radius: var(--gtc-popup-border-radius);
+  color: var(--g3000-color-white);
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: stretch;
+  top: var(--checklist-popup-top);
+  right: var(--checklist-popup-right);
+  width: var(--checklist-popup-width);
+  height: var(--checklist-popup-height);
+  padding: 12px 7px 0 7px;
+  font-size: var(--checklist-font-size-large);
 }
 
 .checklist-options-popup-title {
-    margin-bottom: var(--checklist-popup-title-margin-bottom);
-    text-align: center;
+  margin-bottom: var(--checklist-popup-title-margin-bottom);
+  text-align: center;
 }
 
 .checklist-options-popup-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .checklist-options-popup-button {
-    width: var(--checklist-popup-button-margin-width);
-    height: 150px;
-    margin-bottom: var(--checklist-popup-button-margin-bottom);
+  width: var(--checklist-popup-button-margin-width);
+  height: 150px;
+  margin-bottom: var(--checklist-popup-button-margin-bottom);
 }

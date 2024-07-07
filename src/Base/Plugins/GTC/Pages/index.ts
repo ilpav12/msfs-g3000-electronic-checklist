@@ -1,2 +1,2 @@
-export * from './MfdHomePage';
-export * from './ChecklistPage';
+export * from "./MfdHomePage";
+export * from "./ChecklistPage";

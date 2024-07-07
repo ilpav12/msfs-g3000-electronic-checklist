@@ -1,12 +1,17 @@
-import { ReadonlySubEvent, SubEvent, Subject, Subscribable } from '@microsoft/msfs-sdk';
-import { ChecklistItemChangedEvent } from '@base/Shared/ChecklistSystem/ChecklistEvents';
+import {
+  ReadonlySubEvent,
+  SubEvent,
+  Subject,
+  Subscribable,
+} from "@microsoft/msfs-sdk";
+import { ChecklistItemChangedEvent } from "@base/Shared/ChecklistSystem/ChecklistEvents";
 import {
   ChecklistItem,
   ChecklistItemData,
   ChecklistItemState,
-  ChecklistItemType
+  ChecklistItemType,
 } from "@base/Shared/ChecklistSystem/ChecklistItem";
-import {ItemsShowcaseChecklistNames} from "@base/Shared/ChecklistSystem/Checklists";
+import { ItemsShowcaseChecklistNames } from "@base/Shared/ChecklistSystem/Checklists";
 
 /** The possible item types to focus on the softkey menu  */
 export enum ChecklistPageFocusableItemType {
@@ -21,25 +26,29 @@ export enum ChecklistPageFocusableItemType {
 
 /** The possible  checklist categories, in the order they appear in the aircraft */
 export enum ChecklistCategory {
-  ItemsShowcase = 'Items Showcase',
+  ItemsShowcase = "Items Showcase",
 }
 
 /** The possible checklist names */
-export type ChecklistNames =
-  ItemsShowcaseChecklistNames;
+export type ChecklistNames = ItemsShowcaseChecklistNames;
 
 /** A checklist item that is readonly. */
 export type ChecklistItemReadonly = ChecklistItem & {
   /** Readonly state. */
   readonly state: Subscribable<ChecklistItemState>;
-}
+};
 
 /** Readonly checklist, with all items readonly. */
-export type ChecklistReadonly<Names = ChecklistNames, Category = ChecklistCategory> =
-  Pick<Checklist<Names, Category>, 'isComplete'| 'anyItemChanged' | 'name' | 'category' | 'isLastChecklist'> & {
+export type ChecklistReadonly<
+  Names = ChecklistNames,
+  Category = ChecklistCategory,
+> = Pick<
+  Checklist<Names, Category>,
+  "isComplete" | "anyItemChanged" | "name" | "category" | "isLastChecklist"
+> & {
   /** readonly items. */
   readonly items: readonly ChecklistItem[];
-}
+};
 
 /** Checklist */
 export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
@@ -47,8 +56,14 @@ export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
 
   private readonly _isComplete = Subject.create(false);
   public readonly isComplete = this._isComplete as Subscribable<boolean>;
-  private readonly _anyItemChanged = new SubEvent<this, Omit<ChecklistItemChangedEvent<Names, Category>, 'type' | 'mfdIndex'>>();
-  public readonly anyItemChanged = this._anyItemChanged as ReadonlySubEvent<this, Omit<ChecklistItemChangedEvent<Names>, 'type' | 'mfdIndex'>>;
+  private readonly _anyItemChanged = new SubEvent<
+    this,
+    Omit<ChecklistItemChangedEvent<Names, Category>, "type" | "mfdIndex">
+  >();
+  public readonly anyItemChanged = this._anyItemChanged as ReadonlySubEvent<
+    this,
+    Omit<ChecklistItemChangedEvent<Names>, "type" | "mfdIndex">
+  >;
 
   /**
    * Creates a new instance of a Checklist
@@ -65,7 +80,7 @@ export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
     public readonly isLastChecklist = false,
     public readonly isSubChecklist = false,
   ) {
-    this.items = itemData.map(data => {
+    this.items = itemData.map((data) => {
       return new ChecklistItem(
         data.type,
         data.content,
@@ -75,16 +90,19 @@ export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
         "justification" in data ? data.justification : undefined,
         "imagePath" in data ? data.imagePath : undefined,
         data.interactionType,
-        data.type === ChecklistItemType.Branch ? data.branchItems?.map(branchItemData => {
-          return new ChecklistItem(
-            branchItemData.type,
-            branchItemData.content,
-            undefined,
-             branchItemData.linkTarget,
-            undefined,
-            undefined,
-            undefined,
-          )}) : undefined,
+        data.type === ChecklistItemType.Branch
+          ? data.branchItems?.map((branchItemData) => {
+              return new ChecklistItem(
+                branchItemData.type,
+                branchItemData.content,
+                undefined,
+                branchItemData.linkTarget,
+                undefined,
+                undefined,
+                undefined,
+              );
+            })
+          : undefined,
       );
     });
 
@@ -93,18 +111,19 @@ export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
     });
   }
 
-  private readonly handleItemsStateChange = (itemIndex: number) => (itemState: ChecklistItemState): void => {
-    const everyItemIsCompleted = this.items.every((v) => {
-      return v.state.get() !== ChecklistItemState.Incomplete;
-    });
-    this._isComplete.set(everyItemIsCompleted);
+  private readonly handleItemsStateChange =
+    (itemIndex: number) =>
+    (itemState: ChecklistItemState): void => {
+      const everyItemIsCompleted = this.items.every((v) => {
+        return v.state.get() !== ChecklistItemState.Incomplete;
+      });
+      this._isComplete.set(everyItemIsCompleted);
 
-    this._anyItemChanged.notify(this, {
-      checklistName: this.name,
-      checklistCategory: this.category,
-      itemIndex,
-      itemState,
-    });
-  };
-
+      this._anyItemChanged.notify(this, {
+        checklistName: this.name,
+        checklistCategory: this.category,
+        itemIndex,
+        itemState,
+      });
+    };
 }

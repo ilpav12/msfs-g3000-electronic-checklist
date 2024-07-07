@@ -1,12 +1,18 @@
-import {EventBus, FSComponent, HardwareUiControl, Subscribable, VNode} from '@microsoft/msfs-sdk';
+import {
+  EventBus,
+  FSComponent,
+  HardwareUiControl,
+  Subscribable,
+  VNode,
+} from "@microsoft/msfs-sdk";
 import {
   FmsUiControlEvents,
   ChecklistUiControl,
-  ChecklistUiControlProps
+  ChecklistUiControlProps,
 } from "@base/Shared/UI/ChecklistUiControl";
 import {
   ChecklistInteractionEventAction,
-  ChecklistEvents
+  ChecklistEvents,
 } from "@base/Shared/ChecklistSystem/ChecklistEvents";
 
 /** Component props for the {@link NextChecklistControl} component */
@@ -24,7 +30,7 @@ export class NextChecklistControl extends ChecklistUiControl<NextChecklistContro
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
-    this.props.isLast.sub(isLast => {
+    this.props.isLast.sub((isLast) => {
       this.setDisabled(isLast);
     }, true);
   }
@@ -32,31 +38,33 @@ export class NextChecklistControl extends ChecklistUiControl<NextChecklistContro
   /** @inheritDoc */
   protected onFocused(source: HardwareUiControl<FmsUiControlEvents>): void {
     super.onFocused(source);
-    this.labelRef.instance.classList.add('highlight-select');
+    this.labelRef.instance.classList.add("highlight-select");
   }
 
   /** @inheritDoc */
   protected onBlurred(source: HardwareUiControl<FmsUiControlEvents>): void {
     super.onBlurred(source);
-    this.labelRef.instance.classList.remove('highlight-select');
+    this.labelRef.instance.classList.remove("highlight-select");
   }
 
   /** @inheritDoc */
   protected onDisabled(source: HardwareUiControl<FmsUiControlEvents>): void {
     super.onDisabled(source);
-    this.labelRef.instance.classList.add('disabled');
+    this.labelRef.instance.classList.add("disabled");
   }
 
   /** @inheritDoc */
   protected onEnabled(source: HardwareUiControl<FmsUiControlEvents>): void {
     super.onEnabled(source);
-    this.labelRef.instance.classList.remove('disabled');
+    this.labelRef.instance.classList.remove("disabled");
   }
 
   /** @inheritDoc */
   public render(): VNode {
-    return <div class="next-checklist-label" ref={this.labelRef}>
-      Go to Next Checklist?
-    </div>
+    return (
+      <div class="next-checklist-label" ref={this.labelRef}>
+        Go to Next Checklist?
+      </div>
+    );
   }
 }

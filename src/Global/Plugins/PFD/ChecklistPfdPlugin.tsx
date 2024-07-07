@@ -1,15 +1,22 @@
-import {FSComponent, registerPlugin} from "@microsoft/msfs-sdk";
-import {AbstractG3000PfdPlugin} from "@microsoft/msfs-wtg3000-pfd";
-import {ChecklistFilePaths, ChecklistPane, ChecklistPaneKeys} from "@base/Shared";
+import { FSComponent, registerPlugin } from "@microsoft/msfs-sdk";
+import { AbstractG3000PfdPlugin } from "@microsoft/msfs-wtg3000-pfd";
+import {
+  ChecklistFilePaths,
+  ChecklistPane,
+  ChecklistPaneKeys,
+} from "@base/Shared";
 import {
   LongitudeAbbrevChecklists,
   LongitudeNormalChecklists,
   TbmAmplifiedChecklists,
-  TbmNormalChecklists
+  TbmNormalChecklists,
 } from "../Shared/ChecklistSystem/Checklists";
-import {DisplayPaneViewFactory} from "@microsoft/msfs-wtg3000-common";
-import {LongitudeChecklistRepository, TbmChecklistRepository} from "../Shared/ChecklistSystem";
-import {AircraftModel} from "../Shared/Common/AircraftModel";
+import { DisplayPaneViewFactory } from "@microsoft/msfs-wtg3000-common";
+import {
+  LongitudeChecklistRepository,
+  TbmChecklistRepository,
+} from "../Shared/ChecklistSystem";
+import { AircraftModel } from "../Shared/Common/AircraftModel";
 
 const aircraftType = SimVar.GetSimVarValue("ATC MODEL", "string");
 const isAircraftSupported = Object.values(AircraftModel).includes(aircraftType);
@@ -38,8 +45,8 @@ export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
               )
             }
           />
-        )
-      })
+        );
+      });
     } else if (aircraftType === AircraftModel.Tbm) {
       viewFactory.registerView(ChecklistPaneKeys.Checklist, (index) => {
         return (
@@ -58,8 +65,8 @@ export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
               )
             }
           />
-        )
-      })
+        );
+      });
     }
   }
 }
@@ -71,7 +78,7 @@ if (isAircraftSupported) {
 export class ChecklistPfdCssPlugin extends AbstractG3000PfdPlugin {
   /** @inheritdoc */
   onInstalled() {
-    this.loadCss(`${ChecklistFilePaths.PLUGINS_PATH}/ChecklistMfdPlugins.css`);
+    this.loadCss(`${ChecklistFilePaths.PLUGINS_PATH}/ChecklistMfdPlugin.css`);
   }
 }
 

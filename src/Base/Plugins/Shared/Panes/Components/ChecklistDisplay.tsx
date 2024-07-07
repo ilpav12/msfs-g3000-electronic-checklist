@@ -8,7 +8,7 @@ import {
   Subject,
   Subscribable,
   UiControlPropEventHandlers,
-  VNode
+  VNode,
 } from "@microsoft/msfs-sdk";
 import {
   ChecklistEvent,
@@ -21,17 +21,23 @@ import {
   ChecklistItemType,
   ChecklistPageFocusableItemType,
   ChecklistReadonly,
-  ChecklistRepository
+  ChecklistRepository,
 } from "@base/Shared/ChecklistSystem";
-import {ChecklistControlList, ChecklistUiControl, FmsUiControlEvents} from "@base/Shared/UI/ChecklistUiControl";
-import {ChecklistItemDisplay} from "@base/Shared/Panes/Components/ChecklistItemDisplay";
-import {NextChecklistControl} from "@base/Shared/Panes/Components/ChecklistNextButton";
-import {ControllableDisplayPaneIndex} from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
+import {
+  ChecklistControlList,
+  ChecklistUiControl,
+  FmsUiControlEvents,
+} from "@base/Shared/UI/ChecklistUiControl";
+import { ChecklistItemDisplay } from "@base/Shared/Panes/Components/ChecklistItemDisplay";
+import { NextChecklistControl } from "@base/Shared/Panes/Components/ChecklistNextButton";
+import { ControllableDisplayPaneIndex } from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
 
-import './ChecklistDisplay.css';
+import "./ChecklistDisplay.css";
 
 /** Component props for the {@link ChecklistDisplay} component */
-export interface ChecklistDisplayProps<Names, Category> extends UiControlPropEventHandlers<FmsUiControlEvents>, HardwareUiControlProps {
+export interface ChecklistDisplayProps<Names, Category>
+  extends UiControlPropEventHandlers<FmsUiControlEvents>,
+    HardwareUiControlProps {
   /** The event bus */
   bus: EventBus;
   /** The checklist repository */
@@ -46,14 +52,19 @@ export interface ChecklistDisplayProps<Names, Category> extends UiControlPropEve
   paneIndex: ControllableDisplayPaneIndex;
 }
 
-export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<ChecklistDisplayProps<Names, Category>> {
+export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<
+  ChecklistDisplayProps<Names, Category>
+> {
   private readonly scrollContainer = FSComponent.createRef<HTMLDivElement>();
-  protected readonly checklistItemListRef = FSComponent.createRef<ChecklistControlList<ChecklistItemReadonly>>();
+  protected readonly checklistItemListRef =
+    FSComponent.createRef<ChecklistControlList<ChecklistItemReadonly>>();
 
   private items = ArraySubject.create<ChecklistItemReadonly>([]);
 
   private previousIndex = 0;
-  private ensureIndexInView: ((index: number, pinDirection: 'none' | 'top' | 'bottom') => void) | undefined;
+  private ensureIndexInView:
+    | ((index: number, pinDirection: "none" | "top" | "bottom") => void)
+    | undefined;
 
   private readonly warnChecklistNotCompleted = Subject.create<boolean>(false);
 
@@ -63,19 +74,26 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
   public onAfterRender(node: VNode) {
     super.onAfterRender(node);
 
-    this.props.checklist.sub(checklist => {
+    this.props.checklist.sub((checklist) => {
       this.items.set([...checklist.items]);
       this.previousIndex = 0;
       this.checklistItemListRef.instance.focus(FocusPosition.First);
     }, true);
 
-    this.ensureIndexInView = this.checklistItemListRef.instance.ensureIndexInView.bind(this.checklistItemListRef.instance);
-    this.checklistItemListRef.instance.ensureIndexInView = this.replaceEnsureIndexInView.bind(this);
+    this.ensureIndexInView =
+      this.checklistItemListRef.instance.ensureIndexInView.bind(
+        this.checklistItemListRef.instance,
+      );
+    this.checklistItemListRef.instance.ensureIndexInView =
+      this.replaceEnsureIndexInView.bind(this);
 
-    this.props.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle(this.onChecklistInteraction.bind(this));
+    this.props.bus
+      .getSubscriber<ChecklistEvents>()
+      .on("checklist_event")
+      .handle(this.onChecklistInteraction.bind(this));
 
     // Needed to handle the case where the last item is a challenge
-    this.props.isChecklistCompleted.sub(isComplete => {
+    this.props.isChecklistCompleted.sub((isComplete) => {
       if (isComplete) {
         this.warnChecklistNotCompleted.set(false);
       }
@@ -88,41 +106,64 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
    * @returns Whether the required action was successful.
    */
   private onChecklistInteraction(event: ChecklistEvent<any, any>): boolean {
-    if (event.type === 'checklist_interaction' && event.targetPaneIndex === this.props.paneIndex) {
+    if (
+      event.type === "checklist_interaction" &&
+      event.targetPaneIndex === this.props.paneIndex
+    ) {
       switch (event.action) {
         case ChecklistInteractionEventAction.Interact:
-          if (this.props.focusedItemType.get() === ChecklistPageFocusableItemType.ChecklistCategorySelectionList) {
+          if (
+            this.props.focusedItemType.get() ===
+            ChecklistPageFocusableItemType.ChecklistCategorySelectionList
+          ) {
             this.isChecklistCategoryPopupOpen.set(true);
             return true;
           }
-          if (this.props.focusedItemType.get() === ChecklistPageFocusableItemType.ChecklistSelectionList) {
+          if (
+            this.props.focusedItemType.get() ===
+            ChecklistPageFocusableItemType.ChecklistSelectionList
+          ) {
             this.isChecklistPopupOpen.set(true);
             return true;
           }
-          if (this.props.focusedItemType.get() === ChecklistPageFocusableItemType.NextChecklist) {
+          if (
+            this.props.focusedItemType.get() ===
+            ChecklistPageFocusableItemType.NextChecklist
+          ) {
             return this.goToNextChecklist();
           }
-          return this.toggleItemCompletedStatus(this.items.get(this.previousIndex));
+          return this.toggleItemCompletedStatus(
+            this.items.get(this.previousIndex),
+          );
         case ChecklistInteractionEventAction.ScrollUp:
-          this.scroll('backward');
+          this.scroll("backward");
           return true;
         case ChecklistInteractionEventAction.ScrollDown:
-          if (this.props.focusedItemType.get() === ChecklistPageFocusableItemType.NextChecklist) {
+          if (
+            this.props.focusedItemType.get() ===
+            ChecklistPageFocusableItemType.NextChecklist
+          ) {
             return false;
           }
-          this.scroll('forward');
+          this.scroll("forward");
           return true;
         default:
           return false;
       }
     }
 
-    if (event.type === 'check_all_items' && event.checklistName === this.props.checklist.get().name) {
+    if (
+      event.type === "check_all_items" &&
+      event.checklistName === this.props.checklist.get().name
+    ) {
       this.checklistItemListRef.instance.focus(FocusPosition.Last);
-      return this.scroll('forward'); // Scroll once more for "Go to next checklist"
+      return this.scroll("forward"); // Scroll once more for "Go to next checklist"
     }
 
-    if (event.type === 'checklist_reset' && event.checklistName === this.props.checklist.get().name) {
+    if (
+      event.type === "checklist_reset" &&
+      event.checklistName === this.props.checklist.get().name
+    ) {
       return this.checklistItemListRef.instance.focus(FocusPosition.First);
     }
 
@@ -140,33 +181,49 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
       const itemIndex = checklist.items.indexOf(item);
       // Scroll forward if we're completing the item, don't scroll if we're resetting the item to incomplete
       if (item.state.get() === ChecklistItemState.Incomplete) {
-        this.scroll('forward');
+        this.scroll("forward");
       }
       if (itemIndex >= 0) {
-        this.props.bus.getPublisher<ChecklistEvents<Names, Category>>()
-          .pub('checklist_event', {
-            type: 'item_changed',
+        this.props.bus.getPublisher<ChecklistEvents<Names, Category>>().pub(
+          "checklist_event",
+          {
+            type: "item_changed",
             checklistName: checklist.name,
             checklistCategory: checklist.category,
             itemIndex: itemIndex,
-            itemState: item.state.get() === ChecklistItemState.Completed ? ChecklistItemState.Incomplete : ChecklistItemState.Completed,
-          }, true);
+            itemState:
+              item.state.get() === ChecklistItemState.Completed
+                ? ChecklistItemState.Incomplete
+                : ChecklistItemState.Completed,
+          },
+          true,
+        );
         return true;
       }
-    } else if (item && this.props.focusedItemType.get() === ChecklistPageFocusableItemType.Link) {
+    } else if (
+      item &&
+      this.props.focusedItemType.get() === ChecklistPageFocusableItemType.Link
+    ) {
       if (item.linkTarget) {
-        this.props.bus.getPublisher<ChecklistEvents<Names, Category>>()
-          .pub('checklist_event', {
-            type: 'active_checklist_changed',
+        this.props.bus.getPublisher<ChecklistEvents<Names, Category>>().pub(
+          "checklist_event",
+          {
+            type: "active_checklist_changed",
             newActiveChecklistName: item.linkTarget.checklistName as Names,
-            newActiveChecklistCategory: item.linkTarget.checklistCategory as Category,
+            newActiveChecklistCategory: item.linkTarget
+              .checklistCategory as Category,
             targetPaneIndex: this.props.paneIndex,
-          }, true);
+          },
+          true,
+        );
         return true;
       }
       return false;
-    } else if (item && this.props.focusedItemType.get() === ChecklistPageFocusableItemType.Text) {
-      this.scroll('forward');
+    } else if (
+      item &&
+      this.props.focusedItemType.get() === ChecklistPageFocusableItemType.Text
+    ) {
+      this.scroll("forward");
       return true;
     }
     return false;
@@ -177,13 +234,18 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
    * @param item The item to set to incomplete.
    */
   private setItemIncomplete(item: ChecklistItemReadonly): void {
-    if (item && item.type === ChecklistItemType.Challenge && item.state.get() === ChecklistItemState.Completed) {
+    if (
+      item &&
+      item.type === ChecklistItemType.Challenge &&
+      item.state.get() === ChecklistItemState.Completed
+    ) {
       const checklist = this.props.checklist.get();
       const itemIndex = checklist.items.indexOf(item);
       if (itemIndex >= 0) {
-        this.props.bus.getPublisher<ChecklistEvents<Names, Category>>()
-          .pub('checklist_event', {
-            type: 'item_changed',
+        this.props.bus
+          .getPublisher<ChecklistEvents<Names, Category>>()
+          .pub("checklist_event", {
+            type: "item_changed",
             checklistName: checklist.name,
             checklistCategory: checklist.category,
             itemIndex: itemIndex,
@@ -198,9 +260,10 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
    * @returns Whether the required action was successful.
    */
   private goToNextChecklist(): boolean {
-    this.props.bus.getPublisher<ChecklistEvents<Names, Category>>()
-      .pub('checklist_event', {
-        type: 'next_checklist',
+    this.props.bus
+      .getPublisher<ChecklistEvents<Names, Category>>()
+      .pub("checklist_event", {
+        type: "next_checklist",
         checklistName: this.props.checklist.get().name,
         checklistCategory: this.props.checklist.get().category,
         targetPaneIndex: this.props.paneIndex,
@@ -218,7 +281,11 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
       <ChecklistItemDisplay
         bus={this.props.bus}
         item={item}
-        onRegistered={(control): void => control.setDisabled(item.interactionType === ChecklistItemInteractionType.NoScrollStop)}
+        onRegistered={(control): void =>
+          control.setDisabled(
+            item.interactionType === ChecklistItemInteractionType.NoScrollStop,
+          )
+        }
         toggleItemCompleted={this.toggleItemCompletedStatus.bind(this)}
         setItemIncomplete={this.setItemIncomplete.bind(this)}
         focusedItemType={this.props.focusedItemType}
@@ -231,7 +298,10 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
    * @param index The index to ensure is in view.
    * @param pinDirection The direction to pin the item to.
    */
-  public replaceEnsureIndexInView(index: number, pinDirection: 'none' | 'top' | 'bottom' = 'none'): void {
+  public replaceEnsureIndexInView(
+    index: number,
+    pinDirection: "none" | "top" | "bottom" = "none",
+  ): void {
     let offsetIndex;
     // if the new index is equal to the previous index,
     // we shouldn't offset the scroll as we aren't actively scrolling
@@ -252,7 +322,11 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
       const selectedHeight = this.props.checklist.get().items[index].height;
       offsetIndex = index + 8 - (selectedHeight - 1);
       let totalHeight = 0;
-      for (let i = 1; i <= Math.min(8 - (selectedHeight - 1), this.items.length - index - 1); i++) {
+      for (
+        let i = 1;
+        i <= Math.min(8 - (selectedHeight - 1), this.items.length - index - 1);
+        i++
+      ) {
         totalHeight += this.props.checklist.get().items[index + i].height;
         if (totalHeight >= 8 - (selectedHeight - 1)) {
           offsetIndex = index + i;
@@ -271,10 +345,18 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
       <div class="checklist-page-container">
         <div class="checklist-selection-container">
           <div class="checklist-category">
-            <span>{this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).map(v => v.category)}</span>
+            <span>
+              {this.props.repo
+                .getActiveChecklistByPaneIndex(this.props.paneIndex)
+                .map((v) => v.category)}
+            </span>
           </div>
           <div class="checklist-title">
-            <span>{this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).map(v => v.name)}</span>
+            <span>
+              {this.props.repo
+                .getActiveChecklistByPaneIndex(this.props.paneIndex)
+                .map((v) => v.name)}
+            </span>
           </div>
         </div>
         <div class="checklist-container">
@@ -288,23 +370,29 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
                 hideScrollbar={false}
               />
             </div>
-            <div class={{
-              'checklist-completed-label': true,
-              'hidden': this.props.isChecklistCompleted.map(v => !v)
-            }}>
+            <div
+              class={{
+                "checklist-completed-label": true,
+                hidden: this.props.isChecklistCompleted.map((v) => !v),
+              }}
+            >
               * Checklist Finished *
             </div>
-            <div class={{
-              'checklist-not-completed-label': true,
-              'hidden': this.warnChecklistNotCompleted.map(v => !v)
-            }}>
+            <div
+              class={{
+                "checklist-not-completed-label": true,
+                hidden: this.warnChecklistNotCompleted.map((v) => !v),
+              }}
+            >
               * Checklist Not Finished *
             </div>
             <NextChecklistControl
               bus={this.props.bus}
-              isLast={this.props.checklist.map(v => v.isLastChecklist)}
+              isLast={this.props.checklist.map((v) => v.isLastChecklist)}
               onFocused={() => {
-                this.props.focusedItemType.set(ChecklistPageFocusableItemType.NextChecklist);
+                this.props.focusedItemType.set(
+                  ChecklistPageFocusableItemType.NextChecklist,
+                );
                 if (!this.props.isChecklistCompleted.get()) {
                   this.warnChecklistNotCompleted.set(true);
                 }

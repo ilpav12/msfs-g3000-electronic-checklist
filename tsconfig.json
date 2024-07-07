@@ -17,20 +17,11 @@
     "jsxFragmentFactory": "FSComponent.Fragment",
     "jsx": "react",
     "paths": {
-      "*": [
-        "/*"
-      ],
-      "@base/*": [
-        "./src/Base/Plugins/*"
-      ]
+      "*": ["/*"],
+      "@base/*": ["./src/Base/Plugins/*"]
     }
   },
-  "exclude": [
-    "../Gulpfile.ts",
-    "**/node_modules",
-    "**/build",
-    "**/dist"
-  ],
+  "exclude": ["../Gulpfile.ts", "**/node_modules", "**/build", "**/dist"],
   "ts-node": {
     "transpiler": "@sucrase/ts-node-plugin",
     "transpileOnly": true,

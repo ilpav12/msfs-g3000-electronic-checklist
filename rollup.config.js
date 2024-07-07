@@ -1,54 +1,53 @@
-import css from 'rollup-plugin-import-css';
-import resolve from '@rollup/plugin-node-resolve';
-import alias from "@rollup/plugin-alias";
-import path from "node:path";
+import css from "rollup-plugin-import-css";
+import esbuild from "rollup-plugin-esbuild";
+import typescriptPaths from "rollup-plugin-typescript-paths";
 import fs from "node:fs";
 
-function updateManifestVersion() {
-  return {
-    generateBundle(outputOptions, bundle) {
-      const manifestFile = JSON.parse(fs.readFileSync('dist/ilpav-avionics-g3000-electronic-checklist/manifest.json', 'utf8'));
-      const packageFile = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-      manifestFile.package_version = packageFile.version;
-      fs.writeFileSync('dist/ilpav-avionics-g3000-electronic-checklist/manifest.json', JSON.stringify(manifestFile, null, 2));
-    }
-  }
-}
+const distDir = "./dist/ilpav-avionics-g3000-electronic-checklist";
+
+const manifestFile = JSON.parse(
+  fs.readFileSync(distDir + "/manifest.json", "utf8"),
+);
+const packageFile = JSON.parse(fs.readFileSync("package.json", "utf8"));
+manifestFile.package_version = packageFile.version;
+fs.writeFileSync(
+  distDir + "/manifest.json",
+  JSON.stringify(manifestFile, null, 2),
+);
 
 let config = [];
 
-['Pfd', 'Mfd', 'Gtc'].map(i => {
+["Pfd", "Mfd", "Gtc"].map((i) => {
   config.push({
-    input: `build/Global/Plugins/${i.toUpperCase()}/index.js`,
+    input: `src/Global/Plugins/${i.toUpperCase()}/index.ts`,
     output: {
-      file: `dist/ilpav-avionics-g3000-electronic-checklist/html_ui/ChecklistPlugins/Checklist${i}Plugins.js`,
-      format: 'iife',
+      file: `${distDir}/html_ui/ChecklistPlugins/Checklist${i}Plugin.js`,
+      format: "iife",
       name: `Checklist${i}`,
       globals: {
-        '@microsoft/msfs-sdk': 'msfssdk',
-        '@microsoft/msfs-wtg3000-common': 'wtg3000common',
-        '@microsoft/msfs-wtg3000-pfd': 'wtg3000pfd',
-        '@microsoft/msfs-wtg3000-mfd': 'wtg3000mfd',
-        '@microsoft/msfs-wtg3000-gtc': 'wtg3000gtc',
-      }
+        "@microsoft/msfs-sdk": "msfssdk",
+        "@microsoft/msfs-wtg3000-common": "wtg3000common",
+        "@microsoft/msfs-wtg3000-pfd": "wtg3000pfd",
+        "@microsoft/msfs-wtg3000-mfd": "wtg3000mfd",
+        "@microsoft/msfs-wtg3000-gtc": "wtg3000gtc",
+      },
     },
     external: [
-      '@microsoft/msfs-sdk',
-      '@microsoft/msfs-wtg3000-common',
-      '@microsoft/msfs-wtg3000-pfd',
-      '@microsoft/msfs-wtg3000-mfd',
-      '@microsoft/msfs-wtg3000-gtc',
+      "@microsoft/msfs-sdk",
+      "@microsoft/msfs-wtg3000-common",
+      "@microsoft/msfs-wtg3000-pfd",
+      "@microsoft/msfs-wtg3000-mfd",
+      "@microsoft/msfs-wtg3000-gtc",
     ],
     plugins: [
-      alias({
-        entries: [
-          {find: '@base', replacement: path.join(__dirname, '\\build\\Base\\Plugins')},
-        ],
+      typescriptPaths({ preserveExtensions: true }),
+      esbuild({
+        target: "es2017",
+        jsxFactory: "FSComponent.buildComponent",
+        jsxFragment: "FSComponent.Fragment",
       }),
-      css({output: `Checklist${i}Plugins.css`}),
-      updateManifestVersion(),
-      resolve()
-    ]
+      css({ output: `Checklist${i}Plugin.css` }),
+    ],
   });
 });
 

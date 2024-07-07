@@ -3,72 +3,72 @@
     {
       "path": "ContentInfo/ilpav-avionics-g3000-electronic-checklist/Thumbnail.jpg",
       "size": 63584,
-      "date": 133636448370682301
+      "date": 133640628444184594
     },
     {
-      "path": "html_ui/ChecklistPlugins/ChecklistGtcPlugins.css",
+      "path": "html_ui/ChecklistPlugins/ChecklistGtcPlugin.css",
       "size": 10406,
-      "date": 133637395267570120
+      "date": 133648339486862442
     },
     {
-      "path": "html_ui/ChecklistPlugins/ChecklistGtcPlugins.js",
-      "size": 332355,
-      "date": 133637395267570120
+      "path": "html_ui/ChecklistPlugins/ChecklistGtcPlugin.js",
+      "size": 306285,
+      "date": 133648339486862442
     },
     {
-      "path": "html_ui/ChecklistPlugins/ChecklistMfdPlugins.css",
+      "path": "html_ui/ChecklistPlugins/ChecklistMfdPlugin.css",
       "size": 6637,
-      "date": 133637395260427309
+      "date": 133648339485086772
     },
     {
-      "path": "html_ui/ChecklistPlugins/ChecklistMfdPlugins.js",
-      "size": 338943,
-      "date": 133637395260427309
+      "path": "html_ui/ChecklistPlugins/ChecklistMfdPlugin.js",
+      "size": 310076,
+      "date": 133648339485096768
     },
     {
-      "path": "html_ui/ChecklistPlugins/ChecklistPfdPlugins.css",
+      "path": "html_ui/ChecklistPlugins/ChecklistPfdPlugin.css",
       "size": 6637,
-      "date": 133637395252749651
+      "date": 133648339483045311
     },
     {
-      "path": "html_ui/ChecklistPlugins/ChecklistPfdPlugins.js",
-      "size": 338943,
-      "date": 133637395252758711
+      "path": "html_ui/ChecklistPlugins/ChecklistPfdPlugin.js",
+      "size": 310076,
+      "date": 133648339483045311
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/icon_small_checklist.png",
       "size": 5069,
-      "date": 133636448351987126
+      "date": 133640628444194587
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/max-engine-values.png",
       "size": 64009,
-      "date": 133636448351997135
+      "date": 133640628444204590
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/oxygen-duration.png",
       "size": 75926,
-      "date": 133636448352017128
+      "date": 133640628444224573
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/preflight-inspection-locations.png",
       "size": 63243,
-      "date": 133636448352031010
+      "date": 133640628444229623
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/rotation-airspeed.png",
       "size": 147924,
-      "date": 133636448352061906
+      "date": 133640628444259753
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/usable-oxygen.png",
       "size": 116001,
-      "date": 133636448352081316
+      "date": 133640628444279764
     },
     {
       "path": "html_ui/Plugins/ilpav-avionics-g3000-electronic-checklist.xml",
-      "size": 339,
-      "date": 133636448370692908
+      "size": 336,
+      "date": 133648317094338035
     }
   ]
 }

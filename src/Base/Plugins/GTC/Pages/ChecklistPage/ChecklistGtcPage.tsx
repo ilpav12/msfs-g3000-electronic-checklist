@@ -1,5 +1,15 @@
-import {ArraySubject, FSComponent, NodeReference, Subject, Subscribable, VNode} from "@microsoft/msfs-sdk";
-import {ControllableDisplayPaneIndex, DynamicListData} from "@microsoft/msfs-wtg3000-common";
+import {
+  ArraySubject,
+  FSComponent,
+  NodeReference,
+  Subject,
+  Subscribable,
+  VNode,
+} from "@microsoft/msfs-sdk";
+import {
+  ControllableDisplayPaneIndex,
+  DynamicListData,
+} from "@microsoft/msfs-wtg3000-common";
 import {
   GtcControlMode,
   GtcList,
@@ -8,10 +18,11 @@ import {
   GtcTouchButton,
   GtcView,
   GtcViewLifecyclePolicy,
-  GtcViewProps, SidebarState,
+  GtcViewProps,
+  SidebarState,
   TabbedContainer,
   TabbedContent,
-  TabConfiguration
+  TabConfiguration,
 } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistGtcOptionsPopup } from "@base/GTC/Pages/ChecklistPage/ChecklistGtcOptionsPopup";
 import {
@@ -25,7 +36,7 @@ import "./ChecklistGtcPage.css";
  * GTC view keys for popups owned by checklist pages.
  */
 enum GtcChecklistPagePopupKeys {
-  Options = 'ChecklistOptions'
+  Options = "ChecklistOptions",
 }
 
 export interface ChecklistListItems<Names, Category> extends DynamicListData {
@@ -50,12 +61,22 @@ export interface ChecklistGtcPageProps<Names, Category> extends GtcViewProps {
 /**
  * The checklist GTC page.
  */
-export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageProps<Names, Category>> {
+export class ChecklistGtcPage<Names, Category> extends GtcView<
+  ChecklistGtcPageProps<Names, Category>
+> {
   private readonly optionsPopupKey = GtcChecklistPagePopupKeys.Options;
-  private readonly activeChecklist = Subject.create(this.props.checklistRepository.getActiveChecklistByPaneIndex(this.gtcService.selectedDisplayPane.get() as ControllableDisplayPaneIndex).get());
-  private readonly tabbedContainerRef = FSComponent.createRef<TabbedContainer>();
+  private readonly activeChecklist = Subject.create(
+    this.props.checklistRepository
+      .getActiveChecklistByPaneIndex(
+        this.gtcService.selectedDisplayPane.get() as ControllableDisplayPaneIndex,
+      )
+      .get(),
+  );
+  private readonly tabbedContainerRef =
+    FSComponent.createRef<TabbedContainer>();
 
-  private readonly listItemHeight = this.props.gtcService.orientation === 'horizontal' ? 135 : 72;
+  private readonly listItemHeight =
+    this.props.gtcService.orientation === "horizontal" ? 135 : 72;
 
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
@@ -66,22 +87,48 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
       this.optionsPopupKey,
       this.props.controlMode,
       this.renderOptionsPopup.bind(this),
-      this.props.displayPaneIndex
+      this.props.displayPaneIndex,
     );
 
-    this._title.set('Checklist');
+    this._title.set("Checklist");
 
     this.gtcService.selectedDisplayPane.sub((paneIndex) => {
-      this.activeChecklist.set(this.props.checklistRepository.getActiveChecklistByPaneIndex(paneIndex as ControllableDisplayPaneIndex).get());
-      this.tabbedContainerRef.instance.selectTab(this.props.checklistCategories.indexOf(this.activeChecklist.get().category) + 1);
+      this.activeChecklist.set(
+        this.props.checklistRepository
+          .getActiveChecklistByPaneIndex(
+            paneIndex as ControllableDisplayPaneIndex,
+          )
+          .get(),
+      );
+      this.tabbedContainerRef.instance.selectTab(
+        this.props.checklistCategories.indexOf(
+          this.activeChecklist.get().category,
+        ) + 1,
+      );
     });
 
-    this.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle((event) => {
-      if (event.type === 'active_checklist_changed' && event.targetPaneIndex === this.gtcService.selectedDisplayPane.get()) {
-        this.activeChecklist.set(this.props.checklistRepository.getActiveChecklistByPaneIndex(event.targetPaneIndex as ControllableDisplayPaneIndex).get());
-        this.tabbedContainerRef.instance.selectTab(this.props.checklistCategories.indexOf(this.activeChecklist.get().category) + 1);
-      }
-    });
+    this.bus
+      .getSubscriber<ChecklistEvents>()
+      .on("checklist_event")
+      .handle((event) => {
+        if (
+          event.type === "active_checklist_changed" &&
+          event.targetPaneIndex === this.gtcService.selectedDisplayPane.get()
+        ) {
+          this.activeChecklist.set(
+            this.props.checklistRepository
+              .getActiveChecklistByPaneIndex(
+                event.targetPaneIndex as ControllableDisplayPaneIndex,
+              )
+              .get(),
+          );
+          this.tabbedContainerRef.instance.selectTab(
+            this.props.checklistCategories.indexOf(
+              this.activeChecklist.get().category,
+            ) + 1,
+          );
+        }
+      });
   }
 
   /** @inheritdoc */
@@ -104,18 +151,19 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
    * @param category The tab label.
    * @returns A tab for this page's tab container, as a VNode.
    */
-  protected renderTab(
-    position: number,
-    category: Category,
-  ): VNode {
-    const listRef = FSComponent.createRef<GtcList<ChecklistListItems<Names, Category>>>();
+  protected renderTab(position: number, category: Category): VNode {
+    const listRef =
+      FSComponent.createRef<GtcList<ChecklistListItems<Names, Category>>>();
     const listItems = ArraySubject.create<ChecklistListItems<Names, Category>>(
-      this.props.checklistRepository.getChecklistsByCategory(category).map((checklist) => {
-        return {
-          checklistName: checklist.name,
-          checklistCategory: checklist.category,
-        };
-      }));
+      this.props.checklistRepository
+        .getChecklistsByCategory(category)
+        .map((checklist) => {
+          return {
+            checklistName: checklist.name,
+            checklistCategory: checklist.category,
+          };
+        }),
+    );
     const sidebarState = Subject.create<SidebarState | null>(null);
 
     return (
@@ -131,7 +179,7 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
           sidebarState.set(this._sidebarState);
         }}
       >
-        { this.renderList(listRef, listItems, sidebarState) }
+        {this.renderList(listRef, listItems, sidebarState)}
       </TabbedContent>
     );
   }
@@ -146,18 +194,34 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
   protected renderList(
     listRef: NodeReference<GtcList<ChecklistListItems<Names, Category>>>,
     listItems: ArraySubject<ChecklistListItems<Names, Category>>,
-    sidebarState: Subscribable<SidebarState | null>
+    sidebarState: Subscribable<SidebarState | null>,
   ): VNode {
-    this.bus.getSubscriber<ChecklistEvents>().on('checklist_event').handle((event) => {
-      if (event.type === 'active_checklist_changed' && event.targetPaneIndex === this.gtcService.selectedDisplayPane.get()) {
-        const newActiveChecklistListItem = listItems.getArray().find((listItem) => {
-          return listItem.checklistName === event.newActiveChecklistName && listItem.checklistCategory === event.newActiveChecklistCategory;
-        });
-        if (newActiveChecklistListItem) {
-          listRef.instance.scrollToItem(newActiveChecklistListItem, 4, true, true);
+    this.bus
+      .getSubscriber<ChecklistEvents>()
+      .on("checklist_event")
+      .handle((event) => {
+        if (
+          event.type === "active_checklist_changed" &&
+          event.targetPaneIndex === this.gtcService.selectedDisplayPane.get()
+        ) {
+          const newActiveChecklistListItem = listItems
+            .getArray()
+            .find((listItem) => {
+              return (
+                listItem.checklistName === event.newActiveChecklistName &&
+                listItem.checklistCategory === event.newActiveChecklistCategory
+              );
+            });
+          if (newActiveChecklistListItem) {
+            listRef.instance.scrollToItem(
+              newActiveChecklistListItem,
+              4,
+              true,
+              true,
+            );
+          }
         }
-      }
-    });
+      });
 
     return (
       <GtcList
@@ -167,7 +231,7 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
         itemsPerPage={5}
         listItemSpacingPx={1}
         sidebarState={sidebarState}
-        class='gtc-checklist-tab-list'
+        class="gtc-checklist-tab-list"
         data={listItems}
         renderItem={(listItem) => {
           return (
@@ -175,17 +239,25 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
               <GtcTouchButton
                 label={listItem.checklistName as string}
                 onPressed={() => {
-                  this.bus.getPublisher<ChecklistEvents<Names, Category>>()
-                    .pub('checklist_event', {
-                      type: 'active_checklist_changed',
+                  this.bus.getPublisher<ChecklistEvents<Names, Category>>().pub(
+                    "checklist_event",
+                    {
+                      type: "active_checklist_changed",
                       newActiveChecklistName: listItem.checklistName,
                       newActiveChecklistCategory: listItem.checklistCategory,
-                      targetPaneIndex: this.gtcService.selectedDisplayPane.get() as ControllableDisplayPaneIndex,
-                    }, true);
+                      targetPaneIndex:
+                        this.gtcService.selectedDisplayPane.get() as ControllableDisplayPaneIndex,
+                    },
+                    true,
+                  );
                 }}
-                isHighlighted={this.activeChecklist.map(checklist => checklist.name === listItem.checklistName && checklist.category === listItem.checklistCategory)}
+                isHighlighted={this.activeChecklist.map(
+                  (checklist) =>
+                    checklist.name === listItem.checklistName &&
+                    checklist.category === listItem.checklistCategory,
+                )}
                 isInList
-                class='gtc-checklist-list-button'
+                class="gtc-checklist-list-button"
               />
             </GtcListItem>
           );
@@ -201,20 +273,29 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
         <TabbedContainer
           ref={this.tabbedContainerRef}
           initiallySelectedTabPosition={this.props.initiallySelectedTabPosition}
-          configuration={this.props.tabbedContainerConfiguration ?? TabConfiguration.Left5}
+          configuration={
+            this.props.tabbedContainerConfiguration ?? TabConfiguration.Left5
+          }
         >
-          { this.props.checklistCategories.map((category, index) => {
+          {this.props.checklistCategories.map((category, index) => {
             return this.renderTab(index + 1, category);
           })}
         </TabbedContainer>
         <GtcTouchButton
-          label={'Checklist\nOptions'}
+          label={"Checklist\nOptions"}
           onPressed={() => {
-            if (this.props.gtcService.activeView.get().key !== this.optionsPopupKey) {
-              this.props.gtcService.openPopup(this.optionsPopupKey, 'slideout-right', 'darken');
+            if (
+              this.props.gtcService.activeView.get().key !==
+              this.optionsPopupKey
+            ) {
+              this.props.gtcService.openPopup(
+                this.optionsPopupKey,
+                "slideout-right",
+                "darken",
+              );
             }
           }}
-          class='gtc-checklist-options-button'
+          class="gtc-checklist-options-button"
         />
       </div>
     );
@@ -227,7 +308,11 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
    * @param displayPaneIndex The index of the display pane associated with the popup.
    * @returns This page's options popup, as a VNode.
    */
-  protected renderOptionsPopup(gtcService: GtcService, controlMode: GtcControlMode, displayPaneIndex?: ControllableDisplayPaneIndex): VNode {
+  protected renderOptionsPopup(
+    gtcService: GtcService,
+    controlMode: GtcControlMode,
+    displayPaneIndex?: ControllableDisplayPaneIndex,
+  ): VNode {
     return (
       <ChecklistGtcOptionsPopup
         gtcService={gtcService}

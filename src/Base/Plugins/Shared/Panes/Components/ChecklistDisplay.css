@@ -1,53 +1,53 @@
 .checklist-display-list > div {
-    height: calc(var(--checklist-container-height) - 40px);
-    overflow: hidden;
-    margin-right: 12px;
+  height: calc(var(--checklist-container-height) - 40px);
+  overflow: hidden;
+  margin-right: 12px;
 }
 
 .checklist-display-container .checklist-completed-label,
 .checklist-display-container .checklist-not-completed-label {
-    position: absolute;
-    bottom: 5px;
-    left: 12px;
-    color: var(--checklist-color-green);
-    padding: 2px;
-    font-size: 18px;
+  position: absolute;
+  bottom: 5px;
+  left: 12px;
+  color: var(--checklist-color-green);
+  padding: 2px;
+  font-size: 18px;
 }
 
 .checklist-display-container .checklist-not-completed-label {
-    color: var(--checklist-color-amber);
+  color: var(--checklist-color-amber);
 }
 
 .checklist-display-container .next-checklist-label {
-    position: absolute;
-    bottom: 5px;
-    right: 12px;
-    color: var(--checklist-color-cyan);
-    padding: 2px;
-    font-size: 18px;
+  position: absolute;
+  bottom: 5px;
+  right: 12px;
+  color: var(--checklist-color-cyan);
+  padding: 2px;
+  font-size: 18px;
 }
 
 .checklist-display-container .next-checklist-label.disabled {
-    color: rgb(128, 128, 128);
+  color: rgb(128, 128, 128);
 }
 
 .highlight-select {
-    animation: pulse 1s infinite;
+  animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
-    0% {
-        background-color: cyan;
-        color: black;
-    }
+  0% {
+    background-color: cyan;
+    color: black;
+  }
 
-    50% {
-        background-color: cyan;
-        color: black;
-    }
+  50% {
+    background-color: cyan;
+    color: black;
+  }
 
-    100% {
-        background-color: transparent;
-        color: cyan;
-    }
+  100% {
+    background-color: transparent;
+    color: cyan;
+  }
 }

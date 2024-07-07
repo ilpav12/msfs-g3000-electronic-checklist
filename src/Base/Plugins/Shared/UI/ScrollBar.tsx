@@ -1,6 +1,11 @@
-import { ComponentProps, DisplayComponent, FSComponent, VNode } from '@microsoft/msfs-sdk';
+import {
+  ComponentProps,
+  DisplayComponent,
+  FSComponent,
+  VNode,
+} from "@microsoft/msfs-sdk";
 
-import './Scrollbar.css';
+import "./Scrollbar.css";
 
 /**
  * The Scrollbar.
@@ -27,10 +32,14 @@ export class ScrollBar extends DisplayComponent<ComponentProps> {
    */
   public onAfterRender(): void {
     if (this.scrollBarContainerRef.instance !== null) {
-      this.scrollableContainer = this.scrollBarContainerRef.instance.previousElementSibling as HTMLElement;
+      this.scrollableContainer = this.scrollBarContainerRef.instance
+        .previousElementSibling as HTMLElement;
       if (this.scrollableContainer !== null) {
         // bind scroll event
-        this.scrollableContainer.addEventListener('scroll', this.scrollListener);
+        this.scrollableContainer.addEventListener(
+          "scroll",
+          this.scrollListener,
+        );
       }
 
       // HINT: ResizeObserver doesn't exist in Coherent. MutationObserver doesn't perform well.
@@ -39,7 +48,9 @@ export class ScrollBar extends DisplayComponent<ComponentProps> {
        * Checks if the scrollheight of the container has changed and calls adjust
        */
       const diffAndAdjust = (): void => {
-        if (this.currentScrollHeight !== this.scrollableContainer?.scrollHeight) {
+        if (
+          this.currentScrollHeight !== this.scrollableContainer?.scrollHeight
+        ) {
           this.adjustScrollbarDimensions();
         }
       };
@@ -60,18 +71,26 @@ export class ScrollBar extends DisplayComponent<ComponentProps> {
       this.currentScrollHeight = this.scrollableContainer.scrollHeight;
       const containerHeight = this.scrollableContainer.clientHeight;
 
-      const totalMarginAndPadding = (this.arrowPadding * 2) + (this.margin * 2);
+      const totalMarginAndPadding = this.arrowPadding * 2 + this.margin * 2;
       this.currentThumbAreaHeight = containerHeight - totalMarginAndPadding;
 
-      this.scrollHeightRatio = (this.currentScrollHeight / containerHeight);
+      this.scrollHeightRatio = this.currentScrollHeight / containerHeight;
       if (this.scrollThumbRef.instance !== null) {
-        this.scrollThumbRef.instance.style.height = `${this.currentThumbAreaHeight / this.scrollHeightRatio}`.toString();
+        this.scrollThumbRef.instance.style.height =
+          `${this.currentThumbAreaHeight / this.scrollHeightRatio}`.toString();
       }
 
       this.scrollBarContainerRef.instance.style.height = `${containerHeight}px`;
-      this.svgRef.instance.setAttribute('height', `${containerHeight - (this.margin * 2)}px`);
-      this.scrollBarRef.instance.setAttribute('d', `M 5 0 l 2 3 l -4 0 l 2 -3 m 0 6 l 0 ${this.currentThumbAreaHeight} m 0 6 l 2 -3 l -4 0 l 2 3`);
-      this.scrollBarContainerRef.instance.style.display = (this.scrollHeightRatio <= 1.0) ? 'none' : '';
+      this.svgRef.instance.setAttribute(
+        "height",
+        `${containerHeight - this.margin * 2}px`,
+      );
+      this.scrollBarRef.instance.setAttribute(
+        "d",
+        `M 5 0 l 2 3 l -4 0 l 2 -3 m 0 6 l 0 ${this.currentThumbAreaHeight} m 0 6 l 2 -3 l -4 0 l 2 3`,
+      );
+      this.scrollBarContainerRef.instance.style.display =
+        this.scrollHeightRatio <= 1.0 ? "none" : "";
 
       this.onScroll();
     }
@@ -86,9 +105,13 @@ export class ScrollBar extends DisplayComponent<ComponentProps> {
   private onScroll(): void {
     if (this.scrollableContainer) {
       if (this.scrollBarRef.instance !== null) {
-        const scrollY = ((this.scrollableContainer.scrollTop / this.scrollableContainer.scrollHeight) * this.currentThumbAreaHeight) + this.arrowPadding;
+        const scrollY =
+          (this.scrollableContainer.scrollTop /
+            this.scrollableContainer.scrollHeight) *
+            this.currentThumbAreaHeight +
+          this.arrowPadding;
         if (!isNaN(scrollY)) {
-          this.scrollThumbRef.instance.setAttribute('y', scrollY.toString());
+          this.scrollThumbRef.instance.setAttribute("y", scrollY.toString());
         }
       }
     }
@@ -102,7 +125,13 @@ export class ScrollBar extends DisplayComponent<ComponentProps> {
     return (
       <div class="scroll-bar" ref={this.scrollBarContainerRef}>
         <svg ref={this.svgRef}>
-          <path ref={this.scrollBarRef} d="M 5 0 l 2 3 l -4 0 l 2 -3 m 0 6 l 0 135 m 0 6 l 2 -3 l -4 0 l 2 3" fill="white" stroke="white" stroke-width="2px"></path>
+          <path
+            ref={this.scrollBarRef}
+            d="M 5 0 l 2 3 l -4 0 l 2 -3 m 0 6 l 0 135 m 0 6 l 2 -3 l -4 0 l 2 3"
+            fill="white"
+            stroke="white"
+            stroke-width="2px"
+          ></path>
           <rect ref={this.scrollThumbRef} x="1" y="6" width="8" fill="white" />
         </svg>
       </div>
@@ -112,7 +141,10 @@ export class ScrollBar extends DisplayComponent<ComponentProps> {
   // eslint-disable-next-line jsdoc/require-jsdoc
   public destroy(): void {
     if (this.scrollableContainer) {
-      this.scrollableContainer.removeEventListener('scroll', this.scrollListener);
+      this.scrollableContainer.removeEventListener(
+        "scroll",
+        this.scrollListener,
+      );
     }
     if (this.sizeChangeTimer !== null) {
       clearInterval(this.sizeChangeTimer);

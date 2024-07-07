@@ -1,1 +1,1 @@
-export * from './ChecklistPfdPlugin'
+export * from "./ChecklistPfdPlugin";

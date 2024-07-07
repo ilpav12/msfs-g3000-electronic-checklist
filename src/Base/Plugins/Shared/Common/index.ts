@@ -1,1 +1,1 @@
-export * from './ChecklistFilePaths';
+export * from "./ChecklistFilePaths";

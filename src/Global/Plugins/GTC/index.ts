@@ -1,1 +1,1 @@
-export * from './ChecklistGtcPlugin';
+export * from "./ChecklistGtcPlugin";

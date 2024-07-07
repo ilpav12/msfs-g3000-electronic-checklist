@@ -1,1 +1,1 @@
-export * from './ChecklistGtcMfdHomePage';
+export * from "./ChecklistGtcMfdHomePage";

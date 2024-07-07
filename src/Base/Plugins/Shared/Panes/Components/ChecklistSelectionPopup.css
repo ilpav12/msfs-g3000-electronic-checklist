@@ -1,17 +1,17 @@
 .checklist-popup-dialog {
-    position: absolute;
-    top: 35px;
-    left: 5px;
-    max-width: calc(var(--checklist-container-width) - 30px);
-    background-color: var(--checklist-color-black);
-    border: 3px solid var(--checklist-color-white);
-    border-radius: 10px;
-    padding: 10px 20px 10px 5px;
-    z-index: 10;
-    overflow: hidden;
+  position: absolute;
+  top: 35px;
+  left: 5px;
+  max-width: calc(var(--checklist-container-width) - 30px);
+  background-color: var(--checklist-color-black);
+  border: 3px solid var(--checklist-color-white);
+  border-radius: 10px;
+  padding: 10px 20px 10px 5px;
+  z-index: 10;
+  overflow: hidden;
 }
 
 .checklist-popup-selection-list > div {
-    height: fit-content;
-    max-height: 225px;
+  height: fit-content;
+  max-height: 225px;
 }
