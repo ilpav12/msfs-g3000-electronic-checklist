@@ -10,14 +10,13 @@ import {
   GtcViewLifecyclePolicy,
   GtcViewProps,
   SidebarState,
-  TabbedContainer,
   TabbedContent,
-  TabConfiguration,
 } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistGtcOptionsPopup } from "@base/GTC/Pages/ChecklistPage/ChecklistGtcOptionsPopup";
 import { ChecklistRepository, ChecklistEvents } from "@base/Shared/ChecklistSystem";
 import { ChecklistGtcViewKeys } from "@base/GTC/Pages/MfdHomePage/ChecklistGtcMfdHomePage";
 import { IncompleteChecklistsGtcPage } from "@base/GTC/Pages/ChecklistPage/IncompleteChecklistsGtcPage";
+import { TabbedContainer, TabConfiguration } from "@base/GTC/UI/TabbedContainer";
 
 import "./ChecklistGtcPage.css";
 
@@ -41,8 +40,6 @@ export interface ChecklistGtcPageProps<Names, Category> extends GtcViewProps {
   checklistCategories: Category[];
   /** The checklist repository. */
   checklistRepository: ChecklistRepository<Names, Category>;
-  /** The tabbed container arrangement configuration. */
-  tabbedContainerConfiguration?: TabConfiguration;
   /** The initially selected tab position of the tabbed container. */
   initiallySelectedTabPosition?: number;
 }
@@ -252,7 +249,7 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
         <TabbedContainer
           ref={this.tabbedContainerRef}
           initiallySelectedTabPosition={this.props.initiallySelectedTabPosition}
-          configuration={this.props.tabbedContainerConfiguration ?? TabConfiguration.Left5}
+          configuration={TabConfiguration.LeftRight5}
         >
           {this.props.checklistCategories.map((category, index) => {
             return this.renderTab(index + 1, category);

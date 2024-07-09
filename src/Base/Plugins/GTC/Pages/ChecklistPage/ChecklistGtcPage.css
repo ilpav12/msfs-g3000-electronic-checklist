@@ -1,46 +1,40 @@
 .gtc-horizontal .gtc-checklist {
   --checklist-font-size-large: 32px;
 
-  --checklist-page-padding: 4.5% 7.5% 0 7.5%;
-
-  --checklist-tab-width: 90%;
+  --checklist-page-padding: 4.5% 7.5% 1% 7.5%;
 
   --checklist-tab-list-spacing: 5px;
   --checklist-tab-list-width: calc(100% - 2 * 10px);
   --checklist-tab-list-height: calc(5 * 135px + 4 * 1px);
 
-  --checklist-options-button-margin-left: 10px;
-  --checklist-options-button-width: 190px;
-  --checklist-options-button-height: 125px;
+  --checklist-options-button-width: 170px;
+  --checklist-options-button-height: 130px;
+  --checklist-option-button-right: 7.5%;
+  --checklist-option-button-bottom: 3%;
 }
 
 .gtc-vertical .gtc-checklist {
   --checklist-font-size-large: 16px;
 
-  --checklist-page-padding: 4.5% 2% 0 2%;
-
-  --checklist-tab-width: 80%;
+  --checklist-page-padding: 4.5% 2% 1% 2%;
 
   --checklist-tab-list-spacing: 5px;
-  --checklist-tab-list-width: 240px;
+  --checklist-tab-list-width: 245px;
   --checklist-tab-list-height: calc(5 * 72px + 4 * 1px);
 
-  --checklist-options-button-margin-left: 5px;
-  --checklist-options-button-width: 100px;
-  --checklist-options-button-height: 70px;
+  --checklist-options-button-width: 90px;
+  --checklist-options-button-height: 75px;
+  --checklist-option-button-right: 2%;
+  --checklist-option-button-bottom: 2%;
 }
 
 .gtc-checklist {
-  width: 100%;
   height: 100%;
   padding: var(--checklist-page-padding);
-  display: flex;
-  align-items: flex-end;
 }
 
 .gtc-checklist .gtc-tabbed-container {
-  width: var(--checklist-tab-width);
-  height: 99%;
+  height: 100%;
 }
 
 .gtc-list.gtc-checklist-tab-list {
@@ -63,8 +57,9 @@
 }
 
 .gtc-checklist-options-button {
-  margin-left: var(--checklist-options-button-margin-left);
-  margin-bottom: 15px;
+  position: absolute;
+  right: var(--checklist-option-button-right);
+  bottom: var(--checklist-option-button-bottom);
   width: var(--checklist-options-button-width);
   height: var(--checklist-options-button-height);
   font-size: var(--checklist-font-size-large);

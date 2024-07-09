@@ -1,5 +1,5 @@
 import { FSComponent, Subject, VNode } from "@microsoft/msfs-sdk";
-import { GtcTouchButton, GtcView, GtcViewProps } from "@microsoft/msfs-wtg3000-gtc";
+import { GtcTouchButton, GtcView, GtcViewKeys, GtcViewProps } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistEvents, ChecklistReadonly } from "@base/Shared/ChecklistSystem";
 
 import "./ChecklistGtcOptionsPopup.css";
@@ -48,7 +48,9 @@ export class ChecklistGtcOptionsPopup<Names, Category> extends GtcView<Checklist
             class="checklist-options-popup-button"
             onPressed={() => {
               this.gtcService.goBack();
-              this.gtcService.changePageTo(ChecklistGtcViewKeys.IncompleteChecklists);
+              if (this.gtcService.activeView.get().key !== ChecklistGtcViewKeys.IncompleteChecklists) {
+                this.gtcService.changePageTo(ChecklistGtcViewKeys.IncompleteChecklists);
+              }
             }}
           />
           <GtcTouchButton

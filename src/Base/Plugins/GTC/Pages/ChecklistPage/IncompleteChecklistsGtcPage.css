@@ -1,0 +1,38 @@
+.gtc-horizontal .gtc-incomplete-checklists {
+  --checklist-font-size-large: 32px;
+
+  --checklist-page-padding: 4.5% 7.5% 1% 7.5%;
+
+  --checklist-tab-list-spacing: 5px;
+  --checklist-tab-list-width: calc(100% - 2 * 10px);
+  --checklist-tab-list-height: calc(5 * 135px + 4 * 4px);
+
+  --checklist-options-button-width: 170px;
+  --checklist-options-button-height: 130px;
+  --checklist-option-button-right: 7.5%;
+  --checklist-option-button-bottom: 3%;
+}
+
+.gtc-vertical .gtc-incomplete-checklists {
+  --checklist-font-size-large: 16px;
+
+  --checklist-page-padding: 4.5% 2% 1% 2%;
+
+  --checklist-tab-list-spacing: 5px;
+  --checklist-tab-list-width: 340px;
+  --checklist-tab-list-height: calc(4 * 88px + 4 * 4px);
+
+  --checklist-options-button-width: 90px;
+  --checklist-options-button-height: 75px;
+  --checklist-option-button-right: 2%;
+  --checklist-option-button-bottom: 2%;
+}
+
+.gtc-incomplete-checklists {
+  height: 100%;
+  padding: var(--checklist-page-padding);
+}
+
+.gtc-incomplete-checklists .gtc-tabbed-container {
+  height: 100%;
+}
