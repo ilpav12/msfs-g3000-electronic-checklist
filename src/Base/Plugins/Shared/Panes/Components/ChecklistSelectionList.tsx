@@ -10,16 +10,8 @@ import {
   VNode,
 } from "@microsoft/msfs-sdk";
 import { ControllableDisplayPaneIndex } from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
-import {
-  ChecklistEvents,
-  ChecklistInteractionEventAction,
-  ChecklistRepository,
-} from "@base/Shared/ChecklistSystem";
-import {
-  ChecklistControlList,
-  ChecklistUiControl,
-  FmsUiControlEvents,
-} from "@base/Shared/UI";
+import { ChecklistEvents, ChecklistInteractionEventAction, ChecklistRepository } from "@base/Shared/ChecklistSystem";
+import { ChecklistControlList, ChecklistUiControl, FmsUiControlEvents } from "@base/Shared/UI";
 
 export interface ChecklistSelectionListProps<Names, Category>
   extends UiControlPropEventHandlers<FmsUiControlEvents>,
@@ -43,8 +35,7 @@ export interface ChecklistSelectionListProps<Names, Category>
 export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
   ChecklistSelectionListProps<Names, Category>
 > {
-  protected readonly selectionItemListRef =
-    FSComponent.createRef<ChecklistControlList<Names | Category>>();
+  protected readonly selectionItemListRef = FSComponent.createRef<ChecklistControlList<Names | Category>>();
 
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
@@ -74,41 +65,34 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
             case ChecklistInteractionEventAction.Interact:
               if (this.props.type === "category") {
                 const newChecklist = this.props.repo.getChecklistsByCategory(
-                  this.props.items.get(
-                    this.selectionItemListRef.instance.getSelectedIndex(),
-                  ) as Category,
+                  this.props.items.get(this.selectionItemListRef.instance.getSelectedIndex()) as Category,
                 )[0];
-                this.props.bus
-                  .getPublisher<ChecklistEvents<Names, Category>>()
-                  .pub(
-                    "checklist_event",
-                    {
-                      type: "active_checklist_changed",
-                      newActiveChecklistName: newChecklist.name,
-                      newActiveChecklistCategory: newChecklist.category,
-                      targetPaneIndex: this.props.paneIndex,
-                    },
-                    true,
-                  );
+                this.props.bus.getPublisher<ChecklistEvents<Names, Category>>().pub(
+                  "checklist_event",
+                  {
+                    type: "active_checklist_changed",
+                    newActiveChecklistName: newChecklist.name,
+                    newActiveChecklistCategory: newChecklist.category,
+                    targetPaneIndex: this.props.paneIndex,
+                  },
+                  true,
+                );
               } else {
                 const currentActiveChecklist = this.props.repo
                   .getActiveChecklistByPaneIndex(this.props.paneIndex)
                   .get();
-                this.props.bus
-                  .getPublisher<ChecklistEvents<Names, Category>>()
-                  .pub(
-                    "checklist_event",
-                    {
-                      type: "active_checklist_changed",
-                      newActiveChecklistName: this.props.items.get(
-                        this.selectionItemListRef.instance.getSelectedIndex(),
-                      ) as Names,
-                      newActiveChecklistCategory:
-                        currentActiveChecklist.category,
-                      targetPaneIndex: this.props.paneIndex,
-                    },
-                    true,
-                  );
+                this.props.bus.getPublisher<ChecklistEvents<Names, Category>>().pub(
+                  "checklist_event",
+                  {
+                    type: "active_checklist_changed",
+                    newActiveChecklistName: this.props.items.get(
+                      this.selectionItemListRef.instance.getSelectedIndex(),
+                    ) as Names,
+                    newActiveChecklistCategory: currentActiveChecklist.category,
+                    targetPaneIndex: this.props.paneIndex,
+                  },
+                  true,
+                );
               }
               this.props.isOpen.set(false);
               return true;
@@ -119,10 +103,7 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
               this.scroll("backward");
               return true;
             case ChecklistInteractionEventAction.ScrollDown:
-              if (
-                this.selectionItemListRef.instance.getSelectedIndex() ===
-                this.props.items.length - 1
-              ) {
+              if (this.selectionItemListRef.instance.getSelectedIndex() === this.props.items.length - 1) {
                 return false;
               }
               this.scroll("forward");

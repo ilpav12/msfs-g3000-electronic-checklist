@@ -11,18 +11,16 @@ import {
 import { ScrollBar } from "@base/Shared/UI/ScrollBar";
 import { ChecklistEvents } from "@base/Shared/ChecklistSystem/ChecklistEvents";
 
-export type FmsUiControlEvents = Record<
-  keyof ChecklistEvents,
-  UiControlEventHandler<ChecklistUiControl>
->;
+export type FmsUiControlEvents = Record<keyof ChecklistEvents, UiControlEventHandler<ChecklistUiControl>>;
 
 export interface ChecklistUiControlProps
   extends UiControlPropEventHandlers<FmsUiControlEvents>,
     HardwareUiControlProps {}
 
-export class ChecklistUiControl<
-  P extends ChecklistUiControlProps = ChecklistUiControlProps,
-> extends HardwareUiControl<FmsUiControlEvents, P> {
+export class ChecklistUiControl<P extends ChecklistUiControlProps = ChecklistUiControlProps> extends HardwareUiControl<
+  FmsUiControlEvents,
+  P
+> {
   onInteractionEvent(event: keyof FmsUiControlEvents): boolean {
     return false;
   }
@@ -33,11 +31,7 @@ export interface GarminControlListProps<T>
     HardwareUiControlProps,
     HardwareControlListProps<T> {}
 
-export class ChecklistControlList<T> extends HardwareUiControlList<
-  T,
-  FmsUiControlEvents,
-  GarminControlListProps<T>
-> {
+export class ChecklistControlList<T> extends HardwareUiControlList<T, FmsUiControlEvents, GarminControlListProps<T>> {
   onInteractionEvent(event: keyof FmsUiControlEvents): boolean {
     return false;
   }

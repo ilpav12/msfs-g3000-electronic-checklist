@@ -6,10 +6,7 @@ import {
   ChecklistPageFocusableItemType,
   Justification,
 } from "@base/Shared/ChecklistSystem";
-import {
-  ChecklistUiControl,
-  ChecklistUiControlProps,
-} from "@base/Shared/UI/ChecklistUiControl";
+import { ChecklistUiControl, ChecklistUiControlProps } from "@base/Shared/UI/ChecklistUiControl";
 
 import "./ChecklistItemDisplay.css";
 
@@ -35,10 +32,7 @@ export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDispla
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
     this.props.item.state.sub((state) => {
-      if (
-        this.isFocused &&
-        this.props.item.type === ChecklistItemType.Challenge
-      ) {
+      if (this.isFocused && this.props.item.type === ChecklistItemType.Challenge) {
         this.props.focusedItemType.set(
           state === ChecklistItemState.Completed
             ? ChecklistPageFocusableItemType.ChallengeChecked
@@ -84,27 +78,19 @@ export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDispla
       "indent-4": this.props.item.justification === Justification.Indent4,
     };
 
-    const content = (this.props.item.content || "").replace(
-      new RegExp("\n", "g"),
-      "<br>",
-    );
+    const content = (this.props.item.content || "").replace(new RegExp("\n", "g"), "<br>");
     switch (this.props.item.type) {
       case ChecklistItemType.Challenge:
         const firstContentLine = content.split("<br>")[0];
         const remainingContent = content.split("<br>").slice(1).join("<br>");
-        const response =
-          this.props.item.response &&
-          this.props.item.response.replace(new RegExp("\n", "g"), "<br>");
+        const response = this.props.item.response && this.props.item.response.replace(new RegExp("\n", "g"), "<br>");
         const firstResponseLine = response && response.split("<br>")[0];
-        const remainingResponse =
-          response && response.split("<br>").slice(1).join("<br>");
+        const remainingResponse = response && response.split("<br>").slice(1).join("<br>");
         return (
           <div
             class={{
               "checklist-challenge": true,
-              completed: this.props.item.state.map(
-                (v) => v === ChecklistItemState.Completed,
-              ),
+              completed: this.props.item.state.map((v) => v === ChecklistItemState.Completed),
             }}
           >
             <div class="checklist-challenge-first-line">
@@ -148,9 +134,7 @@ export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDispla
                   hidden: !this.props.item.response,
                 }}
               >
-                <div>
-                  ......................................................................
-                </div>
+                <div>......................................................................</div>
               </div>
               <div
                 class={{
@@ -198,18 +182,12 @@ export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDispla
           <>
             <div
               class={{
-                "checklist-warning":
-                  this.props.item.type === ChecklistItemType.Warning,
-                "checklist-caution":
-                  this.props.item.type === ChecklistItemType.Caution,
-                "checklist-note":
-                  this.props.item.type === ChecklistItemType.Note,
-                "checklist-subtitle":
-                  this.props.item.type === ChecklistItemType.Subtitle,
-                "checklist-plain-text":
-                  this.props.item.type === ChecklistItemType.PlainText,
-                "checklist-link":
-                  this.props.item.type === ChecklistItemType.Link,
+                "checklist-warning": this.props.item.type === ChecklistItemType.Warning,
+                "checklist-caution": this.props.item.type === ChecklistItemType.Caution,
+                "checklist-note": this.props.item.type === ChecklistItemType.Note,
+                "checklist-subtitle": this.props.item.type === ChecklistItemType.Subtitle,
+                "checklist-plain-text": this.props.item.type === ChecklistItemType.PlainText,
+                "checklist-link": this.props.item.type === ChecklistItemType.Link,
                 ...justificationClasses,
               }}
             >

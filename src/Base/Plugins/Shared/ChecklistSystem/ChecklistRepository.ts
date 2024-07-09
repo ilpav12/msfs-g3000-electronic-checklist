@@ -1,8 +1,5 @@
 import { EventBus, Subject, Subscribable } from "@microsoft/msfs-sdk";
-import {
-  ControllableDisplayPaneIndex,
-  DisplayPaneIndex,
-} from "@microsoft/msfs-wtg3000-common";
+import { ControllableDisplayPaneIndex, DisplayPaneIndex } from "@microsoft/msfs-wtg3000-common";
 import {
   Checklist,
   ChecklistCategory,
@@ -15,10 +12,7 @@ import { ChecklistEvents } from "@base/Shared/ChecklistSystem/ChecklistEvents";
 /**
  * The Repo class for the checklists.
  */
-export class ChecklistRepository<
-  Names = ChecklistNames,
-  Category = ChecklistCategory,
-> {
+export class ChecklistRepository<Names = ChecklistNames, Category = ChecklistCategory> {
   private readonly _activeChecklist = Subject.create({
     leftPfd: this.defaultChecklist,
     leftMfd: this.defaultChecklist,
@@ -34,8 +28,7 @@ export class ChecklistRepository<
 
   private readonly incompleteChecklists = new Set<Checklist<Names, Category>>();
 
-  private readonly publisher =
-    this.bus.getPublisher<ChecklistEvents<Names, Category>>();
+  private readonly publisher = this.bus.getPublisher<ChecklistEvents<Names, Category>>();
 
   /**
    * Builds the Repo for the checklists.
@@ -61,11 +54,7 @@ export class ChecklistRepository<
           );
           break;
         case "checklist_reset":
-          this.resetChecklist(
-            event.checklistName,
-            event.checklistCategory,
-            false,
-          );
+          this.resetChecklist(event.checklistName, event.checklistCategory, false);
           break;
         case "all_checklists_reset":
           this.resetAllChecklists();
@@ -80,18 +69,10 @@ export class ChecklistRepository<
           );
           break;
         case "check_all_items":
-          this.checkAllItems(
-            event.checklistName,
-            event.checklistCategory,
-            false,
-          );
+          this.checkAllItems(event.checklistName, event.checklistCategory, false);
           break;
         case "next_checklist":
-          this.nextChecklistInCategory(
-            event.checklistName,
-            event.checklistCategory,
-            event.targetPaneIndex,
-          );
+          this.nextChecklistInCategory(event.checklistName, event.checklistCategory, event.targetPaneIndex);
           break;
       }
     });
@@ -131,13 +112,8 @@ export class ChecklistRepository<
    * @param category The category of the checklist.
    * @returns The Checklist that holds the given name and category.
    */
-  private getChecklistByNameAndCategory(
-    name: Names,
-    category: Category,
-  ): Checklist<Names, Category> {
-    const checklist = this.checklists.find(
-      (x) => x.name === name && x.category === category,
-    );
+  private getChecklistByNameAndCategory(name: Names, category: Category): Checklist<Names, Category> {
+    const checklist = this.checklists.find((x) => x.name === name && x.category === category);
 
     return checklist ?? this.defaultChecklist;
   }
@@ -147,9 +123,7 @@ export class ChecklistRepository<
    * @param category The category of the checklists.
    * @returns The checklists in the given category.
    */
-  public getChecklistsByCategory(
-    category: Category,
-  ): Checklist<Names, Category>[] {
+  public getChecklistsByCategory(category: Category): Checklist<Names, Category>[] {
     return this.checklists.filter((x) => x.category === category);
   }
 
@@ -222,14 +196,9 @@ export class ChecklistRepository<
     itemState: ChecklistItemState,
     notify = true,
   ): void {
-    const checklist = this.getChecklistByNameAndCategory(
-      checklistName,
-      checklistCategory,
-    );
+    const checklist = this.getChecklistByNameAndCategory(checklistName, checklistCategory);
     checklist.items[itemIndex].state.set(itemState);
-    const anyItemChecked = checklist.items.some(
-      (x) => x.state.get() === ChecklistItemState.Completed,
-    );
+    const anyItemChecked = checklist.items.some((x) => x.state.get() === ChecklistItemState.Completed);
     if (anyItemChecked && !checklist.isComplete.get()) {
       this.incompleteChecklists.add(checklist);
     } else {
@@ -257,15 +226,8 @@ export class ChecklistRepository<
    * @param checklistCategory The category of the checklist.
    * @param notify Whether to send the bus event. Defaults to true.
    */
-  public checkAllItems(
-    checklistName: Names,
-    checklistCategory: Category,
-    notify = true,
-  ): void {
-    const checklist = this.getChecklistByNameAndCategory(
-      checklistName,
-      checklistCategory,
-    );
+  public checkAllItems(checklistName: Names, checklistCategory: Category, notify = true): void {
+    const checklist = this.getChecklistByNameAndCategory(checklistName, checklistCategory);
     checklist.items.forEach((x) => x.state.set(ChecklistItemState.Completed));
 
     if (notify) {
@@ -297,11 +259,7 @@ export class ChecklistRepository<
       checklistCategory,
       this.getChecklistsByCategory(checklistCategory),
     );
-    this.setActiveChecklist(
-      nextChecklist.name,
-      nextChecklist.category,
-      targetPaneIndex,
-    );
+    this.setActiveChecklist(nextChecklist.name, nextChecklist.category, targetPaneIndex);
   }
 
   /**
@@ -316,13 +274,9 @@ export class ChecklistRepository<
     currentCategory: Category,
     checklists: Checklist<Names, Category>[],
   ): Checklist<Names, Category> {
-    const currentChecklistIndex = checklists.findIndex(
-      (x) => x.name === currentName && x.category === currentCategory,
-    );
+    const currentChecklistIndex = checklists.findIndex((x) => x.name === currentName && x.category === currentCategory);
     // Find the next checklists, or if there is none, the last checklist.
-    return (
-      checklists[currentChecklistIndex + 1] ?? checklists[checklists.length - 1]
-    );
+    return checklists[currentChecklistIndex + 1] ?? checklists[checklists.length - 1];
   }
 
   /**
@@ -331,15 +285,8 @@ export class ChecklistRepository<
    * @param checklistCategory The category of the checklist.
    * @param notify Whether to send the bus event. Defaults to true.
    */
-  public resetChecklist(
-    checklistName: Names,
-    checklistCategory: Category,
-    notify = true,
-  ): void {
-    const checklist = this.getChecklistByNameAndCategory(
-      checklistName,
-      checklistCategory,
-    );
+  public resetChecklist(checklistName: Names, checklistCategory: Category, notify = true): void {
+    const checklist = this.getChecklistByNameAndCategory(checklistName, checklistCategory);
     checklist.items.forEach((x) => x.state.set(ChecklistItemState.Incomplete));
 
     if (notify) {
@@ -359,13 +306,15 @@ export class ChecklistRepository<
    * @param category The category to reset.
    */
   public resetChecklistByCategory(category: Category): void {
-    this.getChecklistsByCategory(category).forEach((x) =>
-      this.resetChecklist(x.name, x.category),
-    );
+    this.getChecklistsByCategory(category).forEach((x) => this.resetChecklist(x.name, x.category));
   }
 
   /** Resets all checklists. */
   public resetAllChecklists(): void {
     this.checklists.forEach((x) => this.resetChecklist(x.name, x.category));
+  }
+
+  public getIncompleteChecklists(): Checklist<Names, Category>[] {
+    return this.checklists.filter((x) => !x.isComplete.get());
   }
 }

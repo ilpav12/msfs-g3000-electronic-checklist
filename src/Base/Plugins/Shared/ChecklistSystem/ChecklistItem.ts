@@ -44,13 +44,9 @@ export type LinkTarget<Names, Category> = {
 };
 
 /** A checklist item */
-export class ChecklistItem<
-  Names = ChecklistNames,
-  Category = ChecklistCategory,
-> {
+export class ChecklistItem<Names = ChecklistNames, Category = ChecklistCategory> {
   public readonly state = Subject.create(
-    this.type === ChecklistItemType.Challenge ||
-      this.type === ChecklistItemType.BranchItem
+    this.type === ChecklistItemType.Challenge || this.type === ChecklistItemType.BranchItem
       ? ChecklistItemState.Incomplete
       : ChecklistItemState.NotApplicable,
   );
@@ -72,23 +68,17 @@ export class ChecklistItem<
     public readonly type: ChecklistItemType,
     public readonly content: string,
     public readonly response: string | undefined | null = undefined,
-    public readonly linkTarget:
-      | LinkTarget<Names, Category>
-      | undefined = undefined,
+    public readonly linkTarget: LinkTarget<Names, Category> | undefined = undefined,
     public readonly blanksBelow: number = 0,
     public readonly justification: Justification | undefined,
     public readonly imagePath: string | undefined = undefined,
-    public readonly interactionType:
-      | ChecklistItemInteractionType
-      | undefined = undefined,
+    public readonly interactionType: ChecklistItemInteractionType | undefined = undefined,
     public readonly branchItems: ChecklistItem[] | undefined = undefined,
   ) {
     // check for validity of properties for the different types
     if (type === ChecklistItemType.Challenge) {
       if (response === undefined) {
-        throw new Error(
-          "Challenges must have response with a string or null value.",
-        );
+        throw new Error("Challenges must have response with a string or null value.");
       }
       if (justification === Justification.Center) {
         throw new Error("Challenges cannot have a center justification.");
@@ -144,11 +134,7 @@ export class ChecklistItem<
       throw new Error("The number of blanks below must be between 0 and 10.");
     }
 
-    if (
-      type === ChecklistItemType.Warning ||
-      type === ChecklistItemType.Caution ||
-      type === ChecklistItemType.Note
-    ) {
+    if (type === ChecklistItemType.Warning || type === ChecklistItemType.Caution || type === ChecklistItemType.Note) {
       if (justification === undefined) {
         this.justification = Justification.Center;
       }
@@ -179,12 +165,7 @@ export class ChecklistItem<
       }
     }
 
-    this.setHeight(
-      this.content,
-      this.response,
-      this.blanksBelow,
-      this.imagePath,
-    );
+    this.setHeight(this.content, this.response, this.blanksBelow, this.imagePath);
   }
 
   /**
@@ -361,10 +342,7 @@ export interface ChecklistPlainTextItemData {
 }
 
 /** An interface describing a Checklist Link Item */
-export interface ChecklistLinkItemData<
-  Names = ChecklistNames,
-  Category = ChecklistCategory,
-> {
+export interface ChecklistLinkItemData<Names = ChecklistNames, Category = ChecklistCategory> {
   /** The type of checklist item */
   type: ChecklistItemType.Link;
   /**
@@ -406,10 +384,7 @@ export interface ChecklistBranchItemData {
 }
 
 /** An interface describing a Checklist Branch Item */
-export interface ChecklistBranchItemData<
-  Names = ChecklistNames,
-  Category = ChecklistCategory,
-> {
+export interface ChecklistBranchItemData<Names = ChecklistNames, Category = ChecklistCategory> {
   /** The type of checklist item */
   type: ChecklistItemType.Branch;
   /**
@@ -424,10 +399,7 @@ export interface ChecklistBranchItemData<
 }
 
 /** An interface describing an checklist item */
-export type ChecklistItemData<
-  Names = ChecklistNames,
-  Category = ChecklistCategory,
-> = (
+export type ChecklistItemData<Names = ChecklistNames, Category = ChecklistCategory> = (
   | ChecklistChallengeItemData
   | ChecklistWarningItemData
   | ChecklistCautionItemData

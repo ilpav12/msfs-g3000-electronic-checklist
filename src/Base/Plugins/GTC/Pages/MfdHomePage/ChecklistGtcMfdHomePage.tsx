@@ -1,10 +1,4 @@
-import {
-  DisplayComponent,
-  FSComponent,
-  UserSetting,
-  UserSettingManager,
-  VNode,
-} from "@microsoft/msfs-sdk";
+import { DisplayComponent, FSComponent, UserSetting, UserSettingManager, VNode } from "@microsoft/msfs-sdk";
 import {
   ControllableDisplayPaneIndex,
   DisplayPaneSettings,
@@ -26,6 +20,7 @@ import { ChecklistFilePaths, ChecklistPaneKeys } from "@base/Shared";
  */
 export enum ChecklistGtcViewKeys {
   Checklist = "Checklist",
+  IncompleteChecklists = "IncompleteChecklists",
 }
 
 /**
@@ -47,20 +42,12 @@ export class ChecklistGtcMfdHomePage extends GtcView<GtcMfdHomePageProps> {
     super(props);
 
     if (this.props.displayPaneIndex === undefined) {
-      throw new Error(
-        "ChecklistGtcMfdHomePage: display pane index was not defined",
-      );
+      throw new Error("ChecklistGtcMfdHomePage: display pane index was not defined");
     }
 
     this.displayPaneIndex = this.props.displayPaneIndex;
-    this.displayPaneSettingManager =
-      DisplayPanesUserSettings.getDisplayPaneManager(
-        this.bus,
-        this.displayPaneIndex,
-      );
-    this.designatedWeatherPaneKey = this.displayPaneSettingManager.getSetting(
-      "displayPaneDesignatedWeatherView",
-    );
+    this.displayPaneSettingManager = DisplayPanesUserSettings.getDisplayPaneManager(this.bus, this.displayPaneIndex);
+    this.designatedWeatherPaneKey = this.displayPaneSettingManager.getSetting("displayPaneDesignatedWeatherView");
   }
 
   /** @inheritDoc */
@@ -103,13 +90,8 @@ export class ChecklistGtcMfdHomePage extends GtcView<GtcMfdHomePageProps> {
           />
           <GtcDesignatedPaneButton
             displayPaneSettingManager={this.displayPaneSettingManager}
-            selectedPaneViewKeys={[
-              DisplayPaneViewKeys.WeatherMap,
-              DisplayPaneViewKeys.WeatherRadar,
-            ]}
-            getPaneViewKeyToDesignate={() =>
-              this.designatedWeatherPaneKey.value
-            }
+            selectedPaneViewKeys={[DisplayPaneViewKeys.WeatherMap, DisplayPaneViewKeys.WeatherRadar]}
+            getPaneViewKeyToDesignate={() => this.designatedWeatherPaneKey.value}
             label="Weather"
             imgSrc="coui://html_ui/Pages/VCockpit/Instruments/NavSystems/WTG3000/Assets/Images/GTC/icon_small_weather.png"
             selectedLabel={"Weather\nSelection"}
@@ -131,26 +113,20 @@ export class ChecklistGtcMfdHomePage extends GtcView<GtcMfdHomePageProps> {
             label="Direct To"
             imgSrc="coui://html_ui/Pages/VCockpit/Instruments/NavSystems/WTG3000/Assets/Images/GTC/icon_small_direct_to.png"
             onPressed={() =>
-              this.props.gtcService
-                .changePageTo<GtcDirectToPage>(GtcViewKeys.DirectTo)
-                .ref.setWaypoint({})
+              this.props.gtcService.changePageTo<GtcDirectToPage>(GtcViewKeys.DirectTo).ref.setWaypoint({})
             }
             class="gtc-directory-button"
           />
           <ImgTouchButton
             label="Flight Plan"
             imgSrc="coui://html_ui/Pages/VCockpit/Instruments/NavSystems/WTG3000/Assets/Images/GTC/icon_small_fplan.png"
-            onPressed={() =>
-              this.props.gtcService.changePageTo(GtcViewKeys.FlightPlan)
-            }
+            onPressed={() => this.props.gtcService.changePageTo(GtcViewKeys.FlightPlan)}
             class="gtc-directory-button"
           />
           <ImgTouchButton
             label="PROC"
             imgSrc="coui://html_ui/Pages/VCockpit/Instruments/NavSystems/WTG3000/Assets/Images/GTC/icon_small_procedures.png"
-            onPressed={() =>
-              this.props.gtcService.changePageTo(GtcViewKeys.Procedures)
-            }
+            onPressed={() => this.props.gtcService.changePageTo(GtcViewKeys.Procedures)}
             class="gtc-directory-button mfd-home-img-offset-button"
           />
           <ImgTouchButton
@@ -164,9 +140,7 @@ export class ChecklistGtcMfdHomePage extends GtcView<GtcMfdHomePageProps> {
           <ImgTouchButton
             label="Aircraft<br>Systems"
             imgSrc="coui://html_ui/Pages/VCockpit/Instruments/NavSystems/WTG3000/Assets/Images/GTC/icon_small_systems_prop.png"
-            onPressed={() =>
-              this.props.gtcService.changePageTo(GtcViewKeys.AircraftSystems)
-            }
+            onPressed={() => this.props.gtcService.changePageTo(GtcViewKeys.AircraftSystems)}
             class="gtc-directory-button"
           />
           <ImgTouchButton
@@ -178,9 +152,7 @@ export class ChecklistGtcMfdHomePage extends GtcView<GtcMfdHomePageProps> {
           <ImgTouchButton
             label="Utilities"
             imgSrc="coui://html_ui/Pages/VCockpit/Instruments/NavSystems/WTG3000/Assets/Images/GTC/icon_utilities.png"
-            onPressed={() =>
-              this.props.gtcService.changePageTo(GtcViewKeys.Utilities)
-            }
+            onPressed={() => this.props.gtcService.changePageTo(GtcViewKeys.Utilities)}
             class="gtc-directory-button mfd-home-img-offset-button"
           />
         </div>
@@ -189,18 +161,14 @@ export class ChecklistGtcMfdHomePage extends GtcView<GtcMfdHomePageProps> {
             <ImgTouchButton
               label="PERF"
               imgSrc="coui://html_ui/Pages/VCockpit/Instruments/NavSystems/WTG3000/Assets/Images/GTC/icon_performance.png"
-              onPressed={() =>
-                this.props.gtcService.changePageTo(GtcViewKeys.Perf)
-              }
+              onPressed={() => this.props.gtcService.changePageTo(GtcViewKeys.Perf)}
               class="gtc-directory-button"
             />
           ) : (
             <ImgTouchButton
               label="Speed Bugs"
               imgSrc="coui://html_ui/Pages/VCockpit/Instruments/NavSystems/WTG3000/Assets/Images/GTC/icon_speed_bug.png"
-              onPressed={() =>
-                this.props.gtcService.changePageTo(GtcViewKeys.SpeedBugs)
-              }
+              onPressed={() => this.props.gtcService.changePageTo(GtcViewKeys.SpeedBugs)}
               class="gtc-directory-button"
             />
           )}
@@ -208,36 +176,25 @@ export class ChecklistGtcMfdHomePage extends GtcView<GtcMfdHomePageProps> {
             displayPaneSettingManager={this.displayPaneSettingManager}
             selectedPaneViewKeys={[ChecklistPaneKeys.Checklist]}
             label="Checklist"
-            imgSrc={
-              ChecklistFilePaths.ASSETS_PATH + "/icon_small_checklist.png"
-            }
+            imgSrc={ChecklistFilePaths.ASSETS_PATH + "/icon_small_checklist.png"}
             onPressed={() => {
-              this.displayPaneSettingManager.getSetting(
-                "displayPaneDesignatedView",
-              ).value = ChecklistPaneKeys.Checklist;
-              this.displayPaneSettingManager.getSetting(
-                "displayPaneView",
-              ).value = ChecklistPaneKeys.Checklist;
-              this.props.gtcService.changePageTo(
-                ChecklistGtcViewKeys.Checklist,
-              );
+              this.displayPaneSettingManager.getSetting("displayPaneDesignatedView").value =
+                ChecklistPaneKeys.Checklist;
+              this.displayPaneSettingManager.getSetting("displayPaneView").value = ChecklistPaneKeys.Checklist;
+              this.props.gtcService.changePageTo(ChecklistGtcViewKeys.Checklist);
             }}
             class="gtc-directory-button"
           />
           <ImgTouchButton
             label="Waypoint<br>Info"
             imgSrc="coui://html_ui/Pages/VCockpit/Instruments/NavSystems/WTG3000/Assets/Images/GTC/icon_small_waypoint_info.png"
-            onPressed={() =>
-              this.props.gtcService.changePageTo(GtcViewKeys.WaypointInfo)
-            }
+            onPressed={() => this.props.gtcService.changePageTo(GtcViewKeys.WaypointInfo)}
             class="gtc-directory-button"
           />
           <ImgTouchButton
             label="Nearest"
             imgSrc="coui://html_ui/Pages/VCockpit/Instruments/NavSystems/WTG3000/Assets/Images/GTC/icon_small_nearest.png"
-            onPressed={() =>
-              this.props.gtcService.changePageTo(GtcViewKeys.Nearest)
-            }
+            onPressed={() => this.props.gtcService.changePageTo(GtcViewKeys.Nearest)}
             class="gtc-directory-button"
           />
         </div>
@@ -249,10 +206,7 @@ export class ChecklistGtcMfdHomePage extends GtcView<GtcMfdHomePageProps> {
   public destroy(): void {
     if (this.thisNode !== undefined) {
       FSComponent.visitNodes(this.thisNode, (node) => {
-        if (
-          node !== this.thisNode &&
-          node.instance instanceof DisplayComponent
-        ) {
+        if (node !== this.thisNode && node.instance instanceof DisplayComponent) {
           node.instance.destroy();
           return true;
         }

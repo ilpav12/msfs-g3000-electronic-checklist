@@ -13,14 +13,9 @@ export enum LongitudeChecklistCategory {
 }
 
 /** The possible Tbm checklist names */
-export type LongitudeChecklistNames =
-  | LongitudeNormalChecklistNames
-  | LongitudeAbbrevChecklistNames;
+export type LongitudeChecklistNames = LongitudeNormalChecklistNames | LongitudeAbbrevChecklistNames;
 
-export class LongitudeChecklist<
-  N = LongitudeChecklistNames,
-  C = LongitudeChecklistCategory,
-> extends Checklist<N, C> {}
+export class LongitudeChecklist<N = LongitudeChecklistNames, C = LongitudeChecklistCategory> extends Checklist<N, C> {}
 
 /** The possible Tbm checklist categories, in the order they appear in the aircraft */
 export enum TbmChecklistCategory {
@@ -29,11 +24,6 @@ export enum TbmChecklistCategory {
 }
 
 /** The possible Tbm checklist names */
-export type TbmChecklistNames =
-  | TbmNormalChecklistNames
-  | TbmAmplifiedChecklistNames;
+export type TbmChecklistNames = TbmNormalChecklistNames | TbmAmplifiedChecklistNames;
 
-export class TbmChecklist<
-  N = TbmChecklistNames,
-  C = TbmChecklistCategory,
-> extends Checklist<N, C> {}
+export class TbmChecklist<N = TbmChecklistNames, C = TbmChecklistCategory> extends Checklist<N, C> {}

@@ -10,15 +10,11 @@ import {
 import { ControllableDisplayPaneIndex } from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
 import { ChecklistUiControl } from "@base/Shared/UI";
 import { ChecklistSelectionList } from "@base/Shared/Panes/Components/ChecklistSelectionList";
-import {
-  ChecklistEvents,
-  ChecklistRepository,
-} from "@base/Shared/ChecklistSystem";
+import { ChecklistEvents, ChecklistRepository } from "@base/Shared/ChecklistSystem";
 
 import "./ChecklistSelectionPopup.css";
 
-export interface ChecklistSelectionPopupProps<Names, Category>
-  extends ComponentProps {
+export interface ChecklistSelectionPopupProps<Names, Category> extends ComponentProps {
   /** The event bus. */
   readonly bus: EventBus;
   /** The pane index. */
@@ -47,10 +43,7 @@ export class ChecklistSelectionPopup<Names, Category> extends DisplayComponent<
       .getSubscriber<ChecklistEvents<Names, Category>>()
       .on("checklist_event")
       .handle((event) => {
-        if (
-          event.type === "active_checklist_changed" &&
-          event.targetPaneIndex === this.props.paneIndex
-        ) {
+        if (event.type === "active_checklist_changed" && event.targetPaneIndex === this.props.paneIndex) {
           this.props.isOpen.set(false);
         }
       });

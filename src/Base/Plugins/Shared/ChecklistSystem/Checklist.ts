@@ -1,9 +1,4 @@
-import {
-  ReadonlySubEvent,
-  SubEvent,
-  Subject,
-  Subscribable,
-} from "@microsoft/msfs-sdk";
+import { ReadonlySubEvent, SubEvent, Subject, Subscribable } from "@microsoft/msfs-sdk";
 import { ChecklistItemChangedEvent } from "@base/Shared/ChecklistSystem/ChecklistEvents";
 import {
   ChecklistItem,
@@ -39,10 +34,7 @@ export type ChecklistItemReadonly = ChecklistItem & {
 };
 
 /** Readonly checklist, with all items readonly. */
-export type ChecklistReadonly<
-  Names = ChecklistNames,
-  Category = ChecklistCategory,
-> = Pick<
+export type ChecklistReadonly<Names = ChecklistNames, Category = ChecklistCategory> = Pick<
   Checklist<Names, Category>,
   "isComplete" | "anyItemChanged" | "name" | "category" | "isLastChecklist"
 > & {

@@ -1,11 +1,5 @@
-import {
-  Checklist,
-  ChecklistCategory,
-} from "@base/Shared/ChecklistSystem/Checklist";
-import {
-  ChecklistItemType,
-  Justification,
-} from "@base/Shared/ChecklistSystem/ChecklistItem";
+import { Checklist, ChecklistCategory } from "@base/Shared/ChecklistSystem/Checklist";
+import { ChecklistItemType, Justification } from "@base/Shared/ChecklistSystem/ChecklistItem";
 
 export enum ItemsShowcaseChecklistNames {
   ItemsTypes = "Items Types",
@@ -21,71 +15,63 @@ export class ItemsShowcaseChecklists {
    **/
   public static getChecklists(): Checklist[] {
     return [
-      new Checklist(
-        ItemsShowcaseChecklistNames.ItemsTypes,
-        ChecklistCategory.ItemsShowcase,
-        [
-          {
-            type: ChecklistItemType.Challenge,
-            content: "Challenge with response",
-            response: "Response",
+      new Checklist(ItemsShowcaseChecklistNames.ItemsTypes, ChecklistCategory.ItemsShowcase, [
+        {
+          type: ChecklistItemType.Challenge,
+          content: "Challenge with response",
+          response: "Response",
+        },
+        {
+          type: ChecklistItemType.Challenge,
+          content: "Challenge without response",
+          response: null,
+        },
+        { type: ChecklistItemType.Warning, content: "Warning" },
+        { type: ChecklistItemType.Caution, content: "Caution" },
+        { type: ChecklistItemType.Note, content: "Note" },
+        { type: ChecklistItemType.Subtitle, content: "Subtitle" },
+        { type: ChecklistItemType.PlainText, content: "Plain Text" },
+        {
+          type: ChecklistItemType.Link,
+          content: "Link to checklist (Justifications)",
+          linkTarget: {
+            checklistName: ItemsShowcaseChecklistNames.Justifications,
+            checklistCategory: ChecklistCategory.ItemsShowcase,
           },
-          {
-            type: ChecklistItemType.Challenge,
-            content: "Challenge without response",
-            response: null,
-          },
-          { type: ChecklistItemType.Warning, content: "Warning" },
-          { type: ChecklistItemType.Caution, content: "Caution" },
-          { type: ChecklistItemType.Note, content: "Note" },
-          { type: ChecklistItemType.Subtitle, content: "Subtitle" },
-          { type: ChecklistItemType.PlainText, content: "Plain Text" },
-          {
-            type: ChecklistItemType.Link,
-            content: "Link to checklist (Justifications)",
-            linkTarget: {
-              checklistName: ItemsShowcaseChecklistNames.Justifications,
-              checklistCategory: ChecklistCategory.ItemsShowcase,
-            },
-          },
-        ],
-      ),
-      new Checklist(
-        ItemsShowcaseChecklistNames.Justifications,
-        ChecklistCategory.ItemsShowcase,
-        [
-          {
-            type: ChecklistItemType.Challenge,
-            content: "Challenge",
-            response: "Response",
-            justification: Justification.Left,
-          },
-          {
-            type: ChecklistItemType.Challenge,
-            content: "Challenge",
-            response: "Response",
-            justification: Justification.Indent1,
-          },
-          {
-            type: ChecklistItemType.Challenge,
-            content: "Challenge",
-            response: "Response",
-            justification: Justification.Indent2,
-          },
-          {
-            type: ChecklistItemType.Challenge,
-            content: "Challenge",
-            response: "Response",
-            justification: Justification.Indent3,
-          },
-          {
-            type: ChecklistItemType.Challenge,
-            content: "Challenge",
-            response: "Response",
-            justification: Justification.Indent4,
-          },
-        ],
-      ),
+        },
+      ]),
+      new Checklist(ItemsShowcaseChecklistNames.Justifications, ChecklistCategory.ItemsShowcase, [
+        {
+          type: ChecklistItemType.Challenge,
+          content: "Challenge",
+          response: "Response",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Challenge,
+          content: "Challenge",
+          response: "Response",
+          justification: Justification.Indent1,
+        },
+        {
+          type: ChecklistItemType.Challenge,
+          content: "Challenge",
+          response: "Response",
+          justification: Justification.Indent2,
+        },
+        {
+          type: ChecklistItemType.Challenge,
+          content: "Challenge",
+          response: "Response",
+          justification: Justification.Indent3,
+        },
+        {
+          type: ChecklistItemType.Challenge,
+          content: "Challenge",
+          response: "Response",
+          justification: Justification.Indent4,
+        },
+      ]),
       new Checklist(
         ItemsShowcaseChecklistNames.BlanksBelow,
         ChecklistCategory.ItemsShowcase,

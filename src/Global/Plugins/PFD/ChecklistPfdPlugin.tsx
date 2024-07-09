@@ -1,10 +1,6 @@
 import { FSComponent, registerPlugin } from "@microsoft/msfs-sdk";
 import { AbstractG3000PfdPlugin } from "@microsoft/msfs-wtg3000-pfd";
-import {
-  ChecklistFilePaths,
-  ChecklistPane,
-  ChecklistPaneKeys,
-} from "@base/Shared";
+import { ChecklistFilePaths, ChecklistPane, ChecklistPaneKeys } from "@base/Shared";
 import {
   LongitudeAbbrevChecklists,
   LongitudeNormalChecklists,
@@ -12,10 +8,7 @@ import {
   TbmNormalChecklists,
 } from "../Shared/ChecklistSystem/Checklists";
 import { DisplayPaneViewFactory } from "@microsoft/msfs-wtg3000-common";
-import {
-  LongitudeChecklistRepository,
-  TbmChecklistRepository,
-} from "../Shared/ChecklistSystem";
+import { LongitudeChecklistRepository, TbmChecklistRepository } from "../Shared/ChecklistSystem";
 import { AircraftModel } from "../Shared/Common/AircraftModel";
 
 const aircraftType = SimVar.GetSimVarValue("ATC MODEL", "string");
@@ -37,10 +30,7 @@ export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
             repo={
               new LongitudeChecklistRepository(
                 this.binder.bus,
-                [
-                  ...LongitudeNormalChecklists.getChecklists(),
-                  ...LongitudeAbbrevChecklists.getChecklists(),
-                ],
+                [...LongitudeNormalChecklists.getChecklists(), ...LongitudeAbbrevChecklists.getChecklists()],
                 LongitudeNormalChecklists.getChecklists()[0],
               )
             }
@@ -57,10 +47,7 @@ export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
             repo={
               new TbmChecklistRepository(
                 this.binder.bus,
-                [
-                  ...TbmNormalChecklists.getChecklists(),
-                  ...TbmAmplifiedChecklists.getChecklists(),
-                ],
+                [...TbmNormalChecklists.getChecklists(), ...TbmAmplifiedChecklists.getChecklists()],
                 TbmNormalChecklists.getChecklists()[0],
               )
             }

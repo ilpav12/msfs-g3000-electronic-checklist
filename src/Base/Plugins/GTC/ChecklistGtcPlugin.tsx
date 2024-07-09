@@ -6,17 +6,12 @@ import {
   LabelBarPluginHandlers,
 } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistGtcViewKeys } from "@base/GTC/Pages";
-import {
-  ChecklistEvents,
-  ChecklistInteractionEventAction,
-} from "@base/Shared/ChecklistSystem/ChecklistEvents";
+import { ChecklistEvents, ChecklistInteractionEventAction } from "@base/Shared/ChecklistSystem/ChecklistEvents";
 
 export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
   private readonly isChecklistPaneViewActive = MappedSubject.create(
     ([selectedPaneIndex, viewKey]) => {
-      return (
-        selectedPaneIndex !== -1 && viewKey === ChecklistGtcViewKeys.Checklist
-      );
+      return selectedPaneIndex !== -1 && viewKey === ChecklistGtcViewKeys.Checklist;
     },
     this.binder.gtcService.selectedDisplayPane,
     this.binder.gtcService.selectedPaneSettings.getSetting("displayPaneView"),
@@ -25,9 +20,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
   /** @inheritdoc */
   public getKnobStateOverrides(): Readonly<GtcKnobStatePluginOverrides> | null {
     return {
-      mapKnobState: this.isChecklistPaneViewActive.map((isActive) =>
-        isActive ? "ChecklistKnobState" : null,
-      ),
+      mapKnobState: this.isChecklistPaneViewActive.map((isActive) => (isActive ? "ChecklistKnobState" : null)),
     };
   }
 
@@ -48,10 +41,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
 
   /** @inheritdoc */
   public onGtcInteractionEvent(event: GtcInteractionEvent): boolean {
-    if (
-      this.binder.gtcService.gtcKnobStates.mapKnobState.get() !==
-      "ChecklistKnobState"
-    ) {
+    if (this.binder.gtcService.gtcKnobStates.mapKnobState.get() !== "ChecklistKnobState") {
       return false;
     }
 

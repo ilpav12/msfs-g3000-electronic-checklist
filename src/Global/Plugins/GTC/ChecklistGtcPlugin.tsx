@@ -1,31 +1,15 @@
 import { FSComponent, registerPlugin } from "@microsoft/msfs-sdk";
-import {
-  AbstractG3000GtcPlugin,
-  GtcService,
-  GtcViewKeys,
-  GtcViewLifecyclePolicy,
-} from "@microsoft/msfs-wtg3000-gtc";
+import { AbstractG3000GtcPlugin, GtcService, GtcViewKeys, GtcViewLifecyclePolicy } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistFilePaths } from "@base/Shared";
-import {
-  ChecklistGtcMfdHomePage,
-  ChecklistGtcPage,
-  BaseChecklistGtcPlugin,
-  ChecklistGtcViewKeys,
-} from "@base/GTC";
-import {
-  LongitudeChecklistCategory,
-  TbmChecklistCategory,
-} from "../Shared/ChecklistSystem/Checklist";
+import { ChecklistGtcMfdHomePage, ChecklistGtcPage, BaseChecklistGtcPlugin, ChecklistGtcViewKeys } from "@base/GTC";
+import { LongitudeChecklistCategory, TbmChecklistCategory } from "../Shared/ChecklistSystem/Checklist";
 import {
   LongitudeAbbrevChecklists,
   LongitudeNormalChecklists,
   TbmAmplifiedChecklists,
   TbmNormalChecklists,
 } from "../Shared/ChecklistSystem/Checklists";
-import {
-  LongitudeChecklistRepository,
-  TbmChecklistRepository,
-} from "../Shared/ChecklistSystem/ChecklistRepository";
+import { LongitudeChecklistRepository, TbmChecklistRepository } from "../Shared/ChecklistSystem/ChecklistRepository";
 import { AircraftModel } from "../Shared/Common/AircraftModel";
 
 const aircraftType = SimVar.GetSimVarValue("ATC MODEL", "string");
@@ -38,21 +22,16 @@ export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
       return;
     }
 
-    gtcService.registerView(
-      GtcViewLifecyclePolicy.Static,
-      GtcViewKeys.MfdHome,
-      "MFD",
-      function (service, mode, index) {
-        return (
-          <ChecklistGtcMfdHomePage
-            gtcService={service}
-            controlMode={mode}
-            displayPaneIndex={index}
-            supportPerfPage={aircraftType === AircraftModel.Longitude}
-          />
-        );
-      },
-    );
+    gtcService.registerView(GtcViewLifecyclePolicy.Static, GtcViewKeys.MfdHome, "MFD", function (service, mode, index) {
+      return (
+        <ChecklistGtcMfdHomePage
+          gtcService={service}
+          controlMode={mode}
+          displayPaneIndex={index}
+          supportPerfPage={aircraftType === AircraftModel.Longitude}
+        />
+      );
+    });
 
     gtcService.registerView(
       GtcViewLifecyclePolicy.Persistent,
@@ -65,17 +44,11 @@ export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
               gtcService={service}
               controlMode={mode}
               displayPaneIndex={index}
-              checklistCategories={[
-                LongitudeChecklistCategory.Normal,
-                LongitudeChecklistCategory.Abbrev,
-              ]}
+              checklistCategories={[LongitudeChecklistCategory.Normal, LongitudeChecklistCategory.Abbrev]}
               checklistRepository={
                 new LongitudeChecklistRepository(
                   service.bus,
-                  [
-                    ...LongitudeNormalChecklists.getChecklists(),
-                    ...LongitudeAbbrevChecklists.getChecklists(),
-                  ],
+                  [...LongitudeNormalChecklists.getChecklists(), ...LongitudeAbbrevChecklists.getChecklists()],
                   LongitudeNormalChecklists.getChecklists()[0],
                 )
               }
@@ -87,17 +60,11 @@ export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
               gtcService={service}
               controlMode={mode}
               displayPaneIndex={index}
-              checklistCategories={[
-                TbmChecklistCategory.Normal,
-                TbmChecklistCategory.Amplified,
-              ]}
+              checklistCategories={[TbmChecklistCategory.Normal, TbmChecklistCategory.Amplified]}
               checklistRepository={
                 new TbmChecklistRepository(
                   service.bus,
-                  [
-                    ...TbmNormalChecklists.getChecklists(),
-                    ...TbmAmplifiedChecklists.getChecklists(),
-                  ],
+                  [...TbmNormalChecklists.getChecklists(), ...TbmAmplifiedChecklists.getChecklists()],
                   TbmNormalChecklists.getChecklists()[0],
                 )
               }

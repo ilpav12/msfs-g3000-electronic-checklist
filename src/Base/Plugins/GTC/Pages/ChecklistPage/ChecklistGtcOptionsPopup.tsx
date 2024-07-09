@@ -1,15 +1,9 @@
 import { FSComponent, Subject, VNode } from "@microsoft/msfs-sdk";
-import {
-  GtcTouchButton,
-  GtcView,
-  GtcViewProps,
-} from "@microsoft/msfs-wtg3000-gtc";
-import {
-  ChecklistEvents,
-  ChecklistReadonly,
-} from "@base/Shared/ChecklistSystem";
+import { GtcTouchButton, GtcView, GtcViewProps } from "@microsoft/msfs-wtg3000-gtc";
+import { ChecklistEvents, ChecklistReadonly } from "@base/Shared/ChecklistSystem";
 
 import "./ChecklistGtcOptionsPopup.css";
+import { ChecklistGtcViewKeys } from "@base/GTC/Pages/MfdHomePage/ChecklistGtcMfdHomePage";
 
 interface ChecklistGtcOptionsPopupProps<Names, Category> extends GtcViewProps {
   /** The active checklist name. */
@@ -19,9 +13,7 @@ interface ChecklistGtcOptionsPopupProps<Names, Category> extends GtcViewProps {
 /**
  * A popup for checklist options.
  */
-export class ChecklistGtcOptionsPopup<Names, Category> extends GtcView<
-  ChecklistGtcOptionsPopupProps<Names, Category>
-> {
+export class ChecklistGtcOptionsPopup<Names, Category> extends GtcView<ChecklistGtcOptionsPopupProps<Names, Category>> {
   /** @inheritdoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
@@ -55,7 +47,8 @@ export class ChecklistGtcOptionsPopup<Names, Category> extends GtcView<
             label={"Show Incomplete\nChecklists"}
             class="checklist-options-popup-button"
             onPressed={() => {
-              // TODO
+              this.gtcService.goBack();
+              this.gtcService.changePageTo(ChecklistGtcViewKeys.IncompleteChecklists);
             }}
           />
           <GtcTouchButton

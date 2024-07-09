@@ -1,19 +1,6 @@
-import {
-  EventBus,
-  FSComponent,
-  HardwareUiControl,
-  Subscribable,
-  VNode,
-} from "@microsoft/msfs-sdk";
-import {
-  FmsUiControlEvents,
-  ChecklistUiControl,
-  ChecklistUiControlProps,
-} from "@base/Shared/UI/ChecklistUiControl";
-import {
-  ChecklistInteractionEventAction,
-  ChecklistEvents,
-} from "@base/Shared/ChecklistSystem/ChecklistEvents";
+import { EventBus, FSComponent, HardwareUiControl, Subscribable, VNode } from "@microsoft/msfs-sdk";
+import { FmsUiControlEvents, ChecklistUiControl, ChecklistUiControlProps } from "@base/Shared/UI/ChecklistUiControl";
+import { ChecklistInteractionEventAction, ChecklistEvents } from "@base/Shared/ChecklistSystem/ChecklistEvents";
 
 /** Component props for the {@link NextChecklistControl} component */
 export interface NextChecklistControlProps extends ChecklistUiControlProps {

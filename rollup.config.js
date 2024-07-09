@@ -5,15 +5,10 @@ import fs from "node:fs";
 
 const distDir = "./dist/ilpav-avionics-g3000-electronic-checklist";
 
-const manifestFile = JSON.parse(
-  fs.readFileSync(distDir + "/manifest.json", "utf8"),
-);
+const manifestFile = JSON.parse(fs.readFileSync(distDir + "/manifest.json", "utf8"));
 const packageFile = JSON.parse(fs.readFileSync("package.json", "utf8"));
 manifestFile.package_version = packageFile.version;
-fs.writeFileSync(
-  distDir + "/manifest.json",
-  JSON.stringify(manifestFile, null, 2),
-);
+fs.writeFileSync(distDir + "/manifest.json", JSON.stringify(manifestFile, null, 2));
 
 let config = [];
 

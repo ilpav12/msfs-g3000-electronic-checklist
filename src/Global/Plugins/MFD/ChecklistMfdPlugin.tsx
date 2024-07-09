@@ -1,15 +1,8 @@
 import { FSComponent, registerPlugin } from "@microsoft/msfs-sdk";
 import { DisplayPaneViewFactory } from "@microsoft/msfs-wtg3000-common";
 import { AbstractG3000MfdPlugin } from "@microsoft/msfs-wtg3000-mfd";
-import {
-  ChecklistFilePaths,
-  ChecklistPane,
-  ChecklistPaneKeys,
-} from "@base/Shared";
-import {
-  LongitudeChecklistRepository,
-  TbmChecklistRepository,
-} from "../Shared/ChecklistSystem/ChecklistRepository";
+import { ChecklistFilePaths, ChecklistPane, ChecklistPaneKeys } from "@base/Shared";
+import { LongitudeChecklistRepository, TbmChecklistRepository } from "../Shared/ChecklistSystem/ChecklistRepository";
 import {
   LongitudeAbbrevChecklists,
   LongitudeNormalChecklists,
@@ -37,10 +30,7 @@ export class ChecklistMfdPlugin extends AbstractG3000MfdPlugin {
             repo={
               new LongitudeChecklistRepository(
                 this.binder.bus,
-                [
-                  ...LongitudeNormalChecklists.getChecklists(),
-                  ...LongitudeAbbrevChecklists.getChecklists(),
-                ],
+                [...LongitudeNormalChecklists.getChecklists(), ...LongitudeAbbrevChecklists.getChecklists()],
                 LongitudeNormalChecklists.getChecklists()[0],
               )
             }
@@ -57,10 +47,7 @@ export class ChecklistMfdPlugin extends AbstractG3000MfdPlugin {
             repo={
               new TbmChecklistRepository(
                 this.binder.bus,
-                [
-                  ...TbmNormalChecklists.getChecklists(),
-                  ...TbmAmplifiedChecklists.getChecklists(),
-                ],
+                [...TbmNormalChecklists.getChecklists(), ...TbmAmplifiedChecklists.getChecklists()],
                 TbmNormalChecklists.getChecklists()[0],
               )
             }
