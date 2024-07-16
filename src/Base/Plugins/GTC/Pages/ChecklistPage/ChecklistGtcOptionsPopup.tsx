@@ -1,9 +1,9 @@
 import { FSComponent, Subject, VNode } from "@microsoft/msfs-sdk";
-import { GtcTouchButton, GtcView, GtcViewKeys, GtcViewProps } from "@microsoft/msfs-wtg3000-gtc";
+import { GtcTouchButton, GtcView, GtcViewProps } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistEvents, ChecklistReadonly } from "@base/Shared/ChecklistSystem";
+import { ChecklistGtcViewKeys } from "@base/GTC/Pages/MfdHomePage/ChecklistGtcMfdHomePage";
 
 import "./ChecklistGtcOptionsPopup.css";
-import { ChecklistGtcViewKeys } from "@base/GTC/Pages/MfdHomePage/ChecklistGtcMfdHomePage";
 
 interface ChecklistGtcOptionsPopupProps<Names, Category> extends GtcViewProps {
   /** The active checklist name. */
@@ -14,11 +14,19 @@ interface ChecklistGtcOptionsPopupProps<Names, Category> extends GtcViewProps {
  * A popup for checklist options.
  */
 export class ChecklistGtcOptionsPopup<Names, Category> extends GtcView<ChecklistGtcOptionsPopupProps<Names, Category>> {
+  private readonly parentViewKey = Subject.create<ChecklistGtcViewKeys>(ChecklistGtcViewKeys.Checklist);
+
   /** @inheritdoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
 
     this._title.set("Checklist");
+
+    this.gtcService.activeView.sub((view) => {
+      if (view.key in ChecklistGtcViewKeys) {
+        this.parentViewKey.set(this.gtcService.activeView.get().key as ChecklistGtcViewKeys);
+      }
+    });
   }
 
   /** @inheritDoc */
@@ -44,14 +52,13 @@ export class ChecklistGtcOptionsPopup<Names, Category> extends GtcView<Checklist
             }}
           />
           <GtcTouchButton
-            label={"Show Incomplete\nChecklists"}
+            label={this.gtcService.isHorizontal ? "Show Incomplete\nChecklists" : "Show\nIncomplete\nChecklists"}
             class="checklist-options-popup-button"
             onPressed={() => {
               this.gtcService.goBack();
-              if (this.gtcService.activeView.get().key !== ChecklistGtcViewKeys.IncompleteChecklists) {
-                this.gtcService.changePageTo(ChecklistGtcViewKeys.IncompleteChecklists);
-              }
+              this.gtcService.changePageTo(ChecklistGtcViewKeys.IncompleteChecklists);
             }}
+            isEnabled={this.parentViewKey.map((v) => v !== ChecklistGtcViewKeys.IncompleteChecklists)}
           />
           <GtcTouchButton
             label={"Reset Checklist"}

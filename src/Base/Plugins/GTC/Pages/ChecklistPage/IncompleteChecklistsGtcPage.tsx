@@ -108,7 +108,7 @@ export class IncompleteChecklistsGtcPage<Names, Category> extends GtcView<
               listItemSpacingPx={4}
               sidebarState={this._sidebarState}
               class="gtc-checklist-tab-list"
-              data={this.listItems}
+              data={this.listItems.length > 0 ? this.listItems : undefined}
               renderItem={(listItem) => {
                 return (
                   <GtcListItem>
@@ -138,7 +138,9 @@ export class IncompleteChecklistsGtcPage<Names, Category> extends GtcView<
                   </GtcListItem>
                 );
               }}
-            />
+            >
+              <p class="empty-incomplete-checklist-label">No Incomplete Checklist Pages</p>
+            </GtcList>
           </TabbedContent>
         </TabbedContainer>
         <GtcTouchButton
