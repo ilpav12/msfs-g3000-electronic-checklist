@@ -1,4 +1,5 @@
 .gtc-horizontal .gtc-incomplete-checklists {
+  --checklist-font-size-larger: 42px;
   --checklist-font-size-large: 32px;
 
   --checklist-page-padding: 4.5% 7.5% 1% 7.5%;
@@ -14,6 +15,7 @@
 }
 
 .gtc-vertical .gtc-incomplete-checklists {
+  --checklist-font-size-larger: 24px;
   --checklist-font-size-large: 16px;
 
   --checklist-page-padding: 4.5% 2% 1% 2%;
@@ -38,7 +40,7 @@
 }
 
 .empty-incomplete-checklist-label {
-  font-size: 24px;
+  font-size: var(--checklist-font-size-larger);
   line-height: 1.25;
   text-align: center;
   margin-top: 50%;

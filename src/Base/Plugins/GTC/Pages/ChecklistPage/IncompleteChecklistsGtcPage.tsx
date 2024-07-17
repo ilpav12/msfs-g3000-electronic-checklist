@@ -8,16 +8,11 @@ import {
   GtcViewProps,
   TabbedContent,
 } from "@microsoft/msfs-wtg3000-gtc";
-import { GtcChecklistPagePopupKeys } from "@base/GTC/Pages/ChecklistPage/ChecklistGtcPage";
+import { ChecklistListItems, GtcChecklistPagePopupKeys } from "@base/GTC/Pages/ChecklistPage/ChecklistGtcPage";
 import { ChecklistRepository, ChecklistEvents, ChecklistReadonly } from "@base/Shared/ChecklistSystem";
 import { TabbedContainer, TabConfiguration } from "@base/GTC/UI/TabbedContainer";
 
 import "./IncompleteChecklistsGtcPage.css";
-
-export interface ChecklistListItems<Names, Category> extends DynamicListData {
-  checklistName: Names;
-  checklistCategory: Category;
-}
 
 /**
  * Props for the checklist GTC page.
