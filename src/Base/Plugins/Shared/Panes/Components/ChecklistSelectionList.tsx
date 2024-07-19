@@ -1,19 +1,28 @@
 import {
   ArraySubject,
   EventBus,
-  FocusPosition,
   FSComponent,
   HardwareUiControlProps,
-  NodeReference,
   Subject,
   UiControlPropEventHandlers,
   VNode,
 } from "@microsoft/msfs-sdk";
 import { ControllableDisplayPaneIndex } from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
-import { ChecklistEvents, ChecklistInteractionEventAction, ChecklistRepository } from "@base/Shared/ChecklistSystem";
+import {
+  ChecklistEvents,
+  ChecklistInteractionEventAction,
+  ChecklistPageFocusableItemType,
+  ChecklistRepository,
+} from "@base/Shared/ChecklistSystem";
 import { ChecklistControlList, ChecklistUiControl, FmsUiControlEvents } from "@base/Shared/UI";
 
-export interface ChecklistSelectionListProps<Names, Category>
+import "./ChecklistSelectionList.css";
+
+export type SelectionListProps<Names, Category> =
+  | ChecklistSelectionListProps<Names, Category>
+  | CategorySelectionListProps<Names, Category>;
+
+interface BaseSelectionListProps<Names, Category>
   extends UiControlPropEventHandlers<FmsUiControlEvents>,
     HardwareUiControlProps {
   /** The event bus */
@@ -22,33 +31,55 @@ export interface ChecklistSelectionListProps<Names, Category>
   readonly paneIndex: ControllableDisplayPaneIndex;
   /** The checklist repository */
   readonly repo: ChecklistRepository<Names, Category>;
-  /** The popup type */
-  readonly type: "category" | "checklist";
-  /** The items to display */
-  readonly items: ArraySubject<Names> | ArraySubject<Category>;
+  /** The focused item type. */
+  readonly focusedItemType: Subject<ChecklistPageFocusableItemType>;
+  /** The current category */
+  readonly currentCategory: Subject<Category>;
   /** Whether the popup is open. */
   readonly isOpen: Subject<boolean>;
-  /** The scroll container reference */
-  readonly scrollContainerRef: NodeReference<HTMLDivElement>;
 }
 
-export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
-  ChecklistSelectionListProps<Names, Category>
-> {
-  protected readonly selectionItemListRef = FSComponent.createRef<ChecklistControlList<Names | Category>>();
+interface ChecklistSelectionListProps<Names, Category> extends BaseSelectionListProps<Names, Category> {
+  /** The popup type */
+  readonly type: "checklist";
+  /** The items to display */
+  readonly items: ArraySubject<Names>;
+}
+
+interface CategorySelectionListProps<Names, Category> extends BaseSelectionListProps<Names, Category> {
+  /** The popup type */
+  readonly type: "category";
+  /** The items to display */
+  readonly items: ArraySubject<Category>;
+}
+
+export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<SelectionListProps<Names, Category>> {
+  private readonly scrollContainer = FSComponent.createRef<HTMLDivElement>();
+  private readonly selectionItemListRef = FSComponent.createRef<ChecklistControlList<Names | Category>>();
 
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
 
     this.props.isOpen.sub((isOpen) => {
-      console.log("isOpen", isOpen);
       for (let i = 0; i < this.props.items.length; i++) {
         this.selectionItemListRef.instance.getChild(i)?.setDisabled(!isOpen);
       }
 
       if (isOpen) {
         this.selectionItemListRef.instance.scroll("forward");
+        const activeChecklist = this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).get();
+        if (this.props.type === "category") {
+          this.selectionItemListRef.instance.scrollToIndex(
+            this.props.items.getArray().indexOf(activeChecklist.category),
+          );
+        } else {
+          let index = 0;
+          if (this.props.currentCategory.get() === activeChecklist.category) {
+            index = this.props.items.getArray().indexOf(activeChecklist.name);
+          }
+          this.selectionItemListRef.instance.scrollToIndex(index);
+        }
       }
     });
 
@@ -64,44 +95,36 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
           switch (event.action) {
             case ChecklistInteractionEventAction.Interact:
               if (this.props.type === "category") {
-                const newChecklist = this.props.repo.getChecklistsByCategory(
+                this.props.currentCategory.set(
                   this.props.items.get(this.selectionItemListRef.instance.getSelectedIndex()) as Category,
-                )[0];
-                this.props.bus.getPublisher<ChecklistEvents<Names, Category>>().pub(
-                  "checklist_event",
-                  {
-                    type: "active_checklist_changed",
-                    newActiveChecklistName: newChecklist.name,
-                    newActiveChecklistCategory: newChecklist.category,
-                    targetPaneIndex: this.props.paneIndex,
-                  },
-                  true,
                 );
-              } else {
-                const currentActiveChecklist = this.props.repo
-                  .getActiveChecklistByPaneIndex(this.props.paneIndex)
-                  .get();
-                this.props.bus.getPublisher<ChecklistEvents<Names, Category>>().pub(
-                  "checklist_event",
-                  {
-                    type: "active_checklist_changed",
-                    newActiveChecklistName: this.props.items.get(
-                      this.selectionItemListRef.instance.getSelectedIndex(),
-                    ) as Names,
-                    newActiveChecklistCategory: currentActiveChecklist.category,
-                    targetPaneIndex: this.props.paneIndex,
-                  },
-                  true,
-                );
+                this.props.isOpen.set(false);
+                this.props.focusedItemType.set(ChecklistPageFocusableItemType.ChecklistSelectionList);
+                return true;
               }
-              this.props.isOpen.set(false);
+
+              const currentActiveChecklist = this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).get();
+              this.props.bus.getPublisher<ChecklistEvents<Names, Category>>().pub(
+                "checklist_event",
+                {
+                  type: "active_checklist_changed",
+                  newActiveChecklistName: this.props.items.get(
+                    this.selectionItemListRef.instance.getSelectedIndex(),
+                  ) as Names,
+                  newActiveChecklistCategory: this.props.currentCategory.get(),
+                  targetPaneIndex: this.props.paneIndex,
+                },
+                true,
+              );
               return true;
+
             case ChecklistInteractionEventAction.ScrollUp:
               if (this.selectionItemListRef.instance.getSelectedIndex() === 0) {
                 return false;
               }
               this.scroll("backward");
               return true;
+
             case ChecklistInteractionEventAction.ScrollDown:
               if (this.selectionItemListRef.instance.getSelectedIndex() === this.props.items.length - 1) {
                 return false;
@@ -139,14 +162,21 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
 
   public render(): VNode {
     return (
-      <ChecklistControlList
-        class="checklist-popup-selection-list"
-        ref={this.selectionItemListRef}
-        data={this.props.items as ArraySubject<Names | Category>}
-        renderItem={this.renderSelectionItem.bind(this)}
-        scrollContainer={this.props.scrollContainerRef}
-        hideScrollbar={false}
-      />
+      <div
+        ref={this.scrollContainer}
+        class={{
+          "checklist-popup-dialog": true,
+          hidden: this.props.isOpen.map((v) => !v),
+        }}
+      >
+        <ChecklistControlList
+          class="checklist-popup-selection-list"
+          ref={this.selectionItemListRef}
+          data={this.props.items as ArraySubject<Names | Category>}
+          renderItem={this.renderSelectionItem.bind(this)}
+          hideScrollbar={false}
+        />
+      </div>
     );
   }
 }

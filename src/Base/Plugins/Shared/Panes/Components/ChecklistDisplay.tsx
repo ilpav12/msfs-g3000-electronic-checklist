@@ -27,6 +27,7 @@ import { ChecklistControlList, ChecklistUiControl, FmsUiControlEvents } from "@b
 import { ChecklistItemDisplay } from "@base/Shared/Panes/Components/ChecklistItemDisplay";
 import { NextChecklistControl } from "@base/Shared/Panes/Components/ChecklistNextButton";
 import { ControllableDisplayPaneIndex } from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
+import { ChecklistSelectionUiControl } from "@base/Shared/Panes/Components/ChecklistSelectionUiControl";
 
 import "./ChecklistDisplay.css";
 
@@ -61,6 +62,9 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
 
   private readonly isChecklistCategoryPopupOpen = Subject.create(false);
   private readonly isChecklistPopupOpen = Subject.create(false);
+  // Necessary because 'checklist_interaction' event is coming after 'active_checklist_changed' event
+  private readonly canChecklistCategoryPopupOpenBeClosed = Subject.create(false);
+  private readonly canChecklistPopupOpenBeClosed = Subject.create(false);
 
   public onAfterRender(node: VNode) {
     super.onAfterRender(node);
@@ -96,6 +100,27 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
    */
   private onChecklistInteraction(event: ChecklistEvent<any, any>): boolean {
     if (event.type === "checklist_interaction" && event.targetPaneIndex === this.props.paneIndex) {
+      if (this.canChecklistCategoryPopupOpenBeClosed.get()) {
+        this.canChecklistCategoryPopupOpenBeClosed.set(false);
+        this.checklistItemListRef.instance.focus(FocusPosition.First);
+        return false;
+      }
+
+      if (this.canChecklistPopupOpenBeClosed.get()) {
+        this.canChecklistPopupOpenBeClosed.set(false);
+        this.checklistItemListRef.instance.focus(FocusPosition.First);
+        return false;
+      }
+
+      if (
+        this.canChecklistCategoryPopupOpenBeClosed.get() ||
+        this.canChecklistPopupOpenBeClosed.get() ||
+        this.isChecklistCategoryPopupOpen.get() ||
+        this.isChecklistPopupOpen.get()
+      ) {
+        return false;
+      }
+
       switch (event.action) {
         case ChecklistInteractionEventAction.Interact:
           if (this.props.focusedItemType.get() === ChecklistPageFocusableItemType.ChecklistCategorySelectionList) {
@@ -122,6 +147,18 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
         default:
           return false;
       }
+    }
+
+    if (event.type === "active_checklist_changed" && event.targetPaneIndex === this.props.paneIndex) {
+      if (this.isChecklistCategoryPopupOpen.get()) {
+        this.canChecklistCategoryPopupOpenBeClosed.set(true);
+        this.isChecklistCategoryPopupOpen.set(false);
+      }
+      if (this.isChecklistPopupOpen.get()) {
+        this.canChecklistPopupOpenBeClosed.set(true);
+        this.isChecklistPopupOpen.set(false);
+      }
+      return true;
     }
 
     if (event.type === "check_all_items" && event.checklistName === this.props.checklist.get().name) {
@@ -286,12 +323,14 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
     return (
       <div class="checklist-page-container">
         <div class="checklist-selection-container">
-          <div class="checklist-category">
-            <span>{this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).map((v) => v.category)}</span>
-          </div>
-          <div class="checklist-title">
-            <span>{this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).map((v) => v.name)}</span>
-          </div>
+          <ChecklistSelectionUiControl
+            bus={this.props.bus}
+            paneIndex={this.props.paneIndex}
+            repo={this.props.repo}
+            focusedItemType={this.props.focusedItemType}
+            isCategoryPopupOpen={this.isChecklistCategoryPopupOpen}
+            isChecklistPopupOpen={this.isChecklistPopupOpen}
+          />
         </div>
         <div class="checklist-container">
           <div class="checklist-display-container">
