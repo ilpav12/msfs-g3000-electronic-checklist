@@ -30,8 +30,8 @@ export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
             repo={
               new LongitudeChecklistRepository(
                 this.binder.bus,
-                [...LongitudeNormalChecklists.getChecklists(), ...LongitudeAbbrevChecklists.getChecklists()],
-                LongitudeNormalChecklists.getChecklists()[0],
+                [...LongitudeAbbrevChecklists.getChecklists(), ...LongitudeNormalChecklists.getChecklists()],
+                LongitudeAbbrevChecklists.getChecklists()[0],
               )
             }
           />
@@ -48,7 +48,7 @@ export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
               new TbmChecklistRepository(
                 this.binder.bus,
                 [...TbmNormalChecklists.getChecklists(), ...TbmAmplifiedChecklists.getChecklists()],
-                TbmNormalChecklists.getChecklists()[0],
+                TbmNormalChecklists.getChecklists()[1],
               )
             }
           />

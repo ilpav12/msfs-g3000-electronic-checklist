@@ -44,12 +44,12 @@ export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
               gtcService={service}
               controlMode={mode}
               displayPaneIndex={index}
-              checklistCategories={[LongitudeChecklistCategory.Normal, LongitudeChecklistCategory.Abbrev]}
+              checklistCategories={[LongitudeChecklistCategory.Abbrev, LongitudeChecklistCategory.Normal]}
               checklistRepository={
                 new LongitudeChecklistRepository(
                   service.bus,
-                  [...LongitudeNormalChecklists.getChecklists(), ...LongitudeAbbrevChecklists.getChecklists()],
-                  LongitudeNormalChecklists.getChecklists()[0],
+                  [...LongitudeAbbrevChecklists.getChecklists(), ...LongitudeNormalChecklists.getChecklists()],
+                  LongitudeAbbrevChecklists.getChecklists()[0],
                 )
               }
             />
@@ -65,7 +65,7 @@ export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
                 new TbmChecklistRepository(
                   service.bus,
                   [...TbmNormalChecklists.getChecklists(), ...TbmAmplifiedChecklists.getChecklists()],
-                  TbmNormalChecklists.getChecklists()[0],
+                  TbmNormalChecklists.getChecklists()[1],
                 )
               }
             />
