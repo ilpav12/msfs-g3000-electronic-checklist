@@ -1,5 +1,5 @@
-import { ArraySubject, FSComponent, Subject, VNode } from "@microsoft/msfs-sdk";
-import { ControllableDisplayPaneIndex, DynamicListData } from "@microsoft/msfs-wtg3000-common";
+import { ArraySubject, FSComponent, Subject, Subscription, VNode } from "@microsoft/msfs-sdk";
+import { ControllableDisplayPaneIndex } from "@microsoft/msfs-wtg3000-common";
 import {
   GtcList,
   GtcListItem,
@@ -14,9 +14,6 @@ import { TabbedContainer, TabConfiguration } from "@base/GTC/UI/TabbedContainer"
 
 import "./IncompleteChecklistsGtcPage.css";
 
-/**
- * Props for the checklist GTC page.
- */
 export interface IncompleteChecklistsGtcPageProps<Names, Category> extends GtcViewProps {
   /** The checklist repository. */
   checklistRepository: ChecklistRepository<Names, Category>;
@@ -25,7 +22,7 @@ export interface IncompleteChecklistsGtcPageProps<Names, Category> extends GtcVi
 }
 
 /**
- * The checklist GTC page.
+ * The incomplete checklist GTC page.
  */
 export class IncompleteChecklistsGtcPage<Names, Category> extends GtcView<
   IncompleteChecklistsGtcPageProps<Names, Category>
@@ -42,6 +39,9 @@ export class IncompleteChecklistsGtcPage<Names, Category> extends GtcView<
     }),
   );
 
+  private selectedPaneSub?: Subscription;
+  private checklistEventsSub?: Subscription;
+
   private readonly listItemHeight = this.props.gtcService.orientation === "horizontal" ? 135 : 88;
 
   /** @inheritDoc */
@@ -52,13 +52,13 @@ export class IncompleteChecklistsGtcPage<Names, Category> extends GtcView<
 
     this._activeComponent.set(this.listRef.getOrDefault());
 
-    this.gtcService.selectedDisplayPane.sub((paneIndex) => {
+    this.selectedPaneSub = this.gtcService.selectedDisplayPane.sub((paneIndex) => {
       this.props.activeChecklist.set(
         this.props.checklistRepository.getActiveChecklistByPaneIndex(paneIndex as ControllableDisplayPaneIndex).get(),
       );
     });
 
-    this.bus
+    this.checklistEventsSub = this.bus
       .getSubscriber<ChecklistEvents>()
       .on("checklist_event")
       .handle((event) => {
@@ -90,7 +90,7 @@ export class IncompleteChecklistsGtcPage<Names, Category> extends GtcView<
   }
 
   /** @inheritDoc */
-  render(): VNode {
+  public render(): VNode {
     return (
       <div class="gtc-incomplete-checklists">
         <TabbedContainer ref={this.tabbedContainerRef} configuration={TabConfiguration.Right5}>
@@ -156,6 +156,9 @@ export class IncompleteChecklistsGtcPage<Names, Category> extends GtcView<
     this.tabbedContainerRef.getOrDefault()?.destroy();
     this.listRef.getOrDefault()?.destroy();
     this.listItems.clear();
+
+    this.selectedPaneSub?.destroy();
+    this.checklistEventsSub?.destroy();
 
     super.destroy();
   }

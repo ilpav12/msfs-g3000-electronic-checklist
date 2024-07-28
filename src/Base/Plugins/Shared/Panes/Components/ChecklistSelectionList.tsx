@@ -4,6 +4,7 @@ import {
   FSComponent,
   HardwareUiControlProps,
   Subject,
+  Subscription,
   UiControlPropEventHandlers,
   VNode,
 } from "@microsoft/msfs-sdk";
@@ -53,15 +54,19 @@ interface CategorySelectionListProps<Names, Category> extends BaseSelectionListP
   readonly items: ArraySubject<Category>;
 }
 
+/** A selection list for checklists or categories. */
 export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<SelectionListProps<Names, Category>> {
   private readonly scrollContainer = FSComponent.createRef<HTMLDivElement>();
   private readonly selectionItemListRef = FSComponent.createRef<ChecklistControlList<Names | Category>>();
+
+  private isOpenSub?: Subscription;
+  private checklistEventsSub?: Subscription;
 
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
 
-    this.props.isOpen.sub((isOpen) => {
+    this.isOpenSub = this.props.isOpen.sub((isOpen) => {
       for (let i = 0; i < this.props.items.length; i++) {
         this.selectionItemListRef.instance.getChild(i)?.setDisabled(!isOpen);
       }
@@ -83,7 +88,7 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
       }
     });
 
-    this.props.bus
+    this.checklistEventsSub = this.props.bus
       .getSubscriber<ChecklistEvents>()
       .on("checklist_event")
       .handle((event) => {
@@ -160,6 +165,7 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
     );
   }
 
+  /** @inheritDoc */
   public render(): VNode {
     return (
       <div
@@ -178,5 +184,15 @@ export class ChecklistSelectionList<Names, Category> extends ChecklistUiControl<
         />
       </div>
     );
+  }
+
+  /** @inheritDoc */
+  public destroy(): void {
+    this.selectionItemListRef.getOrDefault()?.destroy();
+
+    this.isOpenSub?.destroy();
+    this.checklistEventsSub?.destroy();
+
+    super.destroy();
   }
 }

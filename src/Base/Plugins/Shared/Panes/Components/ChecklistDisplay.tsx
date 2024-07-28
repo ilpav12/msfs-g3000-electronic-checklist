@@ -7,6 +7,7 @@ import {
   MathUtils,
   Subject,
   Subscribable,
+  Subscription,
   UiControlPropEventHandlers,
   VNode,
 } from "@microsoft/msfs-sdk";
@@ -49,6 +50,7 @@ export interface ChecklistDisplayProps<Names, Category>
   paneIndex: ControllableDisplayPaneIndex;
 }
 
+/** A display component for a checklist. */
 export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<ChecklistDisplayProps<Names, Category>> {
   private readonly scrollContainer = FSComponent.createRef<HTMLDivElement>();
   protected readonly checklistItemListRef = FSComponent.createRef<ChecklistControlList<ChecklistItemReadonly>>();
@@ -66,10 +68,14 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
   private readonly canChecklistCategoryPopupOpenBeClosed = Subject.create(false);
   private readonly canChecklistPopupOpenBeClosed = Subject.create(false);
 
+  private checklistSub?: Subscription;
+  private checklistEventsSub?: Subscription;
+  private isChecklistCompletedSub?: Subscription;
+
   public onAfterRender(node: VNode) {
     super.onAfterRender(node);
 
-    this.props.checklist.sub((checklist) => {
+    this.checklistSub = this.props.checklist.sub((checklist) => {
       this.items.set([...checklist.items]);
       this.previousIndex = 0;
       this.checklistItemListRef.instance.focus(FocusPosition.First);
@@ -80,13 +86,13 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
     );
     this.checklistItemListRef.instance.ensureIndexInView = this.replaceEnsureIndexInView.bind(this);
 
-    this.props.bus
+    this.checklistEventsSub = this.props.bus
       .getSubscriber<ChecklistEvents>()
       .on("checklist_event")
       .handle(this.onChecklistInteraction.bind(this));
 
     // Needed to handle the case where the last item is a challenge
-    this.props.isChecklistCompleted.sub((isComplete) => {
+    this.isChecklistCompletedSub = this.props.isChecklistCompleted.sub((isComplete) => {
       if (isComplete) {
         this.warnChecklistNotCompleted.set(false);
       }
@@ -376,5 +382,16 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
         </div>
       </div>
     );
+  }
+
+  public destroy() {
+    this.checklistItemListRef.getOrDefault()?.destroy();
+    this.items.clear();
+
+    this.checklistSub?.destroy();
+    this.checklistEventsSub?.destroy();
+    this.isChecklistCompletedSub?.destroy();
+
+    super.destroy();
   }
 }

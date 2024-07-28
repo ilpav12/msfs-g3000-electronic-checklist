@@ -1,4 +1,12 @@
-import { ArraySubject, FSComponent, NodeReference, Subject, Subscribable, VNode } from "@microsoft/msfs-sdk";
+import {
+  ArraySubject,
+  FSComponent,
+  NodeReference,
+  Subject,
+  Subscribable,
+  Subscription,
+  VNode,
+} from "@microsoft/msfs-sdk";
 import { ControllableDisplayPaneIndex, DynamicListData } from "@microsoft/msfs-wtg3000-common";
 import {
   GtcControlMode,
@@ -27,6 +35,9 @@ export enum GtcChecklistPagePopupKeys {
   Options = "ChecklistOptions",
 }
 
+/**
+ * A checklist list item.
+ */
 export interface ChecklistListItems<Names, Category> extends DynamicListData {
   checklistName: Names;
   checklistCategory: Category;
@@ -55,7 +66,9 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
       .get(),
   );
   private readonly tabbedContainerRef = FSComponent.createRef<TabbedContainer>();
-
+  private selectedPaneSub?: Subscription;
+  private checklistEventsSub?: Subscription;
+  private subs: Subscription[] = [];
   private readonly listItemHeight = this.props.gtcService.orientation === "horizontal" ? 135 : 72;
 
   /** @inheritDoc */
@@ -90,7 +103,7 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
 
     this._title.set("Checklist");
 
-    this.gtcService.selectedDisplayPane.sub((paneIndex) => {
+    this.selectedPaneSub = this.gtcService.selectedDisplayPane.sub((paneIndex) => {
       this.activeChecklist.set(
         this.props.checklistRepository.getActiveChecklistByPaneIndex(paneIndex as ControllableDisplayPaneIndex).get(),
       );
@@ -99,7 +112,7 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
       );
     });
 
-    this.bus
+    this.checklistEventsSub = this.bus
       .getSubscriber<ChecklistEvents>()
       .on("checklist_event")
       .handle((event) => {
@@ -123,14 +136,20 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
   public onResume(): void {
     super.onResume();
 
-    this.tabbedContainerRef.instance.resume();
+    this.selectedPaneSub?.resume();
+    this.checklistEventsSub?.resume();
+    this.tabbedContainerRef.getOrDefault()?.resume();
+    this.subs.forEach((sub) => sub.resume());
   }
 
   /** @inheritdoc */
   public onPause(): void {
     super.onPause();
 
-    this.tabbedContainerRef.instance.pause();
+    this.selectedPaneSub?.pause();
+    this.checklistEventsSub?.pause();
+    this.tabbedContainerRef.getOrDefault()?.pause();
+    this.subs.forEach((sub) => sub.pause());
   }
 
   /**
@@ -181,25 +200,27 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
     listItems: ArraySubject<ChecklistListItems<Names, Category>>,
     sidebarState: Subscribable<SidebarState | null>,
   ): VNode {
-    this.bus
-      .getSubscriber<ChecklistEvents>()
-      .on("checklist_event")
-      .handle((event) => {
-        if (
-          event.type === "active_checklist_changed" &&
-          event.targetPaneIndex === this.gtcService.selectedDisplayPane.get()
-        ) {
-          const newActiveChecklistListItem = listItems.getArray().find((listItem) => {
-            return (
-              listItem.checklistName === event.newActiveChecklistName &&
-              listItem.checklistCategory === event.newActiveChecklistCategory
-            );
-          });
-          if (newActiveChecklistListItem) {
-            listRef.instance.scrollToItem(newActiveChecklistListItem, 4, true, true);
+    this.subs.push(
+      this.bus
+        .getSubscriber<ChecklistEvents>()
+        .on("checklist_event")
+        .handle((event) => {
+          if (
+            event.type === "active_checklist_changed" &&
+            event.targetPaneIndex === this.gtcService.selectedDisplayPane.get()
+          ) {
+            const newActiveChecklistListItem = listItems.getArray().find((listItem) => {
+              return (
+                listItem.checklistName === event.newActiveChecklistName &&
+                listItem.checklistCategory === event.newActiveChecklistCategory
+              );
+            });
+            if (newActiveChecklistListItem) {
+              listRef.instance.scrollToItem(newActiveChecklistListItem, 4, true, true);
+            }
           }
-        }
-      });
+        }),
+    );
 
     return (
       <GtcList
@@ -243,7 +264,7 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
   }
 
   /** @inheritDoc */
-  render(): VNode {
+  public render(): VNode {
     return (
       <div class="gtc-checklist">
         <TabbedContainer
@@ -292,7 +313,10 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
 
   /** @inheritdoc */
   public destroy(): void {
+    this.selectedPaneSub?.destroy();
+    this.checklistEventsSub?.destroy();
     this.tabbedContainerRef.getOrDefault()?.destroy();
+    this.subs.forEach((sub) => sub.destroy());
 
     super.destroy();
   }

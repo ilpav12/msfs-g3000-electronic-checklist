@@ -29,26 +29,27 @@ export class ChecklistPane<Names, Category> extends DisplayPaneView<ChecklistPag
   public readonly focusedItemType = Subject.create(ChecklistPageFocusableItemType.ChallengeUnchecked);
   private readonly checklistDisplayRef = FSComponent.createRef<ChecklistDisplay<Names, Category>>();
   public readonly isActiveChecklistComplete = Subject.create(false);
+  private activeChecklistSub?: Subscription;
   private isActiveChecklistCompletePipe?: Subscription;
 
-  constructor(props: ChecklistPageProps<Names, Category>) {
+  public constructor(props: ChecklistPageProps<Names, Category>) {
     super(props);
 
-    this.activeChecklist.sub((activeChecklist) => {
+    this.activeChecklistSub = this.activeChecklist.sub((activeChecklist) => {
       this.isActiveChecklistCompletePipe?.destroy();
       this.isActiveChecklistCompletePipe = activeChecklist.isComplete.pipe(this.isActiveChecklistComplete);
     }, true);
   }
 
   /** @inheritDoc */
-  onAfterRender(node: VNode) {
+  public onAfterRender(node: VNode): void {
     super.onAfterRender(node);
 
     this._title.set("Checklist");
   }
 
   /** @inheritDoc */
-  render(): VNode {
+  public render(): VNode {
     return (
       <div>
         <ChecklistUiControl ref={this.uiRoot}>
@@ -67,9 +68,10 @@ export class ChecklistPane<Names, Category> extends DisplayPaneView<ChecklistPag
   }
 
   /** @inheritDoc */
-  destroy() {
+  public destroy(): void {
     this.uiRoot.getOrDefault()?.destroy();
     this.checklistDisplayRef.getOrDefault()?.destroy();
+    this.activeChecklistSub?.destroy();
     this.isActiveChecklistCompletePipe?.destroy();
 
     super.destroy();

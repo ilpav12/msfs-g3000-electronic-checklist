@@ -1,4 +1,4 @@
-import { ArraySubject, EventBus, FSComponent, Subject, VNode } from "@microsoft/msfs-sdk";
+import { ArraySubject, EventBus, FSComponent, Subject, Subscription, VNode } from "@microsoft/msfs-sdk";
 import { ControllableDisplayPaneIndex } from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
 import { ChecklistRepository, ChecklistPageFocusableItemType, ChecklistEvents } from "@base/Shared/ChecklistSystem";
 import { ChecklistUiControl, ChecklistUiControlProps } from "@base/Shared/UI";
@@ -43,12 +43,13 @@ export class ChecklistSelectionUiControl<Names, Category> extends ChecklistUiCon
     this.props.repo.getActiveChecklistByPaneIndex(this.props.paneIndex).get().category,
   );
 
+  private currentCategorySub?: Subscription;
+
   /** @inheritDoc */
   public onAfterRender(node: VNode) {
     super.onAfterRender(node);
 
-    this.currentCategory.sub((category) => {
-      console.log("category", category);
+    this.currentCategorySub = this.currentCategory.sub((category) => {
       this.currentCategory.set(category);
     });
   }
@@ -76,6 +77,13 @@ export class ChecklistSelectionUiControl<Names, Category> extends ChecklistUiCon
       </>
     );
   }
+
+  /** @inheritDoc */
+  public destroy(): void {
+    this.currentCategorySub?.destroy();
+
+    super.destroy();
+  }
 }
 
 /** A component which displays the selected category, and opens the category selection popup. */
@@ -85,17 +93,20 @@ class ChecklistCategorySelectionControl<Names, Category> extends ChecklistUiCont
   private readonly paragraphRef = FSComponent.createRef<HTMLParagraphElement>();
   private readonly items = ArraySubject.create(this.props.repo.getChecklistCategories());
 
+  private isOpenSub?: Subscription;
+  private checklistEventsSub?: Subscription;
+
   /** @inheritDoc */
   public onAfterRender(node: VNode): void {
     super.onAfterRender(node);
 
-    this.props.isOpen.sub((isOpen) => {
+    this.isOpenSub = this.props.isOpen.sub((isOpen) => {
       if (isOpen) {
         this.paragraphRef.instance.classList.remove("highlight-select");
       }
     });
 
-    this.props.bus
+    this.checklistEventsSub = this.props.bus
       .getSubscriber<ChecklistEvents<Names, Category>>()
       .on("checklist_event")
       .handle((event) => {
@@ -136,6 +147,15 @@ class ChecklistCategorySelectionControl<Names, Category> extends ChecklistUiCont
       </>
     );
   }
+
+  /** @inheritDoc */
+  public destroy(): void {
+    this.items.clear();
+    this.isOpenSub?.destroy();
+    this.checklistEventsSub?.destroy();
+
+    super.destroy();
+  }
 }
 
 /** A component which displays the selected checklist, and opens the checklist selection popup. */
@@ -147,17 +167,21 @@ class ChecklistSelectionControl<Names, Category> extends ChecklistUiControl<Chec
       .map((v) => v.name),
   );
 
+  private isOpenSub?: Subscription;
+  private checklistEventsSub?: Subscription;
+  private currentCategorySub?: Subscription;
+
   /** @inheritDoc */
   public onAfterRender(node: VNode) {
     super.onAfterRender(node);
 
-    this.props.isOpen.sub((isOpen) => {
+    this.isOpenSub = this.props.isOpen.sub((isOpen) => {
       if (isOpen) {
         this.paragraphRef.instance.classList.remove("highlight-select");
       }
     });
 
-    this.props.bus
+    this.checklistEventsSub = this.props.bus
       .getSubscriber<ChecklistEvents<Names, Category>>()
       .on("checklist_event")
       .handle((event) => {
@@ -166,14 +190,7 @@ class ChecklistSelectionControl<Names, Category> extends ChecklistUiControl<Chec
         }
       });
 
-    // this.props.focusedItemType.sub((type) => {
-    //   if (type === ChecklistPageFocusableItemType.ChecklistSelectionList) {
-    //     console.log("category", this.currentCategory.get());
-    //     this.items.set(this.props.repo.getChecklistsByCategory(this.currentCategory.get()).map((v) => v.name));
-    //   }
-    // });
-    this.props.currentCategory.sub((category) => {
-      console.log("category", category);
+    this.currentCategorySub = this.props.currentCategory.sub((category) => {
       this.items.set(this.props.repo.getChecklistsByCategory(category).map((v) => v.name));
     });
   }
@@ -210,5 +227,15 @@ class ChecklistSelectionControl<Names, Category> extends ChecklistUiControl<Chec
         </div>
       </>
     );
+  }
+
+  /** @inheritDoc */
+  public destroy(): void {
+    this.items.clear();
+    this.isOpenSub?.destroy();
+    this.checklistEventsSub?.destroy();
+    this.currentCategorySub?.destroy();
+
+    super.destroy();
   }
 }

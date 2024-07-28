@@ -1,4 +1,4 @@
-import { EventBus, FSComponent, Subject, VNode } from "@microsoft/msfs-sdk";
+import { EventBus, FSComponent, Subject, Subscription, VNode } from "@microsoft/msfs-sdk";
 import {
   ChecklistItemReadonly,
   ChecklistItemState,
@@ -24,14 +24,16 @@ export interface ChecklistItemDisplayProps extends ChecklistUiControlProps {
   focusedItemType: Subject<ChecklistPageFocusableItemType>;
 }
 
-/** A display component for a  checklist item. */
+/** A display component for a checklist item. */
 export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDisplayProps> {
   private readonly itemRef = FSComponent.createRef<HTMLDivElement>();
+
+  private itemStateSub?: Subscription;
 
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
-    this.props.item.state.sub((state) => {
+    this.itemStateSub = this.props.item.state.sub((state) => {
       if (this.isFocused && this.props.item.type === ChecklistItemType.Challenge) {
         this.props.focusedItemType.set(
           state === ChecklistItemState.Completed
@@ -229,5 +231,12 @@ export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDispla
         {this.renderItem()}
       </div>
     );
+  }
+
+  /** @inheritDoc */
+  public destroy(): void {
+    this.itemStateSub?.destroy();
+
+    super.destroy();
   }
 }

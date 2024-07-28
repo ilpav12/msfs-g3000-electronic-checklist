@@ -1,4 +1,4 @@
-import { FSComponent, Subject, VNode } from "@microsoft/msfs-sdk";
+import { FSComponent, Subject, Subscription, VNode } from "@microsoft/msfs-sdk";
 import { GtcTouchButton, GtcView, GtcViewProps } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistEvents, ChecklistReadonly } from "@base/Shared/ChecklistSystem";
 import { ChecklistGtcViewKeys } from "@base/GTC/Pages/MfdHomePage/ChecklistGtcMfdHomePage";
@@ -15,6 +15,7 @@ interface ChecklistGtcOptionsPopupProps<Names, Category> extends GtcViewProps {
  */
 export class ChecklistGtcOptionsPopup<Names, Category> extends GtcView<ChecklistGtcOptionsPopupProps<Names, Category>> {
   private readonly parentViewKey = Subject.create<ChecklistGtcViewKeys>(ChecklistGtcViewKeys.Checklist);
+  private activeViewSub?: Subscription;
 
   /** @inheritdoc */
   public onAfterRender(thisNode: VNode): void {
@@ -22,11 +23,21 @@ export class ChecklistGtcOptionsPopup<Names, Category> extends GtcView<Checklist
 
     this._title.set("Checklist");
 
-    this.gtcService.activeView.sub((view) => {
+    this.activeViewSub = this.gtcService.activeView.sub((view) => {
       if (view.key in ChecklistGtcViewKeys) {
         this.parentViewKey.set(this.gtcService.activeView.get().key as ChecklistGtcViewKeys);
       }
     });
+  }
+
+  /** @inheritdoc */
+  public onResume(): void {
+    this.activeViewSub?.resume(true);
+  }
+
+  /** @inheritdoc */
+  public onPause(): void {
+    this.activeViewSub?.pause();
   }
 
   /** @inheritDoc */
@@ -93,5 +104,12 @@ export class ChecklistGtcOptionsPopup<Names, Category> extends GtcView<Checklist
         </div>
       </div>
     );
+  }
+
+  /** @inheritDoc */
+  public destroy(): void {
+    this.activeViewSub?.destroy();
+
+    super.destroy();
   }
 }

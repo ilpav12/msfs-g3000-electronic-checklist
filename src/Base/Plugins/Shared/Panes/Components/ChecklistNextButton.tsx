@@ -1,6 +1,5 @@
-import { EventBus, FSComponent, HardwareUiControl, Subscribable, VNode } from "@microsoft/msfs-sdk";
+import { EventBus, FSComponent, HardwareUiControl, Subscribable, Subscription, VNode } from "@microsoft/msfs-sdk";
 import { FmsUiControlEvents, ChecklistUiControl, ChecklistUiControlProps } from "@base/Shared/UI/ChecklistUiControl";
-import { ChecklistInteractionEventAction, ChecklistEvents } from "@base/Shared/ChecklistSystem/ChecklistEvents";
 
 /** Component props for the {@link NextChecklistControl} component */
 export interface NextChecklistControlProps extends ChecklistUiControlProps {
@@ -14,10 +13,12 @@ export interface NextChecklistControlProps extends ChecklistUiControlProps {
 export class NextChecklistControl extends ChecklistUiControl<NextChecklistControlProps> {
   private readonly labelRef = FSComponent.createRef<HTMLDivElement>();
 
+  private isLastSub?: Subscription;
+
   /** @inheritDoc */
   public onAfterRender(thisNode: VNode): void {
     super.onAfterRender(thisNode);
-    this.props.isLast.sub((isLast) => {
+    this.isLastSub = this.props.isLast.sub((isLast) => {
       this.setDisabled(isLast);
     }, true);
   }
@@ -25,12 +26,14 @@ export class NextChecklistControl extends ChecklistUiControl<NextChecklistContro
   /** @inheritDoc */
   protected onFocused(source: HardwareUiControl<FmsUiControlEvents>): void {
     super.onFocused(source);
+    this.isLastSub?.resume();
     this.labelRef.instance.classList.add("highlight-select");
   }
 
   /** @inheritDoc */
   protected onBlurred(source: HardwareUiControl<FmsUiControlEvents>): void {
     super.onBlurred(source);
+    this.isLastSub?.pause();
     this.labelRef.instance.classList.remove("highlight-select");
   }
 
@@ -53,5 +56,12 @@ export class NextChecklistControl extends ChecklistUiControl<NextChecklistContro
         Go to Next Checklist?
       </div>
     );
+  }
+
+  /** @inheritDoc */
+  public destroy(): void {
+    this.isLastSub?.destroy();
+
+    super.destroy();
   }
 }
