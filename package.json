@@ -24,6 +24,6 @@
     "rollup-plugin-import-css": "^3.5.0",
     "rollup-plugin-typescript-paths": "^1.5.0",
     "tslib": "^2.6.3",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   }
 }
