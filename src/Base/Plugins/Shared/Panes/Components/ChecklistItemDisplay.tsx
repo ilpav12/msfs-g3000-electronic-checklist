@@ -11,21 +11,23 @@ import { ChecklistUiControl, ChecklistUiControlProps } from "@base/Shared/UI/Che
 import "./ChecklistItemDisplay.css";
 
 /** Component props for the {@link ChecklistItemDisplay} component */
-export interface ChecklistItemDisplayProps extends ChecklistUiControlProps {
+export interface ChecklistItemDisplayProps<Names, Category> extends ChecklistUiControlProps {
   /** The event bus to use. */
   bus: EventBus;
   /** The checklist item to display. */
-  item: ChecklistItemReadonly;
+  item: ChecklistItemReadonly<Names, Category>;
   /** A function to toggle the completed status of the item. */
-  toggleItemCompleted: (item: ChecklistItemReadonly) => boolean;
+  toggleItemCompleted: (item: ChecklistItemReadonly<Names, Category>) => boolean;
   /** A function to set the item to incomplete. */
-  setItemIncomplete: (item: ChecklistItemReadonly) => void;
+  setItemIncomplete: (item: ChecklistItemReadonly<Names, Category>) => void;
   /** The focused item type. */
   focusedItemType: Subject<ChecklistPageFocusableItemType>;
 }
 
 /** A display component for a checklist item. */
-export class ChecklistItemDisplay extends ChecklistUiControl<ChecklistItemDisplayProps> {
+export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
+  ChecklistItemDisplayProps<Names, Category>
+> {
   private readonly itemRef = FSComponent.createRef<HTMLDivElement>();
 
   private itemStateSub?: Subscription;

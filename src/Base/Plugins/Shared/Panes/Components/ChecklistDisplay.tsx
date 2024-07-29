@@ -15,7 +15,6 @@ import {
   ChecklistEvent,
   ChecklistEvents,
   ChecklistInteractionEventAction,
-  ChecklistItem,
   ChecklistItemInteractionType,
   ChecklistItemReadonly,
   ChecklistItemState,
@@ -53,9 +52,10 @@ export interface ChecklistDisplayProps<Names, Category>
 /** A display component for a checklist. */
 export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<ChecklistDisplayProps<Names, Category>> {
   private readonly scrollContainer = FSComponent.createRef<HTMLDivElement>();
-  protected readonly checklistItemListRef = FSComponent.createRef<ChecklistControlList<ChecklistItemReadonly>>();
+  protected readonly checklistItemListRef =
+    FSComponent.createRef<ChecklistControlList<ChecklistItemReadonly<Names, Category>>>();
 
-  private items = ArraySubject.create<ChecklistItemReadonly>([]);
+  private items = ArraySubject.create<ChecklistItemReadonly<Names, Category>>([]);
 
   private previousIndex = 0;
   private ensureIndexInView: ((index: number, pinDirection: "none" | "top" | "bottom") => void) | undefined;
@@ -72,6 +72,20 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
   private checklistEventsSub?: Subscription;
   private isChecklistCompletedSub?: Subscription;
 
+  /** @inheritDoc */
+  public onBeforeRender() {
+    super.onBeforeRender();
+
+    // Needed to fix the item state subscription not working on the first render
+    this.props.bus.getPublisher<ChecklistEvents<Names, Category>>().pub("checklist_event", {
+      type: "active_checklist_changed",
+      newActiveChecklistName: this.props.checklist.get().name,
+      newActiveChecklistCategory: this.props.checklist.get().category,
+      targetPaneIndex: this.props.paneIndex,
+    });
+  }
+
+  /** @inheritDoc */
   public onAfterRender(node: VNode) {
     super.onAfterRender(node);
 
@@ -184,7 +198,7 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
    * @param item The item to toggle the completed status of.
    * @returns Whether the required action was successful.
    */
-  private toggleItemCompletedStatus(item: ChecklistItemReadonly): boolean {
+  private toggleItemCompletedStatus(item: ChecklistItemReadonly<Names, Category>): boolean {
     if (item && item.type === ChecklistItemType.Challenge) {
       const checklist = this.props.checklist.get();
       const itemIndex = checklist.items.indexOf(item);
@@ -235,7 +249,7 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
    * Sets the item to incomplete.
    * @param item The item to set to incomplete.
    */
-  private setItemIncomplete(item: ChecklistItemReadonly): void {
+  private setItemIncomplete(item: ChecklistItemReadonly<Names, Category>): void {
     if (item && item.type === ChecklistItemType.Challenge && item.state.get() === ChecklistItemState.Completed) {
       const checklist = this.props.checklist.get();
       const itemIndex = checklist.items.indexOf(item);
@@ -270,9 +284,9 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
    * @param item The checklist item.
    * @returns The checklist items VNode.
    */
-  private renderChecklistItem(item: ChecklistItem): VNode {
+  private renderChecklistItem(item: ChecklistItemReadonly<Names, Category>): VNode {
     return (
-      <ChecklistItemDisplay
+      <ChecklistItemDisplay<Names, Category>
         bus={this.props.bus}
         item={item}
         onRegistered={(control): void =>

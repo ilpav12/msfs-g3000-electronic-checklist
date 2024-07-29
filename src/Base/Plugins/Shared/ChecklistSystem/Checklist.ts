@@ -28,7 +28,7 @@ export enum ChecklistCategory {
 export type ChecklistNames = ItemsShowcaseChecklistNames;
 
 /** A checklist item that is readonly. */
-export type ChecklistItemReadonly = ChecklistItem & {
+export type ChecklistItemReadonly<Names, Category> = ChecklistItem<Names, Category> & {
   /** Readonly state. */
   readonly state: Subscribable<ChecklistItemState>;
 };
@@ -39,12 +39,12 @@ export type ChecklistReadonly<Names = ChecklistNames, Category = ChecklistCatego
   "isComplete" | "anyItemChanged" | "name" | "category" | "isLastChecklist"
 > & {
   /** readonly items. */
-  readonly items: readonly ChecklistItem[];
+  readonly items: readonly ChecklistItemReadonly<Names, Category>[];
 };
 
 /** Checklist */
 export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
-  public readonly items: ChecklistItem<string, string>[];
+  public readonly items: ChecklistItemReadonly<Names, Category>[];
 
   private readonly _isComplete = Subject.create(false);
   public readonly isComplete = this._isComplete as Subscribable<boolean>;
@@ -68,7 +68,7 @@ export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
   public constructor(
     public readonly name: Names,
     public readonly category: Category,
-    itemData: Array<ChecklistItemData<string, string>>,
+    itemData: Array<ChecklistItemData<Names, Category>>,
     public readonly isLastChecklist = false,
     public readonly isSubChecklist = false,
   ) {
