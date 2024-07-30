@@ -96,3 +96,48 @@ export interface ChecklistEvents<Names = ChecklistNames, Category = ChecklistCat
   /** Checklist event. */
   readonly checklist_event: ChecklistEvent<Names, Category>;
 }
+
+/** Checklist scroll up events. */
+export enum ChecklistScrollUpEvents {
+  ChecklistPane1ScrollUp = "AS3000_Electronic_Checklist_1_Scroll_Up",
+  ChecklistPane2ScrollUp = "AS3000_Electronic_Checklist_2_Scroll_Up",
+  ChecklistPane3ScrollUp = "AS3000_Electronic_Checklist_3_Scroll_Up",
+  ChecklistPane4ScrollUp = "AS3000_Electronic_Checklist_4_Scroll_Up",
+}
+
+/** Checklist scroll down events. */
+export enum ChecklistScrollDownEvents {
+  ChecklistPane1ScrollDown = "AS3000_Electronic_Checklist_1_Scroll_Down",
+  ChecklistPane2ScrollDown = "AS3000_Electronic_Checklist_2_Scroll_Down",
+  ChecklistPane3ScrollDown = "AS3000_Electronic_Checklist_3_Scroll_Down",
+  ChecklistPane4ScrollDown = "AS3000_Electronic_Checklist_4_Scroll_Down",
+}
+
+/** Checklist interact events. */
+export enum ChecklistInteractEvents {
+  ChecklistPane1Interact = "AS3000_Electronic_Checklist_1_Push",
+  ChecklistPane2Interact = "AS3000_Electronic_Checklist_2_Push",
+  ChecklistPane3Interact = "AS3000_Electronic_Checklist_3_Push",
+  ChecklistPane4Interact = "AS3000_Electronic_Checklist_4_Push",
+}
+
+/** Checklist interact events. */
+export enum ChecklistInteractLongEvents {
+  ChecklistPane1InteractLong = "AS3000_Electronic_Checklist_1_Push_Long",
+  ChecklistPane2InteractLong = "AS3000_Electronic_Checklist_2_Push_Long",
+  ChecklistPane3InteractLong = "AS3000_Electronic_Checklist_3_Push_Long",
+  ChecklistPane4InteractLong = "AS3000_Electronic_Checklist_4_Push_Long",
+}
+
+/** External checklist events. */
+export type ExternalChecklistEvent =
+  | ChecklistScrollUpEvents
+  | ChecklistScrollDownEvents
+  | ChecklistInteractEvents
+  | ChecklistInteractLongEvents;
+
+/** Interface of the external checklist events. */
+export interface ExternalChecklistEvents {
+  /** External checklist event. */
+  external_checklist_event: ExternalChecklistEvent;
+}

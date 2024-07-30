@@ -20,6 +20,24 @@ information manual](https://www.tbm.aero/medias_front/documents/154203PIM-TBM-93
 In the Longitude Normal and Abbreviated Procedures are available. The source of the procedures is the official Garmin
 Checklist [GCL file](https://ww2.txtav.com/TechnicalPublications/Downloads/MFDCheckLists?Brand=Cessna).
 
+### Control Bindings
+
+The plugin supports the following control bindings via H Events:
+
+- `AS3000_Electronic_Checklist_[index]_Push` to open the checklist pane at the specified index if closed or to interact
+  with the checklist at the specified index if open.
+- `AS3000_Electronic_Checklist_[index]_Push_Long` to close the checklist pane if open and restore the previously opened
+  pane if any.
+- `AS3000_Electronic_Checklist_[index]_Scroll_Up` to scroll up the checklist at the specified index.
+- `AS3000_Electronic_Checklist_[index]_Scroll_Down` to scroll down the checklist at the specified index.
+
+where `[index]` is a number from 1 to 4 corresponding to a controllable pane:
+
+- 1: Left PFD.
+- 2: Left MFD.
+- 3: Right MFD.
+- 4: Right PFD.
+
 ## Contributors
 
 Feel free to open issues or send pull requests.
