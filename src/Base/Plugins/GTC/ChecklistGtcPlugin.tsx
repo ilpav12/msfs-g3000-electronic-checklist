@@ -102,7 +102,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
   public onInstalled() {
     super.onInstalled();
 
-    if (this.binder.gtcService.displayPaneControlIndex !== 1) {
+    if (this.binder.gtcService.instrumentIndex !== 1) {
       return;
     }
 
