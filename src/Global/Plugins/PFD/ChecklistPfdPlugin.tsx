@@ -20,7 +20,7 @@ export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
       return;
     }
 
-    if (aircraftType === AircraftModel.Longitude) {
+    if (aircraftType === AircraftModel.Longitude || aircraftType === AircraftModel.LongitudeMod) {
       viewFactory.registerView(ChecklistPaneKeys.Checklist, (index) => {
         return (
           <ChecklistPane

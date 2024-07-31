@@ -28,7 +28,7 @@ export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
           gtcService={service}
           controlMode={mode}
           displayPaneIndex={index}
-          supportPerfPage={aircraftType === AircraftModel.Longitude}
+          supportPerfPage={aircraftType === AircraftModel.Longitude || aircraftType === AircraftModel.LongitudeMod}
         />
       );
     });
@@ -38,7 +38,7 @@ export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
       ChecklistGtcViewKeys.Checklist,
       "MFD",
       function (service, mode, index) {
-        if (aircraftType === AircraftModel.Longitude) {
+        if (aircraftType === AircraftModel.Longitude || aircraftType === AircraftModel.LongitudeMod) {
           return (
             <ChecklistGtcPage
               gtcService={service}
