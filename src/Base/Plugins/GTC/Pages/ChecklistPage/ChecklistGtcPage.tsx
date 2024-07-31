@@ -66,7 +66,6 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
       .get(),
   );
   private readonly tabbedContainerRef = FSComponent.createRef<TabbedContainer>();
-  private selectedPaneSub?: Subscription;
   private checklistEventsSub?: Subscription;
   private subs: Subscription[] = [];
   private readonly listItemHeight = this.props.gtcService.orientation === "horizontal" ? 135 : 72;
@@ -103,15 +102,6 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
 
     this._title.set("Checklist");
 
-    this.selectedPaneSub = this.gtcService.selectedDisplayPane.sub((paneIndex) => {
-      this.activeChecklist.set(
-        this.props.checklistRepository.getActiveChecklistByPaneIndex(paneIndex as ControllableDisplayPaneIndex).get(),
-      );
-      this.tabbedContainerRef.instance.selectTab(
-        this.props.checklistCategories.indexOf(this.activeChecklist.get().category) + 1,
-      );
-    });
-
     this.checklistEventsSub = this.bus
       .getSubscriber<ChecklistEvents>()
       .on("checklist_event")
@@ -125,18 +115,28 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
               .getActiveChecklistByPaneIndex(event.targetPaneIndex as ControllableDisplayPaneIndex)
               .get(),
           );
-          this.tabbedContainerRef.instance.selectTab(
-            this.props.checklistCategories.indexOf(this.activeChecklist.get().category) + 1,
-          );
+          this.tabbedContainerRef
+            .getOrDefault()
+            ?.selectTab(this.props.checklistCategories.indexOf(this.activeChecklist.get().category) + 1);
         }
       });
+
+    this.onResume();
   }
 
   /** @inheritdoc */
   public onResume(): void {
     super.onResume();
 
-    this.selectedPaneSub?.resume();
+    this.activeChecklist?.set(
+      this.props.checklistRepository
+        .getActiveChecklistByPaneIndex(this.gtcService.selectedDisplayPane.get() as ControllableDisplayPaneIndex)
+        .get(),
+    );
+    this.tabbedContainerRef
+      .getOrDefault()
+      ?.selectTab(this.props.checklistCategories.indexOf(this.activeChecklist.get().category) + 1);
+
     this.checklistEventsSub?.resume();
     this.tabbedContainerRef.getOrDefault()?.resume();
     this.subs.forEach((sub) => sub.resume());
@@ -146,7 +146,6 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
   public onPause(): void {
     super.onPause();
 
-    this.selectedPaneSub?.pause();
     this.checklistEventsSub?.pause();
     this.tabbedContainerRef.getOrDefault()?.pause();
     this.subs.forEach((sub) => sub.pause());
@@ -181,6 +180,15 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
         onResume={(): void => {
           this._activeComponent.set(listRef.getOrDefault());
           sidebarState.set(this._sidebarState);
+          const activeChecklistListItem = listItems.getArray().find((listItem) => {
+            return (
+              listItem.checklistName === this.activeChecklist.get().name &&
+              listItem.checklistCategory === this.activeChecklist.get().category
+            );
+          });
+          if (activeChecklistListItem) {
+            listRef.getOrDefault()?.scrollToItem(activeChecklistListItem, 4, true, true);
+          }
         }}
       >
         {this.renderList(listRef, listItems, sidebarState)}
@@ -216,7 +224,7 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
               );
             });
             if (newActiveChecklistListItem) {
-              listRef.instance.scrollToItem(newActiveChecklistListItem, 4, true, true);
+              listRef.getOrDefault()?.scrollToItem(newActiveChecklistListItem, 4, true, true);
             }
           }
         }),
@@ -313,7 +321,6 @@ export class ChecklistGtcPage<Names, Category> extends GtcView<ChecklistGtcPageP
 
   /** @inheritdoc */
   public destroy(): void {
-    this.selectedPaneSub?.destroy();
     this.checklistEventsSub?.destroy();
     this.tabbedContainerRef.getOrDefault()?.destroy();
     this.subs.forEach((sub) => sub.destroy());
