@@ -91,8 +91,8 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
 
     this.checklistSub = this.props.checklist.sub((checklist) => {
       this.items.set([...checklist.items]);
-      this.previousIndex = 0;
       this.checklistItemListRef.instance.focus(FocusPosition.First);
+      this.previousIndex = this.checklistItemListRef.instance.getFocusedIndex();
     }, true);
 
     this.ensureIndexInView = this.checklistItemListRef.instance.ensureIndexInView.bind(
