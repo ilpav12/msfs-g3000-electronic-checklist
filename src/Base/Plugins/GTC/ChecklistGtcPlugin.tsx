@@ -107,7 +107,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
     }
 
     const previousPanesState = {
-      1: {
+      [DisplayPaneIndex.LeftPfd]: {
         previousView: DisplayPanesUserSettings.getDisplayPaneManager(
           this.binder.bus,
           DisplayPaneIndex.LeftPfd,
@@ -117,7 +117,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
           DisplayPaneIndex.LeftPfd,
         ).getSetting("displayPaneVisible").value,
       },
-      2: {
+      [DisplayPaneIndex.LeftMfd]: {
         previousView: DisplayPanesUserSettings.getDisplayPaneManager(
           this.binder.bus,
           DisplayPaneIndex.LeftMfd,
@@ -127,7 +127,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
           DisplayPaneIndex.LeftMfd,
         ).getSetting("displayPaneVisible").value,
       },
-      3: {
+      [DisplayPaneIndex.RightMfd]: {
         previousView: DisplayPanesUserSettings.getDisplayPaneManager(
           this.binder.bus,
           DisplayPaneIndex.RightMfd,
@@ -137,7 +137,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
           DisplayPaneIndex.RightMfd,
         ).getSetting("displayPaneVisible").value,
       },
-      4: {
+      [DisplayPaneIndex.RightPfd]: {
         previousView: DisplayPanesUserSettings.getDisplayPaneManager(
           this.binder.bus,
           DisplayPaneIndex.RightPfd,
@@ -148,6 +148,21 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
         ).getSetting("displayPaneVisible").value,
       },
     };
+
+    // Open the checklist view on all panes to initialize all the subscriptions needed for synchronization and change
+    // the view back to the previous one.
+    for (const pane of [
+      DisplayPaneIndex.LeftPfd,
+      DisplayPaneIndex.LeftMfd,
+      DisplayPaneIndex.RightMfd,
+      DisplayPaneIndex.RightPfd,
+    ]) {
+      const paneView = DisplayPanesUserSettings.getDisplayPaneManager(this.binder.bus, pane).getSetting(
+        "displayPaneView",
+      );
+      paneView.set(ChecklistGtcViewKeys.Checklist);
+      paneView.set(previousPanesState[pane as ControllableDisplayPaneIndex].previousView);
+    }
 
     this.binder.bus
       .getSubscriber<HEvent>()
