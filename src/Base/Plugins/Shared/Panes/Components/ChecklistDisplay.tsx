@@ -305,32 +305,27 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
    * @param pinDirection The direction to pin the item to.
    */
   public replaceEnsureIndexInView(index: number, pinDirection: "none" | "top" | "bottom" = "none"): void {
-    let offsetIndex;
     // if the new index is equal to the previous index,
     // we shouldn't offset the scroll as we aren't actively scrolling
     // (probably freshly loaded checklist)
-    if (index === this.previousIndex) {
-      offsetIndex = index;
-    } else if (index < this.previousIndex) {
-      offsetIndex = index - 3;
-      let totalHeight = 0;
-      for (let i = 1; i <= Math.min(3, index); i++) {
-        totalHeight += this.props.checklist.get().items[index - i].height;
-        if (totalHeight >= 3) {
-          offsetIndex = index - i;
-          break;
-        }
+    let offsetIndex = index;
+    if (index < this.previousIndex) {
+      const items = this.scrollContainer.instance.children[0].children[0].children;
+      let offsetHeight = 0;
+      while (offsetHeight < 120 - items[index].clientHeight / 2 && offsetIndex > 0) {
+        offsetHeight += items[--offsetIndex].clientHeight;
+      }
+      if (offsetHeight > 120) {
+        offsetIndex++;
       }
     } else {
-      const selectedHeight = this.props.checklist.get().items[index].height;
-      offsetIndex = index + 8 - (selectedHeight - 1);
-      let totalHeight = 0;
-      for (let i = 1; i <= Math.min(8 - (selectedHeight - 1), this.items.length - index - 1); i++) {
-        totalHeight += this.props.checklist.get().items[index + i].height;
-        if (totalHeight >= 8 - (selectedHeight - 1)) {
-          offsetIndex = index + i;
-          break;
-        }
+      const items = this.scrollContainer.instance.children[0].children[0].children;
+      let offsetHeight = 0;
+      while (offsetHeight < 300 - items[index].clientHeight / 2 && offsetIndex < items.length - 1) {
+        offsetHeight += items[++offsetIndex].clientHeight;
+      }
+      if (offsetHeight > 300) {
+        offsetIndex--;
       }
     }
     offsetIndex = MathUtils.clamp(offsetIndex, 0, this.items.length - 1);

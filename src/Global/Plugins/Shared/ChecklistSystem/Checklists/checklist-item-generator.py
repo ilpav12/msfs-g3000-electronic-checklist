@@ -1,5 +1,6 @@
 import argparse
 import json
+import re
 from enum import StrEnum
 
 
@@ -70,7 +71,7 @@ class ChecklistItem:
                 or self.item_type == ChecklistItemType.Caution
                 or self.item_type == ChecklistItemType.Note) and self.justification == Justification.Center):
             justification = ''
-        blanks_below = f", blanks_below: {self.blanks_below}" if self.blanks_below != 0 else ''
+        blanks_below = f", blanksBelow: {self.blanks_below}" if self.blanks_below != 0 else ''
         interaction_type = f", interactionType: {self.interaction_type}" if self.interaction_type is not None else ''
 
         if self.item_type == ChecklistItemType.Challenge:
@@ -83,7 +84,7 @@ class ChecklistItem:
             return f"{{ type: {self.item_type}, content: '{self.content}'{justification}{blanks_below}{interaction_type} }},"
         if self.item_type == ChecklistItemType.Link:
             justification = f"  justification: {self.justification},\n" if self.justification != Justification.Left else ''
-            blanks_below = f"  blanks_below: {self.blanks_below},\n" if self.blanks_below != 0 else ''
+            blanks_below = f"  blanksBelow: {self.blanks_below},\n" if self.blanks_below != 0 else ''
             return (f"{{\n"
                     f"  type: {self.item_type},\n"
                     f"  content: '{self.content}',\n"
@@ -228,10 +229,17 @@ elif args.file.endswith('.json'):
         return "\\n".join([" ".join(s.split()) for s in string.split('\n\n')])
 
 
+    checklist_categories = []
     for group in data['groups']:
+        checklist_categories.append(group['name'])
         category = group['name']
+        checklist_names = []
+        print("---------------------------------- " + category + " ----------------------------------")
+        print("return [")
         for checklist in group['checklists']:
-            print(f"---- {category} - {checklist['name']} ----")
+            checklist_names.append(checklist['name'])
+            # print(f"---- {category} - {checklist['name']} ----")
+            print(f"new VisionJetChecklist(VisionJet{re.sub(r'\W+', '', category)}ChecklistNames.{re.sub(r'\W+', '', checklist['name'])}, VisionJetChecklistCategory.{re.sub(r'\W+', '', category)}, [")
             for entry in checklist['entries']:
                 entry_justification = Justification[str(entry['justification']).capitalize()] if 'justification' in entry else Justification.Left
                 entry_blanks_below = entry['blanksBelow'] if 'blanksBelow' in entry else 0
@@ -250,24 +258,36 @@ elif args.file.endswith('.json'):
                                             str_sanitizer(entry['text']),
                                             blanks_below=entry_blanks_below,
                                             justification=entry_justification))
+                    case 'Subtitle - Stop':
+                        print(ChecklistItem(ChecklistItemType.Subtitle,
+                                            str_sanitizer(entry['text']),
+                                            blanks_below=entry_blanks_below,
+                                            justification=entry_justification,
+                                            interaction_type=ChecklistItemInteractionType.ScrollStop))
                     case 'Sub Step':
                         print(ChecklistItem(ChecklistItemType.PlainText,
                                             str_sanitizer(entry['text']),
                                             blanks_below=entry_blanks_below,
                                             justification=entry_justification))
                     case 'Plain Text':
-                        print(ChecklistItem(ChecklistItemType.PlainText,
+                        print(ChecklistItem(ChecklistItemType.Note,
                                             str_sanitizer(entry['text'], False),
                                             blanks_below=entry_blanks_below,
                                             justification=entry_justification))
+                    case 'Plain Text - Stop':
+                        print(ChecklistItem(ChecklistItemType.Note,
+                                            str_sanitizer(entry['text'], False),
+                                            blanks_below=entry_blanks_below,
+                                            justification=entry_justification,
+                                            interaction_type=ChecklistItemInteractionType.ScrollStop))
                     case 'WARNING':
                         print(ChecklistItem(ChecklistItemType.Warning,
                                             'WARNING',
                                             blanks_below=entry_blanks_below,
                                             justification=entry_justification,
                                             interaction_type=ChecklistItemInteractionType.NoScrollStop))
-                    case 'Warning Text':
-                        print(ChecklistItem(ChecklistItemType.Warning,
+                    case 'Warning':
+                        print(ChecklistItem(ChecklistItemType.Note,
                                             str_sanitizer(entry['text'], False),
                                             blanks_below=entry_blanks_below,
                                             justification=entry_justification))
@@ -277,8 +297,8 @@ elif args.file.endswith('.json'):
                                             blanks_below=entry_blanks_below,
                                             justification=entry_justification,
                                             interaction_type=ChecklistItemInteractionType.NoScrollStop))
-                    case 'Caution Text':
-                        print(ChecklistItem(ChecklistItemType.Caution,
+                    case 'Caution':
+                        print(ChecklistItem(ChecklistItemType.Note,
                                             str_sanitizer(entry['text'], False),
                                             blanks_below=entry_blanks_below,
                                             justification=entry_justification))
@@ -288,7 +308,7 @@ elif args.file.endswith('.json'):
                                             blanks_below=entry_blanks_below,
                                             justification=entry_justification,
                                             interaction_type=ChecklistItemInteractionType.NoScrollStop))
-                    case 'Note Text':
+                    case 'Note':
                         print(ChecklistItem(ChecklistItemType.Note,
                                             str_sanitizer(entry['text'], False),
                                             blanks_below=entry_blanks_below,
@@ -309,4 +329,15 @@ elif args.file.endswith('.json'):
                                             interaction_type=ChecklistItemInteractionType.NoScrollStop))
                     case _:
                         quit(f"Unknown type: {entry['type']}")
-            print()
+            print("]),")
+        print("]")
+        print("export enum VisionJet" + category.replace(" ", "") + "ChecklistNames {")
+        for checklist_name in checklist_names:
+            print(f"  {re.sub(r'\W+', '', checklist_name)} = '{checklist_name}',")
+        print("}")
+
+    print("export enum VisionJetChecklistCategories {")
+    for category in checklist_categories:
+        print(f"  {re.sub(r'\W+', '', category)} = '{category}',")
+    print("}")
+

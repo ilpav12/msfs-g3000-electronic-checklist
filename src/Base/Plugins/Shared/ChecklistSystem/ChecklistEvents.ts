@@ -141,3 +141,11 @@ export interface ExternalChecklistEvents {
   /** External checklist event. */
   external_checklist_event: ExternalChecklistEvent;
 }
+
+/** Vision Jet checklist wheel events. */
+export enum VisionJetChecklistWheelHEvents {
+  ShortClick = "checklist_wheel_select",
+  LongClick = "checklist_wheel_select_long",
+  Clockwise = "checklist_wheel_scroll_up",
+  AntiClockwise = "checklist_wheel_scroll_down",
+}

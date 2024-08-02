@@ -3,72 +3,77 @@
     {
       "path": "ContentInfo/ilpav-avionics-g3000-electronic-checklist/Thumbnail.jpg",
       "size": 63584,
-      "date": 133640628444184594
+      "date": 133669413883117976
     },
     {
       "path": "html_ui/ChecklistPlugins/ChecklistGtcPlugin.css",
-      "size": 10406,
-      "date": 133648339486862442
+      "size": 18754,
+      "date": 133670856944214782
     },
     {
       "path": "html_ui/ChecklistPlugins/ChecklistGtcPlugin.js",
-      "size": 306285,
-      "date": 133648339486862442
+      "size": 752285,
+      "date": 133670856944234774
     },
     {
       "path": "html_ui/ChecklistPlugins/ChecklistMfdPlugin.css",
-      "size": 6637,
-      "date": 133648339485086772
+      "size": 6104,
+      "date": 133670856939640182
     },
     {
       "path": "html_ui/ChecklistPlugins/ChecklistMfdPlugin.js",
-      "size": 310076,
-      "date": 133648339485096768
+      "size": 742887,
+      "date": 133670856939645982
     },
     {
       "path": "html_ui/ChecklistPlugins/ChecklistPfdPlugin.css",
-      "size": 6637,
-      "date": 133648339483045311
+      "size": 6104,
+      "date": 133670856934991435
     },
     {
       "path": "html_ui/ChecklistPlugins/ChecklistPfdPlugin.js",
-      "size": 310076,
-      "date": 133648339483045311
+      "size": 742887,
+      "date": 133670856934991435
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/icon_small_checklist.png",
       "size": 5069,
-      "date": 133640628444194587
+      "date": 133669413886000017
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/max-engine-values.png",
       "size": 64009,
-      "date": 133640628444204590
+      "date": 133669413886220485
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/oxygen-duration.png",
       "size": 75926,
-      "date": 133640628444224573
+      "date": 133669413886450958
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/preflight-inspection-locations.png",
       "size": 63243,
-      "date": 133640628444229623
+      "date": 133669413886676617
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/rotation-airspeed.png",
       "size": 147924,
-      "date": 133640628444259753
+      "date": 133669413886897249
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/usable-oxygen.png",
       "size": 116001,
-      "date": 133640628444279764
+      "date": 133669413887133449
     },
     {
       "path": "html_ui/Plugins/ilpav-avionics-g3000-electronic-checklist.xml",
       "size": 336,
-      "date": 133648317094338035
+      "date": 133669413887474299
+    },
+    {
+      "path": "SimObjects/Airplanes/visionjet/model/VisionJet_Interior.xml",
+      "size": 90828,
+      "date": 133676244005635281
     }
   ]
 }
