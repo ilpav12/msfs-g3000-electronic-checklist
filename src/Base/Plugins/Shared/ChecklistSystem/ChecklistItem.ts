@@ -353,7 +353,7 @@ export interface ChecklistLinkItemData<Names = ChecklistNames, Category = Checkl
   /**
    * The target checklist to link to.
    */
-  linkTarget: LinkTarget<Names, Category>;
+  linkTarget: LinkTarget<string, Category>;
   /**
    * The number of blank lines to add below the item (optional, defaults to 0, max 10)
    */
