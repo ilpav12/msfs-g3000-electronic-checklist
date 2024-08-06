@@ -44,7 +44,7 @@ export type ChecklistReadonly<Names = ChecklistNames, Category = ChecklistCatego
 
 /** Checklist */
 export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
-  public readonly items: ChecklistItemReadonly<Names, Category>[];
+  public readonly items: ChecklistItemReadonly<string, Category>[];
 
   private readonly _isComplete = Subject.create(false);
   public readonly isComplete = this._isComplete as Subscribable<boolean>;
