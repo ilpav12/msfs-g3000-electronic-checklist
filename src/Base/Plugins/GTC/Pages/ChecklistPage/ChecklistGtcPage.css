@@ -37,6 +37,10 @@
   height: 100%;
 }
 
+.gtc-tab {
+  word-spacing: 200px;
+}
+
 .gtc-list.gtc-checklist-tab-list {
   left: var(--checklist-tab-list-spacing);
   top: var(--checklist-tab-list-spacing);
