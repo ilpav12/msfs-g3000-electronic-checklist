@@ -84,7 +84,7 @@ export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
                   ...VisionJetAdvisoryChecklists.getChecklists(),
                   ...VisionJetNormalChecklists.getChecklists(),
                 ],
-                VisionJetNormalChecklists.getChecklists()[0],
+                VisionJetNormalChecklists.getChecklists()[6],
               )
             }
           />

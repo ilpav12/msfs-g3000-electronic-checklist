@@ -35,6 +35,7 @@ export type TbmChecklistNames = TbmNormalChecklistNames | TbmAmplifiedChecklistN
 
 export class TbmChecklist<N = TbmChecklistNames, C = TbmChecklistCategory> extends Checklist<N, C> {}
 
+/** The possible VisionJet checklist categories, in the order they appear in the aircraft */
 export enum VisionJetChecklistCategory {
   EmergencyProcedures = "Emergency Procedures",
   Warning = "Warning",
@@ -45,6 +46,7 @@ export enum VisionJetChecklistCategory {
   Normal = "Normal",
 }
 
+/** The possible VisionJet checklist names */
 export type VisionJetChecklistNames =
   | VisionJetEmergencyProceduresChecklistNames
   | VisionJetWarningChecklistNames

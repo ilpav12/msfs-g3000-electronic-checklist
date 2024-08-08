@@ -112,7 +112,7 @@ export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
                     ...VisionJetAdvisoryChecklists.getChecklists(),
                     ...VisionJetNormalChecklists.getChecklists(),
                   ],
-                  VisionJetNormalChecklists.getChecklists()[0],
+                  VisionJetNormalChecklists.getChecklists()[6],
                 )
               }
             />

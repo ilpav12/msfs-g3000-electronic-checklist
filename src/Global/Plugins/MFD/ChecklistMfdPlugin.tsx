@@ -84,7 +84,7 @@ export class ChecklistMfdPlugin extends AbstractG3000MfdPlugin {
                   ...VisionJetAdvisoryChecklists.getChecklists(),
                   ...VisionJetNormalChecklists.getChecklists(),
                 ],
-                VisionJetNormalChecklists.getChecklists()[0],
+                VisionJetNormalChecklists.getChecklists()[6],
               )
             }
           />
