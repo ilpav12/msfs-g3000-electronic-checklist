@@ -1,8 +1,4 @@
-import {
-  ChecklistItemInteractionType,
-  ChecklistItemType,
-  Justification,
-} from "@base/Shared/ChecklistSystem/ChecklistItem";
+import { ChecklistItemType, Justification } from "@base/Shared/ChecklistSystem/ChecklistItem";
 import { VisionJetChecklist, VisionJetChecklistCategory } from "../Checklist";
 
 export enum VisionJetAbnormalProceduresChecklistNames {
@@ -29,11 +25,11 @@ export enum VisionJetAbnormalProceduresChecklistNames {
   YawAxisFailure = "Yaw Axis Failure",
 }
 
-/** A utility class to generate normal checklist data. */
+/** A utility class to generate Vision Jet Abnormal checklist data. */
 export class VisionJetAbnormalProceduresChecklists {
   /**
-   * Generates the normal checklist data.
-   * @returns An array of normal checklists.
+   * Generates the Vision Jet Abnormal checklist data.
+   * @returns An array of Vision Jet Abnormal checklists.
    **/
   public static getChecklists(): VisionJetChecklist[] {
     return [
@@ -71,8 +67,16 @@ export class VisionJetAbnormalProceduresChecklists {
         VisionJetAbnormalProceduresChecklistNames.AileronMistrimLeftRight,
         VisionJetChecklistCategory.AbnormalProcedures,
         [
-          { type: ChecklistItemType.Note, content: "Yellow (left/right arrow) AIL annunciator on PFD." },
-          { type: ChecklistItemType.Note, content: "NOTE: Be prepared for out of trim condition if AP is disengaged." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Yellow (left/right arrow) AIL annunciator on PFD.",
+            justification: Justification.Left,
+          },
+          {
+            type: ChecklistItemType.Note,
+            content: "NOTE: Be prepared for out of trim condition if AP is disengaged.",
+            justification: Justification.Left,
+          },
           {
             type: ChecklistItemType.Challenge,
             content: "1. Manipulate aileron trim as required to eliminate the mistrim condition.",
@@ -96,7 +100,7 @@ export class VisionJetAbnormalProceduresChecklists {
             response: null,
             justification: Justification.Indent1,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -164,10 +168,14 @@ export class VisionJetAbnormalProceduresChecklists {
         VisionJetAbnormalProceduresChecklistNames.AutopilotAbnormalDisconnect,
         VisionJetChecklistCategory.AbnormalProcedures,
         [
-          { type: ChecklistItemType.Note, content: "Red AP flashing on PFD; continuous high-low aural tone." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Red AP flashing on PFD; continuous high-low aural tone.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "1. AP DISC Button", response: "PRESS AND RELEASE" },
           { type: ChecklistItemType.Challenge, content: "2. Airplane Control", response: "MAINTAIN" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -187,16 +195,16 @@ export class VisionJetAbnormalProceduresChecklists {
             response: null,
             justification: Justification.Indent1,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAbnormalProceduresChecklistNames.AutopilotPreflightTestFail,
         VisionJetChecklistCategory.AbnormalProcedures,
         [
-          { type: ChecklistItemType.Note, content: "Red PFT annunciator on PFD." },
+          { type: ChecklistItemType.Note, content: "Red PFT annunciator on PFD.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. Do not dispatch.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -234,15 +242,23 @@ export class VisionJetAbnormalProceduresChecklists {
             content: "4. Engine Button",
             response: "PRESS AND HOLD 15 - 30 SECONDS",
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAbnormalProceduresChecklistNames.ElevatorMistrimDown,
         VisionJetChecklistCategory.AbnormalProcedures,
         [
-          { type: ChecklistItemType.Note, content: "Yellow (down arrow) ELE annunciator on PFD." },
-          { type: ChecklistItemType.Note, content: "NOTE: Be prepared for out of trim condition if AP is disengaged." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Yellow (down arrow) ELE annunciator on PFD.",
+            justification: Justification.Left,
+          },
+          {
+            type: ChecklistItemType.Note,
+            content: "NOTE: Be prepared for out of trim condition if AP is disengaged.",
+            justification: Justification.Left,
+          },
           {
             type: ChecklistItemType.Challenge,
             content: "1. Manipulate elevator trim down to eliminate the mistrim condition.",
@@ -261,15 +277,23 @@ export class VisionJetAbnormalProceduresChecklists {
             response: null,
             justification: Justification.Indent1,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAbnormalProceduresChecklistNames.ElevatorMistrimUp,
         VisionJetChecklistCategory.AbnormalProcedures,
         [
-          { type: ChecklistItemType.Note, content: "Yellow (up arrow) ELE annunciator on PFD." },
-          { type: ChecklistItemType.Note, content: "NOTE: Be prepared for out of trim condition if AP is disengaged." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Yellow (up arrow) ELE annunciator on PFD.",
+            justification: Justification.Left,
+          },
+          {
+            type: ChecklistItemType.Note,
+            content: "NOTE: Be prepared for out of trim condition if AP is disengaged.",
+            justification: Justification.Left,
+          },
           {
             type: ChecklistItemType.Challenge,
             content: "1. Manipulate elevator trim up to eliminate the mistrim condition.",
@@ -288,7 +312,7 @@ export class VisionJetAbnormalProceduresChecklists {
             response: null,
             justification: Justification.Indent1,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -297,7 +321,7 @@ export class VisionJetAbnormalProceduresChecklists {
         [
           { type: ChecklistItemType.Challenge, content: "1. VREF", response: "REFER TO GREEN DONUT" },
           { type: ChecklistItemType.Challenge, content: "2. Landing Gear", response: "DOWN AND LOCKED" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -478,25 +502,25 @@ export class VisionJetAbnormalProceduresChecklists {
             content: "2. Perform STICK PUSHER FAIL Caution checklist.",
             response: null,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAbnormalProceduresChecklistNames.PitchAxisFailure,
         VisionJetChecklistCategory.AbnormalProcedures,
         [
-          { type: ChecklistItemType.Note, content: "Red PTCH annunciator on PFD." },
+          { type: ChecklistItemType.Note, content: "Red PTCH annunciator on PFD.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. Altitude", response: "MONITOR AND MAINTAIN AS POSSIBLE" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAbnormalProceduresChecklistNames.RollAxisFailure,
         VisionJetChecklistCategory.AbnormalProcedures,
         [
-          { type: ChecklistItemType.Note, content: "Red ROLL annunciator on PFD." },
+          { type: ChecklistItemType.Note, content: "Red ROLL annunciator on PFD.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. Airplane Control", response: "MAINTAIN" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -510,7 +534,7 @@ export class VisionJetAbnormalProceduresChecklists {
             response: null,
             justification: Justification.Indent1,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
           { type: ChecklistItemType.Subtitle, content: "If activated uncommanded:" },
           {
             type: ChecklistItemType.Challenge,
@@ -524,17 +548,18 @@ export class VisionJetAbnormalProceduresChecklists {
             response: "PULL",
             justification: Justification.Indent1,
           },
-          { type: ChecklistItemType.Note, content: "Procedure" },
+          { type: ChecklistItemType.Note, content: "Procedure", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAbnormalProceduresChecklistNames.YawAxisFailure,
         VisionJetChecklistCategory.AbnormalProcedures,
         [
-          { type: ChecklistItemType.Note, content: "Red YAW annunciator on PFD." },
+          { type: ChecklistItemType.Note, content: "Red YAW annunciator on PFD.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. Continue flight.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
+        true,
       ),
     ];
   }

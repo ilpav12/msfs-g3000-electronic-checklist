@@ -1,8 +1,4 @@
-import {
-  ChecklistItemInteractionType,
-  ChecklistItemType,
-  Justification,
-} from "@base/Shared/ChecklistSystem/ChecklistItem";
+import { ChecklistItemType, Justification } from "@base/Shared/ChecklistSystem/ChecklistItem";
 import { VisionJetChecklist, VisionJetChecklistCategory } from "../Checklist";
 
 export enum VisionJetAdvisoryChecklistNames {
@@ -31,11 +27,11 @@ export enum VisionJetAdvisoryChecklistNames {
   WOWDISAGREEAdvisory = "WOW DISAGREE Advisory",
 }
 
-/** A utility class to generate normal checklist data. */
+/** A utility class to generate Vision Jet Advisory checklist data. */
 export class VisionJetAdvisoryChecklists {
   /**
-   * Generates the normal checklist data.
-   * @returns An array of normal checklists.
+   * Generates the Vision Jet Advisory checklist data.
+   * @returns An array of Vision Jet Advisory checklists.
    **/
   public static getChecklists(): VisionJetChecklist[] {
     return [
@@ -43,7 +39,11 @@ export class VisionJetAdvisoryChecklists {
         VisionJetAdvisoryChecklistNames.CAPSAUTOPILOTINOPAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "Minimize CAPS deployment speed." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Minimize CAPS deployment speed.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Subtitle, content: "If in an emergency situation:" },
           {
             type: ChecklistItemType.Challenge,
@@ -64,7 +64,7 @@ export class VisionJetAdvisoryChecklists {
         VisionJetAdvisoryChecklistNames.CAPSMISCOMPAREAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "CAPS service required." },
+          { type: ChecklistItemType.Note, content: "CAPS service required.", justification: Justification.Left },
           { type: ChecklistItemType.Subtitle, content: "If in flight:" },
           {
             type: ChecklistItemType.Challenge,
@@ -84,62 +84,86 @@ export class VisionJetAdvisoryChecklists {
         ],
       ),
       new VisionJetChecklist(VisionJetAdvisoryChecklistNames.DOOROPENAdvisory, VisionJetChecklistCategory.Advisory, [
-        { type: ChecklistItemType.Note, content: "One or more doors are open." },
+        { type: ChecklistItemType.Note, content: "One or more doors are open.", justification: Justification.Left },
         { type: ChecklistItemType.Subtitle, content: "On ground only:" },
         { type: ChecklistItemType.Challenge, content: "1. Advisory only. No further action required.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(VisionJetAdvisoryChecklistNames.EDMDISABLEDAdvisory, VisionJetChecklistCategory.Advisory, [
-        { type: ChecklistItemType.Note, content: "Emergency Descent Mode is disabled." },
+        {
+          type: ChecklistItemType.Note,
+          content: "Emergency Descent Mode is disabled.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Challenge, content: "1. Advisory only. No further action required.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(VisionJetAdvisoryChecklistNames.ESPFAILAdvisory, VisionJetChecklistCategory.Advisory, [
-        { type: ChecklistItemType.Note, content: "ESP is inoperative." },
+        { type: ChecklistItemType.Note, content: "ESP is inoperative.", justification: Justification.Left },
         { type: ChecklistItemType.Challenge, content: "1. Advisory only. No further action required.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(VisionJetAdvisoryChecklistNames.ESPOFFAdvisory, VisionJetChecklistCategory.Advisory, [
-        { type: ChecklistItemType.Note, content: "ESP selected off." },
+        { type: ChecklistItemType.Note, content: "ESP selected off.", justification: Justification.Left },
         { type: ChecklistItemType.Challenge, content: "1. Advisory only. No further action required.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(VisionJetAdvisoryChecklistNames.FIREEXTLOWLAdvisory, VisionJetChecklistCategory.Advisory, [
-        { type: ChecklistItemType.Note, content: "Pressure is low in the left fire extinguisher." },
+        {
+          type: ChecklistItemType.Note,
+          content: "Pressure is low in the left fire extinguisher.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Challenge, content: "1. Continue flight.", response: null },
         { type: ChecklistItemType.Challenge, content: "2. Service aircraft as soon as practical.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(VisionJetAdvisoryChecklistNames.FIREEXTLOWRAdvisory, VisionJetChecklistCategory.Advisory, [
-        { type: ChecklistItemType.Note, content: "Pressure is low in the right fire extinguisher." },
+        {
+          type: ChecklistItemType.Note,
+          content: "Pressure is low in the right fire extinguisher.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Challenge, content: "1. Continue flight.", response: null },
         { type: ChecklistItemType.Challenge, content: "2. Service aircraft as soon as practical.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(VisionJetAdvisoryChecklistNames.FUELPUMPONAdvisory, VisionJetChecklistCategory.Advisory, [
-        { type: ChecklistItemType.Note, content: "Fuel pump is ON for normal operations." },
+        {
+          type: ChecklistItemType.Note,
+          content: "Fuel pump is ON for normal operations.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Challenge, content: "1. Advisory only. No further action required.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(VisionJetAdvisoryChecklistNames.FUELSHUTOFFAdvisory, VisionJetChecklistCategory.Advisory, [
-        { type: ChecklistItemType.Note, content: "Fuel shutoff valve is closed." },
+        { type: ChecklistItemType.Note, content: "Fuel shutoff valve is closed.", justification: Justification.Left },
         { type: ChecklistItemType.Challenge, content: "1. ENGINE FIRE ACK", response: "CLOSE GUARD" },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(
         VisionJetAdvisoryChecklistNames.FUELTANKBALANCEDAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "Fuel tank quantity balance has been detected." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Fuel tank quantity balance has been detected.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "1. Fuel Control Switch", response: "AUTO" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAdvisoryChecklistNames.IPSENGINLETUNDERPRESSAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "Engine IPS bleed flow low with engine at idle." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Engine IPS bleed flow low with engine at idle.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Subtitle, content: "On ground only:" },
           { type: ChecklistItemType.Subtitle, content: "If in icing conditions:" },
           {
@@ -152,16 +176,24 @@ export class VisionJetAdvisoryChecklists {
         ],
       ),
       new VisionJetChecklist(VisionJetAdvisoryChecklistNames.IPSFLUIDLOWAdvisory, VisionJetChecklistCategory.Advisory, [
-        { type: ChecklistItemType.Note, content: "IPS fluid below minimum dispatch quantity." },
+        {
+          type: ChecklistItemType.Note,
+          content: "IPS fluid below minimum dispatch quantity.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Subtitle, content: "On ground only:" },
         { type: ChecklistItemType.Challenge, content: "1. Fill IPS fluid as desired.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(
         VisionJetAdvisoryChecklistNames.MASKMICROPHONEAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "A crew mask microphone is switched on." },
+          {
+            type: ChecklistItemType.Note,
+            content: "A crew mask microphone is switched on.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Subtitle, content: "If not wearing oxygen mask:" },
           {
             type: ChecklistItemType.Challenge,
@@ -173,26 +205,30 @@ export class VisionJetAdvisoryChecklists {
         ],
       ),
       new VisionJetChecklist(VisionJetAdvisoryChecklistNames.OXYGENONAdvisory, VisionJetChecklistCategory.Advisory, [
-        { type: ChecklistItemType.Note, content: "Oxygen is on." },
+        { type: ChecklistItemType.Note, content: "Oxygen is on.", justification: Justification.Left },
         { type: ChecklistItemType.Subtitle, content: "On ground only:" },
         { type: ChecklistItemType.Challenge, content: "1. Advisory only. No further action required.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(
         VisionJetAdvisoryChecklistNames.SFDNOCOMPAREAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "SFD comparison data missing." },
+          { type: ChecklistItemType.Note, content: "SFD comparison data missing.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. Exit IMC.", response: null },
           { type: ChecklistItemType.Challenge, content: "2. Land as soon as practicable.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAdvisoryChecklistNames.STALLSPEEDHIGHAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "Stall protection system adjusted for icing." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Stall protection system adjusted for icing.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Subtitle, content: "If airframe is no longer ice contaminated:" },
           {
             type: ChecklistItemType.Challenge,
@@ -219,60 +255,81 @@ export class VisionJetAdvisoryChecklists {
         VisionJetAdvisoryChecklistNames.STARTERENGAGEDAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "Engine start in progress." },
+          { type: ChecklistItemType.Note, content: "Engine start in progress.", justification: Justification.Left },
           {
             type: ChecklistItemType.Note,
             content: "NOTE: Receiving a STARTER ENGAGED CAS Advisory is normal during an engine start.",
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAdvisoryChecklistNames.SURFACEWATCHFAILAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "SurfaceWatch failed." },
-          { type: ChecklistItemType.Note, content: "NOTE: SurfaceWatch is unavailable." },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "SurfaceWatch failed.", justification: Justification.Left },
+          {
+            type: ChecklistItemType.Note,
+            content: "NOTE: SurfaceWatch is unavailable.",
+            justification: Justification.Left,
+          },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAdvisoryChecklistNames.TAKEOFFPITCHTRIMAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "Pitch trim not in takeoff configuration." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Pitch trim not in takeoff configuration.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Subtitle, content: "On ground only:" },
           { type: ChecklistItemType.Challenge, content: "1. Pitch Trim Position", response: "WITHIN GREEN ARC" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAdvisoryChecklistNames.TAKEOFFTHRUSTAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "Engine is in takeoff thrust." },
+          { type: ChecklistItemType.Note, content: "Engine is in takeoff thrust.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. Thrust Lever", response: "MCT" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetAdvisoryChecklistNames.WHEELSPEEDFAULTAdvisory,
         VisionJetChecklistCategory.Advisory,
         [
-          { type: ChecklistItemType.Note, content: "Wheel speed sensor fault detected." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Wheel speed sensor fault detected.",
+            justification: Justification.Left,
+          },
           {
             type: ChecklistItemType.Challenge,
             content: "1. Advisory only. No further action required.",
             response: null,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
-      new VisionJetChecklist(VisionJetAdvisoryChecklistNames.WOWDISAGREEAdvisory, VisionJetChecklistCategory.Advisory, [
-        { type: ChecklistItemType.Note, content: "WOW indicating opposite on ground/in air states." },
-        { type: ChecklistItemType.Challenge, content: "1. Continue flight.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
-      ]),
+      new VisionJetChecklist(
+        VisionJetAdvisoryChecklistNames.WOWDISAGREEAdvisory,
+        VisionJetChecklistCategory.Advisory,
+        [
+          {
+            type: ChecklistItemType.Note,
+            content: "WOW indicating opposite on ground/in air states.",
+            justification: Justification.Left,
+          },
+          { type: ChecklistItemType.Challenge, content: "1. Continue flight.", response: null },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
+        ],
+        true,
+      ),
     ];
   }
 }

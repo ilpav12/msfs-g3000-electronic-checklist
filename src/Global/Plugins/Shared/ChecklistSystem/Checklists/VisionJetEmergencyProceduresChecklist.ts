@@ -1,8 +1,4 @@
-import {
-  ChecklistItemInteractionType,
-  ChecklistItemType,
-  Justification,
-} from "@base/Shared/ChecklistSystem/ChecklistItem";
+import { ChecklistItemType, Justification } from "@base/Shared/ChecklistSystem/ChecklistItem";
 import { VisionJetChecklist, VisionJetChecklistCategory } from "../Checklist";
 import { VisionJetWarningChecklistNames } from "../Checklists/VisionJetWarningChecklist";
 
@@ -38,11 +34,11 @@ export enum VisionJetEmergencyProceduresChecklistNames {
   UncontainedEngineFailureRotorBurstinFlight = "Uncontained Engine Failure (Rotor Burst in Flight)",
 }
 
-/** A utility class to generate normal checklist data. */
+/** A utility class to generate Vision Jet Emergency checklist data. */
 export class VisionJetEmergencyProceduresChecklists {
   /**
-   * Generates the normal checklist data.
-   * @returns An array of normal checklists.
+   * Generates the Vision Jet Emergency checklist data.
+   * @returns An array of Vision Jet Emergency checklists.
    **/
   public static getChecklists(): VisionJetChecklist[] {
     return [
@@ -62,7 +58,7 @@ export class VisionJetEmergencyProceduresChecklists {
               '3. See Section 2: Limitations, "Powerplant Limitations" and Section 2:Limitations, "Outside Air Temperature Limits" in for corrective actions.',
             response: null,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -72,6 +68,7 @@ export class VisionJetEmergencyProceduresChecklists {
           {
             type: ChecklistItemType.Note,
             content: "For more information on AFCS alerts, refer to SF50 Garmin Cockpit Reference Guide.",
+            justification: Justification.Left,
           },
         ],
       ),
@@ -98,7 +95,7 @@ export class VisionJetEmergencyProceduresChecklists {
           { type: ChecklistItemType.Challenge, content: "1. Airspeed", response: "120 - 200 KIAS" },
           { type: ChecklistItemType.Challenge, content: "2. Altitude", response: "< 18,000 FEET" },
           { type: ChecklistItemType.Challenge, content: "3. Thrust Lever", response: "IDLE" },
-          { type: ChecklistItemType.Note, content: "Engine reset:" },
+          { type: ChecklistItemType.Note, content: "Engine reset:", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "4. Engine Knob", response: "OFF" },
           { type: ChecklistItemType.Challenge, content: "5. Engine Button", response: "PRESS (MOMENTARY)" },
           { type: ChecklistItemType.Challenge, content: "6. N2", response: "WAIT UNTIL < 24%" },
@@ -109,7 +106,7 @@ export class VisionJetEmergencyProceduresChecklists {
             response: "WAIT UNTIL < 16%",
             justification: Justification.Indent1,
           },
-          { type: ChecklistItemType.Note, content: "Engine start:" },
+          { type: ChecklistItemType.Note, content: "Engine start:", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "7. Engine Knob", response: "RUN" },
           { type: ChecklistItemType.Challenge, content: "8. Engine Button", response: "PRESS (MOMENTARY)" },
           { type: ChecklistItemType.Subtitle, content: "If air start is successful:" },
@@ -162,6 +159,7 @@ export class VisionJetEmergencyProceduresChecklists {
             type: ChecklistItemType.Note,
             content:
               'CAUTION Probability of engine restart is greater when N2 < 16%. Do not attempt a restart until N2 < 24%. See Section 2: Limitations, "Engine Start (In flight)" for Engine Air Start envelope.',
+            justification: Justification.Left,
           },
         ],
       ),
@@ -173,6 +171,7 @@ export class VisionJetEmergencyProceduresChecklists {
             type: ChecklistItemType.Note,
             content:
               "CAUTION: Delay of AP DISC Button in response to an automatic flight control malfunction while manually overriding controls may result in excessive pitch out of trim condition and will require retrimming of the aircraft as needed.",
+            justification: Justification.Left,
           },
           { type: ChecklistItemType.Challenge, content: "1. Grip side stick firmly.", response: null },
           { type: ChecklistItemType.Challenge, content: "2. AP DISC Button", response: "PRESS AND HOLD" },
@@ -193,7 +192,7 @@ export class VisionJetEmergencyProceduresChecklists {
             justification: Justification.Indent1,
           },
           { type: ChecklistItemType.Challenge, content: "6. Land as soon as practicable.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -244,6 +243,7 @@ export class VisionJetEmergencyProceduresChecklists {
           {
             type: ChecklistItemType.Note,
             content: "NOTE: Wait for plane to stabilize beneath canopy before proceeding.",
+            justification: Justification.Left,
           },
           { type: ChecklistItemType.Challenge, content: "3. Oxygen Mask (above 15,000 ft)", response: "DON, 100%" },
           { type: ChecklistItemType.Challenge, content: "4. PAX OXY DEPLOY Switch", response: "ON" },
@@ -266,13 +266,17 @@ export class VisionJetEmergencyProceduresChecklists {
           { type: ChecklistItemType.Challenge, content: "12. Loose Items", response: "SECURE" },
           { type: ChecklistItemType.Challenge, content: "13. Seat Belts", response: "TIGHTEN" },
           { type: ChecklistItemType.Challenge, content: "14. Assume emergency landing body position.", response: null },
-          { type: ChecklistItemType.Note, content: "After airplane comes to a complete stop:" },
+          {
+            type: ChecklistItemType.Note,
+            content: "After airplane comes to a complete stop:",
+            justification: Justification.Left,
+          },
           {
             type: ChecklistItemType.Challenge,
             content: "15. Evacuate quickly and move upwind, well clear of the aircraft and parachute.",
             response: null,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -324,13 +328,14 @@ export class VisionJetEmergencyProceduresChecklists {
             type: ChecklistItemType.Note,
             content:
               "WARNING: Evacuate via either egress window or main cabin door. However, main cabin door evacuation shall be done only via the upper cabin door. To avoid flooding the airplane, do not open lower cabin door.",
+            justification: Justification.Left,
           },
           {
             type: ChecklistItemType.Challenge,
             content: "15. Flotation Devices (if equipped)",
             response: "INFLATE WHEN CLEAR OF AIRPLANE",
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -345,7 +350,7 @@ export class VisionJetEmergencyProceduresChecklists {
             content: "4. Airspeed",
             response: "INCREASE TO VMO (250 KIAS) / MMO (0.53 Mach) MAXIMUM",
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -357,7 +362,7 @@ export class VisionJetEmergencyProceduresChecklists {
           { type: ChecklistItemType.Challenge, content: "3. BAT 1 and BAT 2", response: "OFF" },
           { type: ChecklistItemType.Challenge, content: "4. Parking Brake", response: "SET" },
           { type: ChecklistItemType.Challenge, content: "5. Egress aircraft through exits.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -463,6 +468,7 @@ export class VisionJetEmergencyProceduresChecklists {
             type: ChecklistItemType.Note,
             content:
               'WARNING: Refer to Section 3: Emergency Procedures, "Flameout / Precautionary Approach" checklist. If a safe landing is not assured by the High-Key/Low-Key approach, consider CAPS procedures.',
+            justification: Justification.Left,
           },
           { type: ChecklistItemType.Note, content: "After landing:", justification: Justification.Indent1 },
           {
@@ -484,7 +490,11 @@ export class VisionJetEmergencyProceduresChecklists {
         VisionJetEmergencyProceduresChecklistNames.EngineEmergencyOnTakeoffSpeedBelowVR,
         VisionJetChecklistCategory.EmergencyProcedures,
         [
-          { type: ChecklistItemType.Note, content: "NOTE: Includes emergencies such as engine failure or fire." },
+          {
+            type: ChecklistItemType.Note,
+            content: "NOTE: Includes emergencies such as engine failure or fire.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "1. Brakes", response: "MAX PILOT EFFORT W/O SKIDDING" },
           { type: ChecklistItemType.Challenge, content: "2. Thrust Lever", response: "IDLE" },
           { type: ChecklistItemType.Challenge, content: "3. Engine Knob", response: "OFF" },
@@ -540,13 +550,18 @@ export class VisionJetEmergencyProceduresChecklists {
             response: null,
             justification: Justification.Indent1,
           },
-          { type: ChecklistItemType.Note, content: "After airplane comes to a complete stop:" },
+          {
+            type: ChecklistItemType.Note,
+            content: "After airplane comes to a complete stop:",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "5. Brakes", response: "COOL DOWN" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
           {
             type: ChecklistItemType.Note,
             content:
               "CAUTION: For maximum brake effectiveness, retract flaps, hold side stick control full back, and bring the airplane to a stop by smooth, even application of the brakes. A cool down period and brake overheat inspection are required after high-energy braking events. Refer to Section 2: Limitations, Brakes.",
+            justification: Justification.Left,
           },
         ],
       ),
@@ -562,6 +577,7 @@ export class VisionJetEmergencyProceduresChecklists {
             type: ChecklistItemType.Note,
             content:
               "NOTE: Engine can be considered safe to attempt restart if no abnormal, loud noises or vibrations were noted prior to or during shutdown, N1 rotation is observed, and no exceedances were noted prior to shutdown.",
+            justification: Justification.Left,
           },
           { type: ChecklistItemType.Subtitle, content: "If engine appears safe to attempt a restart:" },
           {
@@ -664,7 +680,7 @@ export class VisionJetEmergencyProceduresChecklists {
         VisionJetChecklistCategory.EmergencyProcedures,
         [
           { type: ChecklistItemType.Challenge, content: "1. Land as soon as possible.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
           { type: ChecklistItemType.Subtitle, content: "If immediate landing is not possible:" },
           {
             type: ChecklistItemType.Link,
@@ -682,10 +698,26 @@ export class VisionJetEmergencyProceduresChecklists {
         VisionJetEmergencyProceduresChecklistNames.FlameoutPrecautionaryApproach,
         VisionJetChecklistCategory.EmergencyProcedures,
         [
-          { type: ChecklistItemType.Note, content: "POSITION......ALTITUDE......AIRSPEED" },
-          { type: ChecklistItemType.Note, content: "High-Key......3000 ft AGL......115-130 KIAS" },
-          { type: ChecklistItemType.Note, content: "Low-Key......1500 ft AGL......120 KIAS" },
-          { type: ChecklistItemType.Note, content: "Base Leg......1000 ft AGL.......120 KIAS" },
+          {
+            type: ChecklistItemType.Note,
+            content: "POSITION......ALTITUDE......AIRSPEED",
+            justification: Justification.Left,
+          },
+          {
+            type: ChecklistItemType.Note,
+            content: "High-Key......3000 ft AGL......115-130 KIAS",
+            justification: Justification.Left,
+          },
+          {
+            type: ChecklistItemType.Note,
+            content: "Low-Key......1500 ft AGL......120 KIAS",
+            justification: Justification.Left,
+          },
+          {
+            type: ChecklistItemType.Note,
+            content: "Base Leg......1000 ft AGL.......120 KIAS",
+            justification: Justification.Left,
+          },
         ],
       ),
       new VisionJetChecklist(
@@ -779,7 +811,7 @@ export class VisionJetEmergencyProceduresChecklists {
             content: "4. Use rudder as necessary to align the aircraft with the runway.",
             response: null,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -797,9 +829,13 @@ export class VisionJetEmergencyProceduresChecklists {
             content: "3. Make small pitch and power changes and prepare for landing configuration early.",
             response: null,
           },
-          { type: ChecklistItemType.Note, content: "After touchdown and after the nose wheel is on the ground:" },
+          {
+            type: ChecklistItemType.Note,
+            content: "After touchdown and after the nose wheel is on the ground:",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "4. Brakes", response: "A/R" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -812,7 +848,7 @@ export class VisionJetEmergencyProceduresChecklists {
             content: "2. Maintain directional control on ground, using brakes and ailerons as required.",
             response: null,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -822,7 +858,7 @@ export class VisionJetEmergencyProceduresChecklists {
           { type: ChecklistItemType.Challenge, content: "1. BAT 1 and BAT 2", response: "VERIFY ON" },
           { type: ChecklistItemType.Challenge, content: "2. GEN 1 and GEN 2", response: "VERIFY ON" },
           { type: ChecklistItemType.Challenge, content: "3. Land as soon as possible.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -905,7 +941,7 @@ export class VisionJetEmergencyProceduresChecklists {
             justification: Justification.Indent1,
           },
           { type: ChecklistItemType.Challenge, content: "4. Land as soon as practicable.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -916,7 +952,7 @@ export class VisionJetEmergencyProceduresChecklists {
           { type: ChecklistItemType.Challenge, content: "2. Flaps", response: "A/R" },
           { type: ChecklistItemType.Challenge, content: "3. Landing Gear", response: "A/R" },
           { type: ChecklistItemType.Challenge, content: "4. Land as soon as practicable.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
           { type: ChecklistItemType.Subtitle, content: "If the thrust lever is stuck at, or near, the T/O detent:" },
           {
             type: ChecklistItemType.Challenge,
@@ -985,13 +1021,13 @@ export class VisionJetEmergencyProceduresChecklists {
         VisionJetEmergencyProceduresChecklistNames.PitchTrimRunawayFailure,
         VisionJetChecklistCategory.EmergencyProcedures,
         [
-          { type: ChecklistItemType.Note, content: "Red PTRM annunciator on PFD." },
+          { type: ChecklistItemType.Note, content: "Red PTRM annunciator on PFD.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. Grip side stick firmly.", response: null },
           { type: ChecklistItemType.Challenge, content: "2. AP DISC Button", response: "PRESS AND HOLD" },
           { type: ChecklistItemType.Challenge, content: "3. Pitch Trim", response: "A/R (MANUAL TRIM WHEEL)" },
           { type: ChecklistItemType.Challenge, content: "4. PITCH TRIM CB (A1)", response: "PULL" },
           { type: ChecklistItemType.Challenge, content: "5. AP DISC Button", response: "RELEASE" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -1000,9 +1036,13 @@ export class VisionJetEmergencyProceduresChecklists {
         [
           { type: ChecklistItemType.Challenge, content: "1. Brakes", response: "MAX. PILOT EFFORT W/O SKIDDING" },
           { type: ChecklistItemType.Challenge, content: "2. Thrust Lever", response: "IDLE" },
-          { type: ChecklistItemType.Note, content: "After airplane comes to a complete stop:" },
+          {
+            type: ChecklistItemType.Note,
+            content: "After airplane comes to a complete stop:",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "3. Brakes", response: "COOL DOWN" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -1014,7 +1054,7 @@ export class VisionJetEmergencyProceduresChecklists {
           { type: ChecklistItemType.Challenge, content: "3. Airspeed", response: "REDUCE (A/R TO MINIMIZE FORCE)" },
           { type: ChecklistItemType.Challenge, content: "4. ROLL TRIM CB (A2)", response: "PULL" },
           { type: ChecklistItemType.Challenge, content: "5. AP DISC Button", response: "RELEASE" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -1091,7 +1131,7 @@ export class VisionJetEmergencyProceduresChecklists {
             content: "14. Oxygen Mask",
             response: "ADJUST TO NORM IF ABLE AND BELOW 20,000 FT",
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
@@ -1119,8 +1159,9 @@ export class VisionJetEmergencyProceduresChecklists {
               checklistCategory: VisionJetChecklistCategory.EmergencyProcedures,
             },
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
+        true,
       ),
     ];
   }

@@ -1,8 +1,4 @@
-import {
-  ChecklistItemInteractionType,
-  ChecklistItemType,
-  Justification,
-} from "@base/Shared/ChecklistSystem/ChecklistItem";
+import { ChecklistItemType, Justification } from "@base/Shared/ChecklistSystem/ChecklistItem";
 import { VisionJetChecklist, VisionJetChecklistCategory } from "../Checklist";
 
 export enum VisionJetNormalChecklistNames {
@@ -28,11 +24,11 @@ export enum VisionJetNormalChecklistNames {
   IPSActivation = "IPS Activation",
 }
 
-/** A utility class to generate normal checklist data. */
+/** A utility class to generate Vision Jet Normal checklist data. */
 export class VisionJetNormalChecklists {
   /**
-   * Generates the normal checklist data.
-   * @returns An array of normal checklists.
+   * Generates the Vision Jet Normal checklist data.
+   * @returns An array of Vision Jet Normal checklists.
    **/
   public static getChecklists(): VisionJetChecklist[] {
     return [
@@ -1142,7 +1138,11 @@ export class VisionJetNormalChecklists {
         { type: ChecklistItemType.Challenge, content: "2. Flaps", response: "A/R" },
         { type: ChecklistItemType.Challenge, content: "3. Cabin Pressure Diff", response: "APPROX 0 PSI" },
         { type: ChecklistItemType.Challenge, content: "4. WINDSHLD IPS Switch", response: "OFF" },
-        { type: ChecklistItemType.Note, content: "NOTE: IPS fluid decreases flight visibility." },
+        {
+          type: ChecklistItemType.Note,
+          content: "NOTE: IPS fluid decreases flight visibility.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Challenge, content: "5. Autopilot", response: "OFF" },
         { type: ChecklistItemType.Challenge, content: "6. Airspeed", response: "VREF TO VREF+10" },
         { type: ChecklistItemType.Challenge, content: "7. Brake Pressure", response: "CHECK" },
@@ -1158,7 +1158,7 @@ export class VisionJetNormalChecklists {
           response: "VREF (REFER TO LANDING CONSIDERATIONS TABLE)",
         },
         { type: ChecklistItemType.Challenge, content: "3. Thrust Lever", response: "A/R" },
-        { type: ChecklistItemType.Note, content: "After landing:" },
+        { type: ChecklistItemType.Note, content: "After landing:", justification: Justification.Left },
         { type: ChecklistItemType.Challenge, content: "4. Brakes", response: "A/R" },
       ]),
       new VisionJetChecklist(VisionJetNormalChecklistNames.GoAround, VisionJetChecklistCategory.Normal, [
@@ -1307,43 +1307,52 @@ export class VisionJetNormalChecklists {
           },
         ],
       ),
-      new VisionJetChecklist(VisionJetNormalChecklistNames.IPSActivation, VisionJetChecklistCategory.Normal, [
-        {
-          type: ChecklistItemType.Subtitle,
-          content: "OAT is less than or equal to 41 F (5 C) with visible moisture or visibility less than 1 mile:",
-        },
-        { type: ChecklistItemType.Subtitle, content: "IN FLIGHT:" },
-        { type: ChecklistItemType.Challenge, content: "1. PROBE HEAT Switch", response: "ON" },
-        { type: ChecklistItemType.Challenge, content: "2. ENGINE IPS Switch", response: "ON" },
-        { type: ChecklistItemType.Challenge, content: "3. WING/STAB IPS Switch", response: "OFF" },
-        { type: ChecklistItemType.Challenge, content: "4. WINDSHLD IPS Switch", response: "OFF" },
-        { type: ChecklistItemType.Subtitle, content: "ON GROUND:" },
-        { type: ChecklistItemType.Challenge, content: "1. PROBE HEAT Switch", response: "ON" },
-        { type: ChecklistItemType.Challenge, content: "2. ENGINE IPS Switch", response: "ON" },
-        { type: ChecklistItemType.Subtitle, content: "At first sign of ice:" },
-        {
-          type: ChecklistItemType.Note,
-          content:
-            "WARNING: Ice contamination of the lifting surfaces may result in an inoperable or inadequate stall warning, which may cause an inadvertent stall. The resulting stall may lead to loss of control of the airplane. The WING/STAB IPS switch must remain at the ON position until either the entire wing is free of ice accretion or ice is no longer accreting on the aircraft. Stall Warning offset must remain ON until entire airframe is free of ice.",
-        },
-        {
-          type: ChecklistItemType.Note,
-          content:
-            "NOTE: The left wing leading edge is the primary reference area for determining if ice is accumulating on the aircraft. Ice may be visible on other areas of the aircraft as well, such as the forward windshield.",
-        },
-        { type: ChecklistItemType.Challenge, content: "1. PROBE HEAT Switch", response: "ON" },
-        { type: ChecklistItemType.Challenge, content: "2. ENGINE IPS Switch", response: "ON" },
-        { type: ChecklistItemType.Challenge, content: "3. WING/STAB IPS Switch", response: "ON" },
-        { type: ChecklistItemType.Subtitle, content: "In RVSM Airspace:" },
-        {
-          type: ChecklistItemType.Challenge,
-          content: "a. Contact ATC and notify of non-RVSM status.",
-          response: null,
-          justification: Justification.Indent1,
-        },
-        { type: ChecklistItemType.Note, content: "NOTE: Verify STALL SPEED HIGH CAS Advisory is present." },
-        { type: ChecklistItemType.Challenge, content: "4. WINDSHLD IPS Switch", response: "ON" },
-      ]),
+      new VisionJetChecklist(
+        VisionJetNormalChecklistNames.IPSActivation,
+        VisionJetChecklistCategory.Normal,
+        [
+          {
+            type: ChecklistItemType.Subtitle,
+            content: "OAT is less than or equal to 41 F (5 C) with visible moisture or visibility less than 1 mile:",
+          },
+          { type: ChecklistItemType.Subtitle, content: "IN FLIGHT:" },
+          { type: ChecklistItemType.Challenge, content: "1. PROBE HEAT Switch", response: "ON" },
+          { type: ChecklistItemType.Challenge, content: "2. ENGINE IPS Switch", response: "ON" },
+          { type: ChecklistItemType.Challenge, content: "3. WING/STAB IPS Switch", response: "OFF" },
+          { type: ChecklistItemType.Challenge, content: "4. WINDSHLD IPS Switch", response: "OFF" },
+          { type: ChecklistItemType.Subtitle, content: "ON GROUND:" },
+          { type: ChecklistItemType.Challenge, content: "1. PROBE HEAT Switch", response: "ON" },
+          { type: ChecklistItemType.Challenge, content: "2. ENGINE IPS Switch", response: "ON" },
+          { type: ChecklistItemType.Subtitle, content: "At first sign of ice:" },
+          {
+            type: ChecklistItemType.Note,
+            content:
+              "WARNING: Ice contamination of the lifting surfaces may result in an inoperable or inadequate stall warning, which may cause an inadvertent stall. The resulting stall may lead to loss of control of the airplane. The WING/STAB IPS switch must remain at the ON position until either the entire wing is free of ice accretion or ice is no longer accreting on the aircraft. Stall Warning offset must remain ON until entire airframe is free of ice.",
+          },
+          {
+            type: ChecklistItemType.Note,
+            content:
+              "NOTE: The left wing leading edge is the primary reference area for determining if ice is accumulating on the aircraft. Ice may be visible on other areas of the aircraft as well, such as the forward windshield.",
+          },
+          { type: ChecklistItemType.Challenge, content: "1. PROBE HEAT Switch", response: "ON" },
+          { type: ChecklistItemType.Challenge, content: "2. ENGINE IPS Switch", response: "ON" },
+          { type: ChecklistItemType.Challenge, content: "3. WING/STAB IPS Switch", response: "ON" },
+          { type: ChecklistItemType.Subtitle, content: "In RVSM Airspace:" },
+          {
+            type: ChecklistItemType.Challenge,
+            content: "a. Contact ATC and notify of non-RVSM status.",
+            response: null,
+            justification: Justification.Indent1,
+          },
+          {
+            type: ChecklistItemType.Note,
+            content: "NOTE: Verify STALL SPEED HIGH CAS Advisory is present.",
+            justification: Justification.Left,
+          },
+          { type: ChecklistItemType.Challenge, content: "4. WINDSHLD IPS Switch", response: "ON" },
+        ],
+        true,
+      ),
     ];
   }
 }

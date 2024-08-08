@@ -51,16 +51,20 @@ export enum VisionJetWarningChecklistNames {
   TT2OVERHEATWarning = "TT2 OVERHEAT Warning",
 }
 
-/** A utility class to generate normal checklist data. */
+/** A utility class to generate Vision Jet Warning checklist data. */
 export class VisionJetWarningChecklists {
   /**
-   * Generates the normal checklist data.
-   * @returns An array of normal checklists.
+   * Generates the Vision Jet Warning checklist data.
+   * @returns An array of Vision Jet Warning checklists.
    **/
   public static getChecklists(): VisionJetChecklist[] {
     return [
       new VisionJetChecklist(VisionJetWarningChecklistNames.AUTODESCENTWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Aircraft descending to 14,000 FT." },
+        {
+          type: ChecklistItemType.Note,
+          content: "Aircraft descending to 14,000 FT.",
+          justification: Justification.Left,
+        },
         {
           type: ChecklistItemType.Note,
           content:
@@ -73,13 +77,13 @@ export class VisionJetWarningChecklists {
           response: "PRESS AND RELEASE",
           justification: Justification.Indent1,
         },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(
         VisionJetWarningChecklistNames.CABINALTITUDEHIGHWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Cabin high altitude detected." },
+          { type: ChecklistItemType.Note, content: "Cabin high altitude detected.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. Oxygen Mask", response: "DON, 100%" },
           { type: ChecklistItemType.Challenge, content: "2. BLEED Switch", response: "VERIFY BLEED" },
           { type: ChecklistItemType.Challenge, content: "3. MIC SELECT Switch", response: "MASK MIC" },
@@ -102,14 +106,18 @@ export class VisionJetWarningChecklists {
           },
           { type: ChecklistItemType.Challenge, content: "6. Transponder", response: "SQUAWK 7700" },
           { type: ChecklistItemType.Challenge, content: "7. CABIN PRESSURE DUMP Button", response: "PRESS" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetWarningChecklistNames.CABINDIFFPRESSUREHIGHWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Cabin differential pressure is too high." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Cabin differential pressure is too high.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "1. Oxygen Mask", response: "DON, 100%" },
           { type: ChecklistItemType.Challenge, content: "2. BLEED Switch", response: "FRESH" },
           { type: ChecklistItemType.Challenge, content: "3. MIC SELECT Switch", response: "MASK MIC" },
@@ -135,7 +143,7 @@ export class VisionJetWarningChecklists {
         ],
       ),
       new VisionJetChecklist(VisionJetWarningChecklistNames.CABINDUMPWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Cabin pressure dump activated." },
+        { type: ChecklistItemType.Note, content: "Cabin pressure dump activated.", justification: Justification.Left },
         { type: ChecklistItemType.Subtitle, content: "If message is accompanied by CABIN ALTITUDE HIGH Warning:" },
         {
           type: ChecklistItemType.Challenge,
@@ -143,10 +151,14 @@ export class VisionJetWarningChecklists {
           response: null,
           justification: Justification.Indent1,
         },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(VisionJetWarningChecklistNames.CAPSACTIVATEDWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "CAPS sequence has been activated." },
+        {
+          type: ChecklistItemType.Note,
+          content: "CAPS sequence has been activated.",
+          justification: Justification.Left,
+        },
         {
           type: ChecklistItemType.Subtitle,
           content: "If message is displayed due to CAPS activation (pulling of CAPS Activation Handle):",
@@ -191,7 +203,7 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.DOOROPENBAGGAGEWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Baggage door is open." },
+          { type: ChecklistItemType.Note, content: "Baggage door is open.", justification: Justification.Left },
           { type: ChecklistItemType.Subtitle, content: "If in flight:" },
           {
             type: ChecklistItemType.Challenge,
@@ -211,7 +223,7 @@ export class VisionJetWarningChecklists {
         ],
       ),
       new VisionJetChecklist(VisionJetWarningChecklistNames.DOOROPENMAINWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Main door is open." },
+        { type: ChecklistItemType.Note, content: "Main door is open.", justification: Justification.Left },
         { type: ChecklistItemType.Subtitle, content: "If in flight:" },
         {
           type: ChecklistItemType.Challenge,
@@ -251,7 +263,11 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.EMERAUTOLANDACTIVATINGWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Emergency Autoland is activating." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Emergency Autoland is activating.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Subtitle, content: "If Safe Return Autoland activation is not desired:" },
           {
             type: ChecklistItemType.Challenge,
@@ -317,7 +333,7 @@ export class VisionJetWarningChecklists {
             response: "A/R",
             justification: Justification.Indent3,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
           {
             type: ChecklistItemType.Subtitle,
             content: "If Malfunction of Safe Return Autoland activation is suspected:",
@@ -335,7 +351,7 @@ export class VisionJetWarningChecklists {
             response: null,
             justification: Justification.Indent2,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
           { type: ChecklistItemType.Subtitle, content: "If Safe Return Autoland activation is desired:" },
           {
             type: ChecklistItemType.Challenge,
@@ -343,20 +359,24 @@ export class VisionJetWarningChecklists {
             response: null,
             justification: Justification.Indent1,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetWarningChecklistNames.EMERAUTOLANDBRAKESWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Do not dispatch, autoland brakes in test mode." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Do not dispatch, autoland brakes in test mode.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "1. Do not dispatch.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(VisionJetWarningChecklistNames.EMERBUSVOLTSWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Operating on emergency power." },
+        { type: ChecklistItemType.Note, content: "Operating on emergency power.", justification: Justification.Left },
         {
           type: ChecklistItemType.Subtitle,
           content: "If GENERATOR 1 CURRENT OR GENERATOR 2 CURRENT CAS is also displayed:",
@@ -417,58 +437,142 @@ export class VisionJetWarningChecklists {
           content: "BATT1 Hot Bus",
           interactionType: ChecklistItemInteractionType.ScrollStop,
         },
-        { type: ChecklistItemType.Note, content: "CONV LIGHTS CB - Interior Lights Controller" },
-        { type: ChecklistItemType.Note, content: "CAPS A CB - Primary CAPS" },
+        {
+          type: ChecklistItemType.Note,
+          content: "CONV LIGHTS CB - Interior Lights Controller",
+          justification: Justification.Left,
+        },
+        { type: ChecklistItemType.Note, content: "CAPS A CB - Primary CAPS", justification: Justification.Left },
         {
           type: ChecklistItemType.Subtitle,
           content: "Copilot Circuit Breaker Panel (Row D)",
           interactionType: ChecklistItemInteractionType.ScrollStop,
         },
-        { type: ChecklistItemType.Note, content: "FUEL VALVE 1 CB (D5) - Fuel Control Valve 1" },
-        { type: ChecklistItemType.Note, content: "LANDING GEAR IND CB (D6) - L MLG WOW Sensor" },
-        { type: ChecklistItemType.Note, content: "LANDING GEAR IND CB (D6) - R MLG WOW Sensor" },
-        { type: ChecklistItemType.Note, content: "LANDING GEAR IND CB (D6) - L MLG Down Sensor" },
-        { type: ChecklistItemType.Note, content: "LANDING GEAR IND CB (D6) - L MLG Locked Sensor" },
-        { type: ChecklistItemType.Note, content: "LANDING GEAR IND CB (D6) - R MLG Down Sensor" },
-        { type: ChecklistItemType.Note, content: "LANDING GEAR IND CB (D6) - R MLG Locked Sensor" },
-        { type: ChecklistItemType.Note, content: "LANDING GEAR IND CB (D6) - NLG Down Sensor" },
-        { type: ChecklistItemType.Note, content: "LANDING GEAR IND CB (D6) - NLG Locked Sensor" },
-        { type: ChecklistItemType.Note, content: "STANDBY ATT CB (D2) - ADAHRS 3 (MD302)" },
-        { type: ChecklistItemType.Note, content: "GTC 1A CB (D3) - GTC 1 (pwr A)" },
-        { type: ChecklistItemType.Note, content: "GEA CB (D4) - RDM" },
-        { type: ChecklistItemType.Note, content: "GEA CB (D4) - GEA 71" },
+        {
+          type: ChecklistItemType.Note,
+          content: "FUEL VALVE 1 CB (D5) - Fuel Control Valve 1",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "LANDING GEAR IND CB (D6) - L MLG WOW Sensor",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "LANDING GEAR IND CB (D6) - R MLG WOW Sensor",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "LANDING GEAR IND CB (D6) - L MLG Down Sensor",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "LANDING GEAR IND CB (D6) - L MLG Locked Sensor",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "LANDING GEAR IND CB (D6) - R MLG Down Sensor",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "LANDING GEAR IND CB (D6) - R MLG Locked Sensor",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "LANDING GEAR IND CB (D6) - NLG Down Sensor",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "LANDING GEAR IND CB (D6) - NLG Locked Sensor",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "STANDBY ATT CB (D2) - ADAHRS 3 (MD302)",
+          justification: Justification.Left,
+        },
+        { type: ChecklistItemType.Note, content: "GTC 1A CB (D3) - GTC 1 (pwr A)", justification: Justification.Left },
+        { type: ChecklistItemType.Note, content: "GEA CB (D4) - RDM", justification: Justification.Left },
+        { type: ChecklistItemType.Note, content: "GEA CB (D4) - GEA 71", justification: Justification.Left },
         { type: ChecklistItemType.Note, content: "CAPS B CB (D1) - Secondary CAPS", blanksBelow: 1 },
         {
           type: ChecklistItemType.Subtitle,
           content: "Pilot Circuit Breaker Panel (Row A)",
           interactionType: ChecklistItemInteractionType.ScrollStop,
         },
-        { type: ChecklistItemType.Note, content: "CABIN PRESS 2 CB (A10) - Manual Dump SW & Controller Solenoid Pwr" },
-        { type: ChecklistItemType.Note, content: "AP CTRL CB (A7) - AP Controller (GMC 707)" },
-        { type: ChecklistItemType.Note, content: "FIRE PROT 1 CB (A9) - Fire Bottle 1" },
-        { type: ChecklistItemType.Note, content: "FIRE PROT 1 CB (A9) - Fire Prot. CCA LED" },
-        { type: ChecklistItemType.Note, content: "CREW LIGHTS CB (A11) - Task Light, Copilot" },
-        { type: ChecklistItemType.Note, content: "CREW LIGHTS CB (A11) - Task Light, Pilot" },
+        {
+          type: ChecklistItemType.Note,
+          content: "CABIN PRESS 2 CB (A10) - Manual Dump SW & Controller Solenoid Pwr",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "AP CTRL CB (A7) - AP Controller (GMC 707)",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "FIRE PROT 1 CB (A9) - Fire Bottle 1",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "FIRE PROT 1 CB (A9) - Fire Prot. CCA LED",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "CREW LIGHTS CB (A11) - Task Light, Copilot",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "CREW LIGHTS CB (A11) - Task Light, Pilot",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Note, content: "PROBE HT LEFT CB (A8) - Left Pitot Heat", blanksBelow: 1 },
         {
           type: ChecklistItemType.Subtitle,
           content: "Pilot Circuit Breaker Panel (Row B)",
           interactionType: ChecklistItemInteractionType.ScrollStop,
         },
-        { type: ChecklistItemType.Note, content: "FIRE PROT 2 CB (B9) - Fire Bottle 2" },
-        { type: ChecklistItemType.Note, content: "FIRE PROT 2 CB (B9) - Fuel Shutoff Valve" },
-        { type: ChecklistItemType.Note, content: "AHRS 1 CB (B10) - AHRS 1 (GRS79)" },
-        { type: ChecklistItemType.Note, content: "ADC 1 CB (B11) - GDC 1" },
-        { type: ChecklistItemType.Note, content: "GTC 2A CB (B5) - GTC 2 (pwr A)" },
-        { type: ChecklistItemType.Note, content: "GPS NAV GIA 1 CB (B6) - GIA 1 MAIN" },
-        { type: ChecklistItemType.Note, content: "PFD A CB (B8) - PFD (pwr A)" },
-        { type: ChecklistItemType.Note, content: "COM 1 CB (B7) - GIA 1 COM" },
+        {
+          type: ChecklistItemType.Note,
+          content: "FIRE PROT 2 CB (B9) - Fire Bottle 2",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "FIRE PROT 2 CB (B9) - Fuel Shutoff Valve",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "AHRS 1 CB (B10) - AHRS 1 (GRS79)",
+          justification: Justification.Left,
+        },
+        { type: ChecklistItemType.Note, content: "ADC 1 CB (B11) - GDC 1", justification: Justification.Left },
+        { type: ChecklistItemType.Note, content: "GTC 2A CB (B5) - GTC 2 (pwr A)", justification: Justification.Left },
+        {
+          type: ChecklistItemType.Note,
+          content: "GPS NAV GIA 1 CB (B6) - GIA 1 MAIN",
+          justification: Justification.Left,
+        },
+        { type: ChecklistItemType.Note, content: "PFD A CB (B8) - PFD (pwr A)", justification: Justification.Left },
+        { type: ChecklistItemType.Note, content: "COM 1 CB (B7) - GIA 1 COM", justification: Justification.Left },
       ]),
       new VisionJetChecklist(
         VisionJetWarningChecklistNames.ENGINEFIREWarningInFlight,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Engine fire detected." },
+          { type: ChecklistItemType.Note, content: "Engine fire detected.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. Thrust Lever", response: "IDLE" },
           { type: ChecklistItemType.Challenge, content: "2. Pitch for 120 KIAS (APPROX.)", response: null },
           { type: ChecklistItemType.Challenge, content: "3. Wait 15 seconds.", response: null },
@@ -587,17 +691,17 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.ENGINEFIREWarningOnGround,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Engine fire detected." },
+          { type: ChecklistItemType.Note, content: "Engine fire detected.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. ENGINE FIRE ACK", response: "LIFT GUARD, TOGGLE" },
           { type: ChecklistItemType.Challenge, content: "2. L/R PUSH TO DISCHARGE", response: "PUSH" },
           { type: ChecklistItemType.Challenge, content: "3. Engine Knob", response: "OFF" },
           { type: ChecklistItemType.Challenge, content: "4. Engine Button", response: "PRESS (MOMENTARY)" },
           { type: ChecklistItemType.Challenge, content: "5. Evacuate airplane.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(VisionJetWarningChecklistNames.ENGINESTARTN1Warning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "N1 is not indicating rotation." },
+        { type: ChecklistItemType.Note, content: "N1 is not indicating rotation.", justification: Justification.Left },
         { type: ChecklistItemType.Challenge, content: "1. ENGINE START N1", response: "ABORT START" },
         { type: ChecklistItemType.Subtitle, content: "If in flight:", justification: Justification.Indent1 },
         {
@@ -606,7 +710,7 @@ export class VisionJetWarningChecklists {
           response: null,
           justification: Justification.Indent1,
         },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         { type: ChecklistItemType.Subtitle, content: "If on ground:", justification: Justification.Indent1 },
         {
           type: ChecklistItemType.Challenge,
@@ -614,24 +718,32 @@ export class VisionJetWarningChecklists {
           response: null,
           justification: Justification.Indent1,
         },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(
         VisionJetWarningChecklistNames.EXTERNALPOWERCONNECTEDWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "External power is connected, set park brake." },
+          {
+            type: ChecklistItemType.Note,
+            content: "External power is connected, set park brake.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Subtitle, content: "On ground only:" },
           { type: ChecklistItemType.Challenge, content: "1. Parking Brake or Brakes", response: "SET OR HOLD" },
           { type: ChecklistItemType.Challenge, content: "2. Disconnect external power.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetWarningChecklistNames.FADECCTRLDEGRADEDWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Reference FADEC Fault Code Messages." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Reference FADEC Fault Code Messages.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "1. FADEC Reset via MFD Controller:", response: null },
           {
             type: ChecklistItemType.Challenge,
@@ -711,7 +823,11 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.FADECNODISPATCHWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Reference FADEC Fault Code Messages." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Reference FADEC Fault Code Messages.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Subtitle, content: "On ground only:" },
           { type: ChecklistItemType.Challenge, content: "1. FADEC Reset via MFD Controller:", response: null },
           {
@@ -745,15 +861,23 @@ export class VisionJetWarningChecklists {
         ],
       ),
       new VisionJetChecklist(VisionJetWarningChecklistNames.FLAPSCALMODEWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Do not dispatch, flaps system needs service." },
+        {
+          type: ChecklistItemType.Note,
+          content: "Do not dispatch, flaps system needs service.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Subtitle, content: "On ground only:" },
         { type: ChecklistItemType.Challenge, content: "1. Do not dispatch.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(VisionJetWarningChecklistNames.FLAPSICEWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Full flaps prohibited in icing conditions." },
+        {
+          type: ChecklistItemType.Note,
+          content: "Full flaps prohibited in icing conditions.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Challenge, content: "1. Flaps", response: "SET UP OR 50%" },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         {
           type: ChecklistItemType.Note,
           content: "WARNING: Maximum flap deflection in icing conditions is limited to 50%.",
@@ -763,14 +887,22 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.FUELFILTERBYPASSWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Fuel filter diff press too high, bypass impending." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Fuel filter diff press too high, bypass impending.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "1. Thrust Lever", response: "REDUCE (MINIMUM REQUIRED)" },
           { type: ChecklistItemType.Challenge, content: "3. Land as soon as possible.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(VisionJetWarningChecklistNames.FUELIMBALANCEWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Fuel imbalance is greater than or equal to 50 gallons." },
+        {
+          type: ChecklistItemType.Note,
+          content: "Fuel imbalance is greater than or equal to 50 gallons.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Challenge, content: "1. Fuel Quantity/Fuel Remaining", response: "COMPARE" },
         {
           type: ChecklistItemType.Challenge,
@@ -807,9 +939,17 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.FUELLOWLEFTRIGHTTOTALWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Left fuel tank is nearly empty, OR" },
-          { type: ChecklistItemType.Note, content: "Right fuel tank is nearly empty, OR" },
-          { type: ChecklistItemType.Note, content: "Total fuel quantity is low." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Left fuel tank is nearly empty, OR",
+            justification: Justification.Left,
+          },
+          {
+            type: ChecklistItemType.Note,
+            content: "Right fuel tank is nearly empty, OR",
+            justification: Justification.Left,
+          },
+          { type: ChecklistItemType.Note, content: "Total fuel quantity is low.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. Fuel Quantity", response: "CHECK" },
           { type: ChecklistItemType.Challenge, content: "2. Fuel Control Switch", response: "FULLEST TANK" },
           { type: ChecklistItemType.Challenge, content: "3. Land as soon as possible.", response: null },
@@ -819,14 +959,18 @@ export class VisionJetWarningChecklists {
               "4. Avoid excessive pitch attitudes and lateral acceleration to prevent uncovering the fuel inlet lines and possible fuel flow interruption.",
             response: null,
           },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetWarningChecklistNames.FUELPRESSURELOWWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "FDU fuel inlet pressure is low." },
+          {
+            type: ChecklistItemType.Note,
+            content: "FDU fuel inlet pressure is low.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "1. Fuel Control Switch", response: "SWITCH TO OTHER TANK" },
           {
             type: ChecklistItemType.Challenge,
@@ -860,7 +1004,11 @@ export class VisionJetWarningChecklists {
         ],
       ),
       new VisionJetChecklist(VisionJetWarningChecklistNames.FUELTEMPLOWWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Fuel temperature below operating limit." },
+        {
+          type: ChecklistItemType.Note,
+          content: "Fuel temperature below operating limit.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Challenge, content: "1. Fuel Temp (L / R)", response: "CHECK" },
         { type: ChecklistItemType.Subtitle, content: "If in flight:" },
         {
@@ -904,18 +1052,26 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.FUELVALVESBOTHFAILWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Both fuel control valves have failed." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Both fuel control valves have failed.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "1. Fuel Quantity", response: "CHECK" },
           { type: ChecklistItemType.Challenge, content: "2. Airspeed", response: "MAINTAIN FOR ADEQUATE ROLL CONTROL" },
           { type: ChecklistItemType.Challenge, content: "3. Land as soon as possible.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetWarningChecklistNames.GENERATOR1CURRENTWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Generator 1 current is too high." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Generator 1 current is too high.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "1. GEN 1 Switch", response: "OFF" },
           { type: ChecklistItemType.Challenge, content: "2. GCU Reset via MFD Controller:", response: null },
           {
@@ -966,7 +1122,7 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.GENERATOR1OVERVOLTAGEWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Generator 1 voltage is high." },
+          { type: ChecklistItemType.Note, content: "Generator 1 voltage is high.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. GEN 1 Switch", response: "OFF" },
           { type: ChecklistItemType.Challenge, content: "2. GCU Reset via MFD Controller:", response: null },
           {
@@ -1017,7 +1173,11 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.GENERATOR2CURRENTWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Generator 2 current is too high." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Generator 2 current is too high.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Challenge, content: "1. GEN 2 Switch", response: "CYCLE" },
           { type: ChecklistItemType.Challenge, content: "2. GEN 2 Amps", response: "CHECK WITHIN LIMITS" },
           { type: ChecklistItemType.Subtitle, content: "If GEN 2 amps are within limits:" },
@@ -1053,7 +1213,7 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.GENERATOR2OVERVOLTAGEWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Generator 2 voltage is high." },
+          { type: ChecklistItemType.Note, content: "Generator 2 voltage is high.", justification: Justification.Left },
           { type: ChecklistItemType.Challenge, content: "1. GEN 2 Switch", response: "CYCLE" },
           { type: ChecklistItemType.Subtitle, content: "If message persists:" },
           {
@@ -1084,7 +1244,7 @@ export class VisionJetWarningChecklists {
         ],
       ),
       new VisionJetChecklist(VisionJetWarningChecklistNames.ITTWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "ITT limits exceeded." },
+        { type: ChecklistItemType.Note, content: "ITT limits exceeded.", justification: Justification.Left },
         { type: ChecklistItemType.Subtitle, content: "If in flight:" },
         {
           type: ChecklistItemType.Challenge,
@@ -1116,7 +1276,11 @@ export class VisionJetWarningChecklists {
         { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Indent1 },
       ]),
       new VisionJetChecklist(VisionJetWarningChecklistNames.LDGGEARISUPWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Landing gear is not down and locked for landing." },
+        {
+          type: ChecklistItemType.Note,
+          content: "Landing gear is not down and locked for landing.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Subtitle, content: "If in flight:" },
         {
           type: ChecklistItemType.Challenge,
@@ -1151,7 +1315,11 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.LDGGEARSELECTEDUPWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Ldg gear should be selected down while on ground." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Ldg gear should be selected down while on ground.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Subtitle, content: "If on ground:" },
           {
             type: ChecklistItemType.Challenge,
@@ -1177,7 +1345,7 @@ export class VisionJetWarningChecklists {
         ],
       ),
       new VisionJetChecklist(VisionJetWarningChecklistNames.N1Warning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "N1 speed exceeded." },
+        { type: ChecklistItemType.Note, content: "N1 speed exceeded.", justification: Justification.Left },
         { type: ChecklistItemType.Subtitle, content: "If in flight:" },
         {
           type: ChecklistItemType.Challenge,
@@ -1209,7 +1377,7 @@ export class VisionJetWarningChecklists {
         { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Indent1 },
       ]),
       new VisionJetChecklist(VisionJetWarningChecklistNames.N2Warning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "N2 speed exceeded." },
+        { type: ChecklistItemType.Note, content: "N2 speed exceeded.", justification: Justification.Left },
         { type: ChecklistItemType.Subtitle, content: "If in flight:" },
         {
           type: ChecklistItemType.Challenge,
@@ -1241,23 +1409,27 @@ export class VisionJetWarningChecklists {
         { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Indent1 },
       ]),
       new VisionJetChecklist(VisionJetWarningChecklistNames.OILCHIPDETECTWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Engine oil debris detected." },
+        { type: ChecklistItemType.Note, content: "Engine oil debris detected.", justification: Justification.Left },
         { type: ChecklistItemType.Subtitle, content: "On ground only:" },
         { type: ChecklistItemType.Challenge, content: "1. Shut down engine. Do not dispatch.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(
         VisionJetWarningChecklistNames.OILFILTERBYPASSWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Oil filter diff press too high, bypass impending." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Oil filter diff press too high, bypass impending.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Subtitle, content: "On ground only:" },
           { type: ChecklistItemType.Challenge, content: "1. Shut down engine. Do not dispatch.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(VisionJetWarningChecklistNames.OILPRESSUREWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Engine oil pressure exceedance." },
+        { type: ChecklistItemType.Note, content: "Engine oil pressure exceedance.", justification: Justification.Left },
         { type: ChecklistItemType.Subtitle, content: "If in flight:" },
         {
           type: ChecklistItemType.Challenge,
@@ -1295,7 +1467,11 @@ export class VisionJetWarningChecklists {
         { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Indent1 },
       ]),
       new VisionJetChecklist(VisionJetWarningChecklistNames.OILTEMPERATUREWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Engine oil temperature exceedance." },
+        {
+          type: ChecklistItemType.Note,
+          content: "Engine oil temperature exceedance.",
+          justification: Justification.Left,
+        },
         { type: ChecklistItemType.Challenge, content: "1. Thrust Lever", response: "REDUCE (MINIMUM REQUIRED)" },
         {
           type: ChecklistItemType.Challenge,
@@ -1312,17 +1488,21 @@ export class VisionJetWarningChecklists {
         { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Indent1 },
       ]),
       new VisionJetChecklist(VisionJetWarningChecklistNames.STALLWARNING, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Stall warning active." },
+        { type: ChecklistItemType.Note, content: "Stall warning active.", justification: Justification.Left },
         { type: ChecklistItemType.Challenge, content: "1. AOA", response: "REDUCE" },
         { type: ChecklistItemType.Challenge, content: "2. Thrust Lever", response: "T/O" },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
       ]),
       new VisionJetChecklist(VisionJetWarningChecklistNames.STICKPUSHERWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "Stick pusher active." },
+        { type: ChecklistItemType.Note, content: "Stick pusher active.", justification: Justification.Left },
         { type: ChecklistItemType.Challenge, content: "1. AOA", response: "REDUCE" },
         { type: ChecklistItemType.Challenge, content: "2. Thrust Lever", response: "T/O" },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
-        { type: ChecklistItemType.Note, content: "CAUTION: Do not attempt to overpower the stick pusher." },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
+        {
+          type: ChecklistItemType.Note,
+          content: "CAUTION: Do not attempt to overpower the stick pusher.",
+          justification: Justification.Left,
+        },
         {
           type: ChecklistItemType.Note,
           content:
@@ -1396,19 +1576,31 @@ export class VisionJetWarningChecklists {
           response: null,
           justification: Justification.Indent1,
         },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
-        { type: ChecklistItemType.Note, content: "VREF Speeds (KIAS)" },
-        { type: ChecklistItemType.Note, content: "-------------------------------------" },
-        { type: ChecklistItemType.Note, content: "FLAPS....4000lb 4500lb 5000lb 5550lb 6000lb" },
-        { type: ChecklistItemType.Note, content: "-------------------------------------" },
-        { type: ChecklistItemType.Note, content: "UP or" },
+        { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
+        { type: ChecklistItemType.Note, content: "VREF Speeds (KIAS)", justification: Justification.Left },
+        {
+          type: ChecklistItemType.Note,
+          content: "-------------------------------------",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "FLAPS....4000lb 4500lb 5000lb 5550lb 6000lb",
+          justification: Justification.Left,
+        },
+        {
+          type: ChecklistItemType.Note,
+          content: "-------------------------------------",
+          justification: Justification.Left,
+        },
+        { type: ChecklistItemType.Note, content: "UP or", justification: Justification.Left },
         {
           type: ChecklistItemType.Note,
           content: "UNKNOWN....89....95....100.......104.....109",
           interactionType: ChecklistItemInteractionType.ScrollStop,
         },
-        { type: ChecklistItemType.Note, content: "UP (Ice" },
-        { type: ChecklistItemType.Note, content: "Contamin." },
+        { type: ChecklistItemType.Note, content: "UP (Ice", justification: Justification.Left },
+        { type: ChecklistItemType.Note, content: "Contamin.", justification: Justification.Left },
         {
           type: ChecklistItemType.Note,
           content: "Airframe)....115....122...128.......135.....140",
@@ -1419,8 +1611,8 @@ export class VisionJetWarningChecklists {
           content: "50%...........82.....87.....91..........96.....100",
           interactionType: ChecklistItemInteractionType.ScrollStop,
         },
-        { type: ChecklistItemType.Note, content: "50% (Ice" },
-        { type: ChecklistItemType.Note, content: "Contamin." },
+        { type: ChecklistItemType.Note, content: "50% (Ice", justification: Justification.Left },
+        { type: ChecklistItemType.Note, content: "Contamin.", justification: Justification.Left },
         {
           type: ChecklistItemType.Note,
           content: "Airframe).....98....104...110......115.....120",
@@ -1436,29 +1628,38 @@ export class VisionJetWarningChecklists {
         VisionJetWarningChecklistNames.TAKEOFFPITCHTRIMWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "Pitch trim not in takeoff configuration." },
+          {
+            type: ChecklistItemType.Note,
+            content: "Pitch trim not in takeoff configuration.",
+            justification: Justification.Left,
+          },
           { type: ChecklistItemType.Subtitle, content: "On ground only:" },
           { type: ChecklistItemType.Challenge, content: "1. Takeoff", response: "ABORT" },
           { type: ChecklistItemType.Challenge, content: "2. Pitch Trim", response: "ADJUST TO TAKEOFF (GREEN BAND)" },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
       new VisionJetChecklist(
         VisionJetWarningChecklistNames.THRLEVERCALIBRATIONWarning,
         VisionJetChecklistCategory.Warning,
         [
-          { type: ChecklistItemType.Note, content: "FADEC is in TLA rigging mode." },
+          { type: ChecklistItemType.Note, content: "FADEC is in TLA rigging mode.", justification: Justification.Left },
           { type: ChecklistItemType.Subtitle, content: "On ground only:" },
           { type: ChecklistItemType.Challenge, content: "1. Do not dispatch.", response: null },
-          { type: ChecklistItemType.Note, content: "Procedure Complete" },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
         ],
       ),
-      new VisionJetChecklist(VisionJetWarningChecklistNames.TT2OVERHEATWarning, VisionJetChecklistCategory.Warning, [
-        { type: ChecklistItemType.Note, content: "TT2 probes pending overheat." },
-        { type: ChecklistItemType.Challenge, content: "1. ENG. IPS Switch", response: "OFF" },
-        { type: ChecklistItemType.Challenge, content: "2. Avoid/exit icing conditions.", response: null },
-        { type: ChecklistItemType.Note, content: "Procedure Complete" },
-      ]),
+      new VisionJetChecklist(
+        VisionJetWarningChecklistNames.TT2OVERHEATWarning,
+        VisionJetChecklistCategory.Warning,
+        [
+          { type: ChecklistItemType.Note, content: "TT2 probes pending overheat.", justification: Justification.Left },
+          { type: ChecklistItemType.Challenge, content: "1. ENG. IPS Switch", response: "OFF" },
+          { type: ChecklistItemType.Challenge, content: "2. Avoid/exit icing conditions.", response: null },
+          { type: ChecklistItemType.Note, content: "Procedure Complete", justification: Justification.Left },
+        ],
+        true,
+      ),
     ];
   }
 }
