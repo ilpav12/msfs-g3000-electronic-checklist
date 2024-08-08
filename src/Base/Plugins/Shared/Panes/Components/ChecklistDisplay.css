@@ -1,5 +1,5 @@
 .checklist-display-list > div {
-  height: calc(var(--checklist-container-height) - 40px);
+  height: calc(100vh - var(--page-heading-space) - 135px);
   overflow: hidden;
   margin-right: 12px;
 }
