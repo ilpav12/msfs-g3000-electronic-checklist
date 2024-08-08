@@ -69,6 +69,7 @@ export class VisionJetWarningChecklists {
           type: ChecklistItemType.Note,
           content:
             'Note: Unless canceled, Safe Return Autoland will activate descending through 15,000 feet pressure altitude and change route to an emergency landing airport. Refer to AFM Section 10: Safety Information, "Safe Return Autoland System (if installed)".',
+          justification: Justification.Left,
         },
         { type: ChecklistItemType.Subtitle, content: "To cancel auto descent, disconnect the autopilot:" },
         {
@@ -169,11 +170,13 @@ export class VisionJetWarningChecklists {
           type: ChecklistItemType.Note,
           content:
             "WARNING: Do not press and hold AP DISC Button if CAPS handle has been pulled; if handle has been pulled, parachute will deploy regardless and pressing AP DISC will prevent the aircraft from adequately slowing prior to deployment.",
+          justification: Justification.Left,
         },
         {
           type: ChecklistItemType.Note,
           content:
             "CAUTION: Delay of AP DISC Button in response to an automatic flight control malfunction while manually overriding controls may result in excessive pitch out of trim condition and will require retrimming of the aircraft as needed.",
+          justification: Justification.Left,
         },
         { type: ChecklistItemType.Subtitle, content: "If message is displayed but CAPS handle is NOT pulled:" },
         {
@@ -881,6 +884,7 @@ export class VisionJetWarningChecklists {
         {
           type: ChecklistItemType.Note,
           content: "WARNING: Maximum flap deflection in icing conditions is limited to 50%.",
+          justification: Justification.Left,
         },
       ]),
       new VisionJetChecklist(
@@ -1507,6 +1511,7 @@ export class VisionJetWarningChecklists {
           type: ChecklistItemType.Note,
           content:
             "NOTE: If airspeed, altitude, power settings, and load factors are within normal limits, and there is no evidence of ice contamination, message should be considered a malfunction.",
+          justification: Justification.Left,
         },
         { type: ChecklistItemType.Subtitle, content: "If message is determined to be a malfunction:" },
         {

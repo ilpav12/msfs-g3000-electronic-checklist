@@ -992,6 +992,7 @@ export class VisionJetNormalChecklists {
           type: ChecklistItemType.Note,
           content:
             "CAUTION: At 25% N2, ensure positive N1 indication. Be prepared to abort start. If any of the following occur, abort start:",
+          justification: Justification.Left,
         },
         {
           type: ChecklistItemType.Note,
@@ -1022,6 +1023,7 @@ export class VisionJetNormalChecklists {
           type: ChecklistItemType.Note,
           content:
             "NOTE: The BLEED switch should not be set to BLEED until BAT 1 and BAT 2 have been ON for 2 minutes or more.",
+          justification: Justification.Left,
         },
         { type: ChecklistItemType.Challenge, content: "19. BLEED Switch", response: "BLEED" },
       ]),
@@ -1035,11 +1037,13 @@ export class VisionJetNormalChecklists {
         {
           type: ChecklistItemType.Note,
           content: "CAUTION: If TT2 HEAT FAIL Caution occurs with Engine IPS ON, dispatch is not allowed.",
+          justification: Justification.Left,
         },
         {
           type: ChecklistItemType.Note,
           content:
             "NOTE: Turn Engine IPS ON if OAT is less than or equal to 41 F (5 C) with visible moisture or visibility of less than 1 mile.",
+          justification: Justification.Left,
         },
         { type: ChecklistItemType.Challenge, content: "7. Trim", response: "SET" },
         { type: ChecklistItemType.Challenge, content: "8. Flaps", response: "50%" },
@@ -1058,6 +1062,7 @@ export class VisionJetNormalChecklists {
           type: ChecklistItemType.Note,
           content:
             "CAUTION: Above 41 degrees F (5 degrees C), probe heat may only be ON for 5 minutes (continuous) during ground operations. Extended use in warmer temperatures may damage the composite structure adjacent to the pitot probe.",
+          justification: Justification.Left,
         },
         { type: ChecklistItemType.Challenge, content: "3. PROBE HEAT Switch", response: "ON" },
         { type: ChecklistItemType.Challenge, content: "4. ENGINE IPS Switch", response: "A/R" },
@@ -1179,6 +1184,7 @@ export class VisionJetNormalChecklists {
           type: ChecklistItemType.Note,
           content:
             "CAUTION: Above 41 degrees F (5 degrees C), probe heat may only be ON for 5 minutes (continuous) during ground operations. Extended use in warmer temperatures may damage the composite structure adjacent to the pitot probe.",
+          justification: Justification.Left,
         },
         { type: ChecklistItemType.Challenge, content: "4. PROBE HEAT Switch", response: "OFF" },
         { type: ChecklistItemType.Challenge, content: "5. External Lights", response: "A/R" },
@@ -1194,6 +1200,7 @@ export class VisionJetNormalChecklists {
           type: ChecklistItemType.Note,
           content:
             "CAUTION: To avoid unnecessary FADEC System faults, do not remove aircraft power until N2 is less than 24%.",
+          justification: Justification.Left,
         },
         { type: ChecklistItemType.Challenge, content: "6. GEN 1 and GEN 2", response: "OFF" },
         { type: ChecklistItemType.Challenge, content: "7. Engine Knob", response: "OFF" },
@@ -1328,11 +1335,13 @@ export class VisionJetNormalChecklists {
             type: ChecklistItemType.Note,
             content:
               "WARNING: Ice contamination of the lifting surfaces may result in an inoperable or inadequate stall warning, which may cause an inadvertent stall. The resulting stall may lead to loss of control of the airplane. The WING/STAB IPS switch must remain at the ON position until either the entire wing is free of ice accretion or ice is no longer accreting on the aircraft. Stall Warning offset must remain ON until entire airframe is free of ice.",
+            justification: Justification.Left,
           },
           {
             type: ChecklistItemType.Note,
             content:
               "NOTE: The left wing leading edge is the primary reference area for determining if ice is accumulating on the aircraft. Ice may be visible on other areas of the aircraft as well, such as the forward windshield.",
+            justification: Justification.Left,
           },
           { type: ChecklistItemType.Challenge, content: "1. PROBE HEAT Switch", response: "ON" },
           { type: ChecklistItemType.Challenge, content: "2. ENGINE IPS Switch", response: "ON" },
