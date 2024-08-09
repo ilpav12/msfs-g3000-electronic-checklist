@@ -2,14 +2,29 @@ import { FSComponent, registerPlugin } from "@microsoft/msfs-sdk";
 import { AbstractG3000GtcPlugin, GtcService, GtcViewKeys, GtcViewLifecyclePolicy } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistFilePaths } from "@base/Shared";
 import { ChecklistGtcMfdHomePage, ChecklistGtcPage, BaseChecklistGtcPlugin, ChecklistGtcViewKeys } from "@base/GTC";
-import { LongitudeChecklistCategory, TbmChecklistCategory } from "../Shared/ChecklistSystem/Checklist";
+import {
+  LongitudeChecklistCategory,
+  TbmChecklistCategory,
+  VisionJetChecklistCategory,
+} from "../Shared/ChecklistSystem/Checklist";
 import {
   LongitudeAbbrevChecklists,
   LongitudeNormalChecklists,
   TbmAmplifiedChecklists,
   TbmNormalChecklists,
+  VisionJetAbnormalProceduresChecklists,
+  VisionJetAdvisoryChecklists,
+  VisionJetCautionAFChecklists,
+  VisionJetCautionGZChecklists,
+  VisionJetEmergencyProceduresChecklists,
+  VisionJetNormalChecklists,
+  VisionJetWarningChecklists,
 } from "../Shared/ChecklistSystem/Checklists";
-import { LongitudeChecklistRepository, TbmChecklistRepository } from "../Shared/ChecklistSystem/ChecklistRepository";
+import {
+  LongitudeChecklistRepository,
+  TbmChecklistRepository,
+  VisionJetChecklistRepository,
+} from "../Shared/ChecklistSystem/ChecklistRepository";
 import { AircraftModel } from "../Shared/Common/AircraftModel";
 
 const aircraftType = SimVar.GetSimVarValue("ATC MODEL", "string");
@@ -66,6 +81,38 @@ export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
                   service.bus,
                   [...TbmNormalChecklists.getChecklists(), ...TbmAmplifiedChecklists.getChecklists()],
                   TbmNormalChecklists.getChecklists()[1],
+                )
+              }
+            />
+          );
+        } else if (aircraftType === AircraftModel.VisionJet) {
+          return (
+            <ChecklistGtcPage
+              gtcService={service}
+              controlMode={mode}
+              displayPaneIndex={index}
+              checklistCategories={[
+                VisionJetChecklistCategory.EmergencyProcedures,
+                VisionJetChecklistCategory.Warning,
+                VisionJetChecklistCategory.AbnormalProcedures,
+                VisionJetChecklistCategory.CautionAF,
+                VisionJetChecklistCategory.CautionGZ,
+                VisionJetChecklistCategory.Advisory,
+                VisionJetChecklistCategory.Normal,
+              ]}
+              checklistRepository={
+                new VisionJetChecklistRepository(
+                  service.bus,
+                  [
+                    ...VisionJetEmergencyProceduresChecklists.getChecklists(),
+                    ...VisionJetWarningChecklists.getChecklists(),
+                    ...VisionJetAbnormalProceduresChecklists.getChecklists(),
+                    ...VisionJetCautionGZChecklists.getChecklists(),
+                    ...VisionJetCautionAFChecklists.getChecklists(),
+                    ...VisionJetAdvisoryChecklists.getChecklists(),
+                    ...VisionJetNormalChecklists.getChecklists(),
+                  ],
+                  VisionJetNormalChecklists.getChecklists()[6],
                 )
               }
             />

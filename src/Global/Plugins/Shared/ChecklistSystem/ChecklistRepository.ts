@@ -4,6 +4,8 @@ import {
   LongitudeChecklistNames,
   TbmChecklistCategory,
   TbmChecklistNames,
+  VisionJetChecklistCategory,
+  VisionJetChecklistNames,
 } from "./Checklist";
 
 export class LongitudeChecklistRepository<
@@ -14,4 +16,9 @@ export class LongitudeChecklistRepository<
 export class TbmChecklistRepository<
   Names = TbmChecklistNames,
   Category = TbmChecklistCategory,
+> extends ChecklistRepository<Names, Category> {}
+
+export class VisionJetChecklistRepository<
+  Names = VisionJetChecklistNames,
+  Category = VisionJetChecklistCategory,
 > extends ChecklistRepository<Names, Category> {}

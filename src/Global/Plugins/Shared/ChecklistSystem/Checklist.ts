@@ -4,6 +4,13 @@ import {
   LongitudeNormalChecklistNames,
   TbmNormalChecklistNames,
   TbmAmplifiedChecklistNames,
+  VisionJetEmergencyProceduresChecklistNames,
+  VisionJetWarningChecklistNames,
+  VisionJetAbnormalProceduresChecklistNames,
+  VisionJetAdvisoryChecklistNames,
+  VisionJetCautionAFChecklistNames,
+  VisionJetCautionGZChecklistNames,
+  VisionJetNormalChecklistNames,
 } from "./Checklists";
 
 /** The possible Tbm checklist categories, in the order they appear in the aircraft */
@@ -27,3 +34,26 @@ export enum TbmChecklistCategory {
 export type TbmChecklistNames = TbmNormalChecklistNames | TbmAmplifiedChecklistNames;
 
 export class TbmChecklist<N = TbmChecklistNames, C = TbmChecklistCategory> extends Checklist<N, C> {}
+
+/** The possible VisionJet checklist categories, in the order they appear in the aircraft */
+export enum VisionJetChecklistCategory {
+  EmergencyProcedures = "Emergency Procedures",
+  Warning = "Warning",
+  AbnormalProcedures = "Abnormal Procedures",
+  CautionAF = "Caution (A-F)",
+  CautionGZ = "Caution (G-Z)",
+  Advisory = "Advisory",
+  Normal = "Normal",
+}
+
+/** The possible VisionJet checklist names */
+export type VisionJetChecklistNames =
+  | VisionJetEmergencyProceduresChecklistNames
+  | VisionJetWarningChecklistNames
+  | VisionJetAbnormalProceduresChecklistNames
+  | VisionJetCautionAFChecklistNames
+  | VisionJetCautionGZChecklistNames
+  | VisionJetAdvisoryChecklistNames
+  | VisionJetNormalChecklistNames;
+
+export class VisionJetChecklist<N = VisionJetChecklistNames, C = VisionJetChecklistCategory> extends Checklist<N, C> {}

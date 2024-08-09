@@ -50,7 +50,6 @@ export class ChecklistItem<Names = ChecklistNames, Category = ChecklistCategory>
       ? ChecklistItemState.Incomplete
       : ChecklistItemState.NotApplicable,
   );
-  public height = 1;
 
   /**
    * Creates a newChecklistItem
@@ -164,37 +163,6 @@ export class ChecklistItem<Names = ChecklistNames, Category = ChecklistCategory>
           break;
       }
     }
-
-    this.setHeight(this.content, this.response, this.blanksBelow, this.imagePath);
-  }
-
-  /**
-   * Sets the height of the checklist item to be used in the calculation of the scroll position
-   * @param content The content of the checklist item
-   * @param response The response to a challenge (may be undefined or null)
-   * @param blanksBelow The number of blank lines to add below the item (optional, defaults to 0, max 10)
-   * @param imagePath The path of image to display below the item (optional)
-   */
-  public setHeight(
-    content: string,
-    response: string | undefined | null,
-    blanksBelow: number | undefined = 0,
-    imagePath: string | undefined,
-  ): void {
-    let height: number;
-    let contentLines = content.split("\n").length;
-    // if the content is height is not defined by '\n', approximate the number of lines based on the length of the content
-    if (contentLines === 1) {
-      contentLines = Math.ceil(content.length / 45);
-    }
-    const responseLines = response ? response.split("\n").length : 0;
-    height = Math.max(contentLines, responseLines);
-    height += blanksBelow;
-    if (imagePath) {
-      height += 5;
-    }
-
-    this.height = height;
   }
 }
 
@@ -353,7 +321,7 @@ export interface ChecklistLinkItemData<Names = ChecklistNames, Category = Checkl
   /**
    * The target checklist to link to.
    */
-  linkTarget: LinkTarget<Names, Category>;
+  linkTarget: LinkTarget<string, Category>;
   /**
    * The number of blank lines to add below the item (optional, defaults to 0, max 10)
    */

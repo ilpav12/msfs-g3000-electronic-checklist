@@ -82,14 +82,8 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
       "indent-4": this.props.item.justification === Justification.Indent4,
     };
 
-    const content = (this.props.item.content || "").replace(new RegExp("\n", "g"), "<br>");
     switch (this.props.item.type) {
       case ChecklistItemType.Challenge:
-        const firstContentLine = content.split("<br>")[0];
-        const remainingContent = content.split("<br>").slice(1).join("<br>");
-        const response = this.props.item.response && this.props.item.response.replace(new RegExp("\n", "g"), "<br>");
-        const firstResponseLine = response && response.split("<br>")[0];
-        const remainingResponse = response && response.split("<br>").slice(1).join("<br>");
         return (
           <div
             class={{
@@ -97,7 +91,7 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
               completed: this.props.item.state.map((v) => v === ChecklistItemState.Completed),
             }}
           >
-            <div class="checklist-challenge-first-line">
+            <div class="checklist-challenge-content">
               <svg width="36px" height="36px" viewBox="0 0 36 36">
                 <path
                   class="checklist-challenge-border"
@@ -127,44 +121,28 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
               <div
                 class={{
                   "checklist-challenge-title": true,
+                  "all-width": !this.props.item.response,
                   ...justificationClasses,
                 }}
               >
-                {firstContentLine}
+                {this.props.item.content}
               </div>
               <div
                 class={{
-                  "checklist-challenge-spacer": true,
+                  "checklist-challenge-dotted-spacer": true,
                   hidden: !this.props.item.response,
                 }}
               >
                 <div>......................................................................</div>
               </div>
+              <div class="checklist-challenge-spacer" />
               <div
                 class={{
                   "checklist-challenge-response": true,
                   hidden: !this.props.item.response,
                 }}
               >
-                {firstResponseLine}
-              </div>
-            </div>
-            <div class="checklist-challenge-remaining-lines">
-              <div
-                class={{
-                  "checklist-challenge-content": true,
-                  ...justificationClasses,
-                }}
-              >
-                {remainingContent}
-              </div>
-              <div
-                class={{
-                  "checklist-challenge-response": true,
-                  ...justificationClasses,
-                }}
-              >
-                {remainingResponse}
+                {this.props.item.response}
               </div>
             </div>
             <img
@@ -195,7 +173,7 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
                 ...justificationClasses,
               }}
             >
-              {content}
+              {this.props.item.content}
             </div>
             <img
               class={{

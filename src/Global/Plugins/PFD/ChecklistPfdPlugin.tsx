@@ -6,9 +6,20 @@ import {
   LongitudeNormalChecklists,
   TbmAmplifiedChecklists,
   TbmNormalChecklists,
+  VisionJetAbnormalProceduresChecklists,
+  VisionJetAdvisoryChecklists,
+  VisionJetCautionAFChecklists,
+  VisionJetCautionGZChecklists,
+  VisionJetEmergencyProceduresChecklists,
+  VisionJetNormalChecklists,
+  VisionJetWarningChecklists,
 } from "../Shared/ChecklistSystem/Checklists";
 import { DisplayPaneViewFactory } from "@microsoft/msfs-wtg3000-common";
-import { LongitudeChecklistRepository, TbmChecklistRepository } from "../Shared/ChecklistSystem";
+import {
+  LongitudeChecklistRepository,
+  TbmChecklistRepository,
+  VisionJetChecklistRepository,
+} from "../Shared/ChecklistSystem";
 import { AircraftModel } from "../Shared/Common/AircraftModel";
 
 const aircraftType = SimVar.GetSimVarValue("ATC MODEL", "string");
@@ -49,6 +60,31 @@ export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
                 this.binder.bus,
                 [...TbmNormalChecklists.getChecklists(), ...TbmAmplifiedChecklists.getChecklists()],
                 TbmNormalChecklists.getChecklists()[1],
+              )
+            }
+          />
+        );
+      });
+    } else if (aircraftType === AircraftModel.VisionJet) {
+      viewFactory.registerView(ChecklistPaneKeys.Checklist, (index) => {
+        return (
+          <ChecklistPane
+            halfSizeOnly={true}
+            index={index}
+            bus={this.binder.bus}
+            repo={
+              new VisionJetChecklistRepository(
+                this.binder.bus,
+                [
+                  ...VisionJetEmergencyProceduresChecklists.getChecklists(),
+                  ...VisionJetWarningChecklists.getChecklists(),
+                  ...VisionJetAbnormalProceduresChecklists.getChecklists(),
+                  ...VisionJetCautionGZChecklists.getChecklists(),
+                  ...VisionJetCautionAFChecklists.getChecklists(),
+                  ...VisionJetAdvisoryChecklists.getChecklists(),
+                  ...VisionJetNormalChecklists.getChecklists(),
+                ],
+                VisionJetNormalChecklists.getChecklists()[6],
               )
             }
           />

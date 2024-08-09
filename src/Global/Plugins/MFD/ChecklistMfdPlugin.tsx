@@ -2,12 +2,23 @@ import { FSComponent, registerPlugin } from "@microsoft/msfs-sdk";
 import { DisplayPaneViewFactory } from "@microsoft/msfs-wtg3000-common";
 import { AbstractG3000MfdPlugin } from "@microsoft/msfs-wtg3000-mfd";
 import { ChecklistFilePaths, ChecklistPane, ChecklistPaneKeys } from "@base/Shared";
-import { LongitudeChecklistRepository, TbmChecklistRepository } from "../Shared/ChecklistSystem/ChecklistRepository";
+import {
+  LongitudeChecklistRepository,
+  TbmChecklistRepository,
+  VisionJetChecklistRepository,
+} from "../Shared/ChecklistSystem/ChecklistRepository";
 import {
   LongitudeAbbrevChecklists,
   LongitudeNormalChecklists,
   TbmAmplifiedChecklists,
   TbmNormalChecklists,
+  VisionJetAbnormalProceduresChecklists,
+  VisionJetAdvisoryChecklists,
+  VisionJetCautionAFChecklists,
+  VisionJetCautionGZChecklists,
+  VisionJetEmergencyProceduresChecklists,
+  VisionJetNormalChecklists,
+  VisionJetWarningChecklists,
 } from "../Shared/ChecklistSystem/Checklists";
 import { AircraftModel } from "../Shared/Common/AircraftModel";
 
@@ -49,6 +60,31 @@ export class ChecklistMfdPlugin extends AbstractG3000MfdPlugin {
                 this.binder.bus,
                 [...TbmNormalChecklists.getChecklists(), ...TbmAmplifiedChecklists.getChecklists()],
                 TbmNormalChecklists.getChecklists()[1],
+              )
+            }
+          />
+        );
+      });
+    } else if (aircraftType === AircraftModel.VisionJet) {
+      viewFactory.registerView(ChecklistPaneKeys.Checklist, (index) => {
+        return (
+          <ChecklistPane
+            halfSizeOnly={true}
+            index={index}
+            bus={this.binder.bus}
+            repo={
+              new VisionJetChecklistRepository(
+                this.binder.bus,
+                [
+                  ...VisionJetEmergencyProceduresChecklists.getChecklists(),
+                  ...VisionJetWarningChecklists.getChecklists(),
+                  ...VisionJetAbnormalProceduresChecklists.getChecklists(),
+                  ...VisionJetCautionGZChecklists.getChecklists(),
+                  ...VisionJetCautionAFChecklists.getChecklists(),
+                  ...VisionJetAdvisoryChecklists.getChecklists(),
+                  ...VisionJetNormalChecklists.getChecklists(),
+                ],
+                VisionJetNormalChecklists.getChecklists()[6],
               )
             }
           />
