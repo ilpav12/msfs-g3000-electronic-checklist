@@ -124,8 +124,7 @@ html {
 }
 
 .checklist-challenge-title {
-  flex: 1;
-  min-width: 45%;
+  max-width: 50%;
 }
 
 .checklist-challenge-title::first-line,
@@ -137,7 +136,7 @@ html {
   max-width: 100%;
 }
 
-.checklist-challenge .checklist-challenge-spacer {
+.checklist-challenge .checklist-challenge-dotted-spacer {
   position: absolute;
   right: 10px;
   left: 45px;
@@ -145,7 +144,7 @@ html {
   letter-spacing: 3px;
 }
 
-.checklist-challenge .checklist-challenge-spacer > div {
+.checklist-challenge .checklist-challenge-dotted-spacer > div {
   height: 100%;
   overflow: hidden;
   text-overflow: clip;
@@ -153,8 +152,14 @@ html {
   word-break: break-all;
 }
 
+.checklist-challenge .checklist-challenge-spacer {
+  flex: 1;
+  min-width: 5%;
+}
+
 .checklist-challenge .checklist-challenge-response {
   text-align: right;
+  max-width: 50%;
 }
 
 .checklist-warning {

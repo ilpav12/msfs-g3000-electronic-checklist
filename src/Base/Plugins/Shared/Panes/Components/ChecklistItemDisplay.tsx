@@ -129,12 +129,13 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
               </div>
               <div
                 class={{
-                  "checklist-challenge-spacer": true,
+                  "checklist-challenge-dotted-spacer": true,
                   hidden: !this.props.item.response,
                 }}
               >
                 <div>......................................................................</div>
               </div>
+              <div class="checklist-challenge-spacer" />
               <div
                 class={{
                   "checklist-challenge-response": true,
