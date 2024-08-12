@@ -1,5 +1,7 @@
 import { ChecklistRepository } from "@base/Shared/ChecklistSystem";
 import {
+  HondaJetChecklistCategory,
+  HondaJetChecklistNames,
   LongitudeChecklistCategory,
   LongitudeChecklistNames,
   TbmChecklistCategory,
@@ -21,4 +23,9 @@ export class TbmChecklistRepository<
 export class VisionJetChecklistRepository<
   Names = VisionJetChecklistNames,
   Category = VisionJetChecklistCategory,
+> extends ChecklistRepository<Names, Category> {}
+
+export class HondaJetChecklistRepository<
+  Names = HondaJetChecklistNames,
+  Category = HondaJetChecklistCategory,
 > extends ChecklistRepository<Names, Category> {}

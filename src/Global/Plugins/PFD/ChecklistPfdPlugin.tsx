@@ -2,6 +2,7 @@ import { FSComponent, registerPlugin } from "@microsoft/msfs-sdk";
 import { AbstractG3000PfdPlugin } from "@microsoft/msfs-wtg3000-pfd";
 import { ChecklistFilePaths, ChecklistPane, ChecklistPaneKeys } from "@base/Shared";
 import {
+  HondaJetNormalChecklists,
   LongitudeAbbrevChecklists,
   LongitudeNormalChecklists,
   TbmAmplifiedChecklists,
@@ -16,6 +17,7 @@ import {
 } from "../Shared/ChecklistSystem/Checklists";
 import { DisplayPaneViewFactory } from "@microsoft/msfs-wtg3000-common";
 import {
+  HondaJetChecklistRepository,
   LongitudeChecklistRepository,
   TbmChecklistRepository,
   VisionJetChecklistRepository,
@@ -85,6 +87,23 @@ export class ChecklistPfdPlugin extends AbstractG3000PfdPlugin {
                   ...VisionJetNormalChecklists.getChecklists(),
                 ],
                 VisionJetNormalChecklists.getChecklists()[6],
+              )
+            }
+          />
+        );
+      });
+    } else if (aircraftType === AircraftModel.HondaJet) {
+      viewFactory.registerView(ChecklistPaneKeys.Checklist, (index) => {
+        return (
+          <ChecklistPane
+            halfSizeOnly={true}
+            index={index}
+            bus={this.binder.bus}
+            repo={
+              new HondaJetChecklistRepository(
+                this.binder.bus,
+                [...HondaJetNormalChecklists.getChecklists()],
+                HondaJetNormalChecklists.getChecklists()[0],
               )
             }
           />

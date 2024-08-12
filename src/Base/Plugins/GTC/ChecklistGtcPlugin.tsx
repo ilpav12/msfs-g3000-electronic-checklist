@@ -14,7 +14,6 @@ import {
   ChecklistInteractLongEvents,
   ChecklistScrollUpEvents,
   ChecklistScrollDownEvents,
-  VisionJetChecklistWheelHEvents,
 } from "@base/Shared/ChecklistSystem/ChecklistEvents";
 import { DisplayPaneIndex, DisplayPanesUserSettings } from "@microsoft/msfs-wtg3000-common";
 import { ControllableDisplayPaneIndex } from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
@@ -172,10 +171,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
         const pane = this.getExternalEventPane(event as ExternalChecklistEvent);
         const paneSettings = DisplayPanesUserSettings.getDisplayPaneManager(this.binder.bus, pane);
 
-        if (
-          Object.values(ChecklistInteractEvents).includes(event as ChecklistInteractEvents) ||
-          event === VisionJetChecklistWheelHEvents.ShortClick
-        ) {
+        if (Object.values(ChecklistInteractEvents).includes(event as ChecklistInteractEvents)) {
           const paneView = paneSettings.getSetting("displayPaneView");
           const paneVisibility = paneSettings.getSetting("displayPaneVisible");
           if (paneView.get() !== ChecklistGtcViewKeys.Checklist || !paneVisibility.get()) {
@@ -200,10 +196,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
           return true;
         }
 
-        if (
-          Object.values(ChecklistInteractLongEvents).includes(event as ChecklistInteractLongEvents) ||
-          event === VisionJetChecklistWheelHEvents.LongClick
-        ) {
+        if (Object.values(ChecklistInteractLongEvents).includes(event as ChecklistInteractLongEvents)) {
           const paneView = paneSettings.getSetting("displayPaneView");
           const paneVisibility = paneSettings.getSetting("displayPaneVisible");
           if (paneView.get() !== ChecklistGtcViewKeys.Checklist || !paneVisibility.get()) {
@@ -216,10 +209,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
           return true;
         }
 
-        if (
-          Object.values(ChecklistScrollUpEvents).includes(event as ChecklistScrollUpEvents) ||
-          event === VisionJetChecklistWheelHEvents.Clockwise
-        ) {
+        if (Object.values(ChecklistScrollUpEvents).includes(event as ChecklistScrollUpEvents)) {
           if (
             DisplayPanesUserSettings.getDisplayPaneManager(this.binder.bus, pane).getSetting("displayPaneView")
               .value === ChecklistGtcViewKeys.Checklist
@@ -237,10 +227,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
           return true;
         }
 
-        if (
-          Object.values(ChecklistScrollDownEvents).includes(event as ChecklistScrollDownEvents) ||
-          event === VisionJetChecklistWheelHEvents.AntiClockwise
-        ) {
+        if (Object.values(ChecklistScrollDownEvents).includes(event as ChecklistScrollDownEvents)) {
           if (
             DisplayPanesUserSettings.getDisplayPaneManager(this.binder.bus, pane).getSetting("displayPaneView")
               .value === ChecklistGtcViewKeys.Checklist

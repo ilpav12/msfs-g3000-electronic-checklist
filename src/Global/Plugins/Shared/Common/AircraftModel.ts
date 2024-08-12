@@ -3,4 +3,5 @@ export enum AircraftModel {
   LongitudeMod = "TT:ATCCOM.AC_MODEL_LONGITUDE.0.text",
   Tbm = "TT:ATCCOM.AC_MODEL_TBM9.0.text",
   VisionJet = "$$:SF50",
+  HondaJet = "HA420",
 }

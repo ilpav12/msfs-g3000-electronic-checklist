@@ -2107,10 +2107,10 @@
 				<TOOLTIP_TITLE_IS_DYNAMIC>True</TOOLTIP_TITLE_IS_DYNAMIC>
 				<ANIM_NAME_PUSH>checklist_wheel_pushIn</ANIM_NAME_PUSH>
 				<ANIM_NAME_KNOB>G3000_Mid_Wheel_CheckList</ANIM_NAME_KNOB>
-				<CLOCKWISE_CODE>(&gt;H:checklist_wheel_scroll_up)</CLOCKWISE_CODE>
-				<ANTICLOCKWISE_CODE>(&gt;H:checklist_wheel_scroll_down)</ANTICLOCKWISE_CODE>
-				<SHORT_CLICK_CODE>(&gt;H:checklist_wheel_select)</SHORT_CLICK_CODE>
-				<LONG_CLICK_CODE>(&gt;H:checklist_wheel_select_long)</LONG_CLICK_CODE>
+				<CLOCKWISE_CODE>(&gt;H:AS3000_Electronic_Checklist_1_Scroll_Up)</CLOCKWISE_CODE>
+				<ANTICLOCKWISE_CODE>(&gt;H:AS3000_Electronic_Checklist_1_Scroll_Down)</ANTICLOCKWISE_CODE>
+				<SHORT_CLICK_CODE>(&gt;H:AS3000_Electronic_Checklist_1_Push)</SHORT_CLICK_CODE>
+				<LONG_CLICK_CODE>(&gt;H:AS3000_Electronic_Checklist_1_Push_Long)</LONG_CLICK_CODE>
 				<LONG_CLICK_TIME>2</LONG_CLICK_TIME>
 				<WWISE_EVENT>AS580_big_knob_turn</WWISE_EVENT>
 				<COUNT>36</COUNT>

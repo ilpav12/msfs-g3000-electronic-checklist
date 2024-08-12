@@ -11,6 +11,7 @@ import {
   VisionJetCautionAFChecklistNames,
   VisionJetCautionGZChecklistNames,
   VisionJetNormalChecklistNames,
+  HondaJetNormalChecklistNames,
 } from "./Checklists";
 
 /** The possible Tbm checklist categories, in the order they appear in the aircraft */
@@ -57,3 +58,13 @@ export type VisionJetChecklistNames =
   | VisionJetNormalChecklistNames;
 
 export class VisionJetChecklist<N = VisionJetChecklistNames, C = VisionJetChecklistCategory> extends Checklist<N, C> {}
+
+/** The possible HondaJet checklist categories, in the order they appear in the aircraft */
+export enum HondaJetChecklistCategory {
+  Normal = "Normal",
+}
+
+/** The possible HondaJet checklist names */
+export type HondaJetChecklistNames = HondaJetNormalChecklistNames;
+
+export class HondaJetChecklist<N = HondaJetChecklistNames, C = HondaJetChecklistCategory> extends Checklist<N, C> {}

@@ -40,8 +40,8 @@ class LinkTarget:
 
     def __str__(self):
         return (f"  linkTarget: {{\n"
-                f"    checklistName: '{self.checklist_name}',\n"
-                f"    checklistCategory: '{self.category_name}',\n"
+                f"    checklistName: {aircraft}{category_sanitizer(category)}ChecklistNames.{category_sanitizer(self.checklist_name)},\n"
+                f"    checklistCategory: {aircraft}ChecklistCategory.{category_sanitizer(self.category_name)},\n"
                 f"  }},\n")
 
     def __repr__(self):
@@ -67,27 +67,27 @@ class ChecklistItem:
 
     def __str__(self):
         justification = f", justification: {self.justification}" if self.justification != Justification.Left else ''
-        if ((self.item_type == ChecklistItemType.Warning
+        if (self.item_type == ChecklistItemType.Warning
                 or self.item_type == ChecklistItemType.Caution
-                or self.item_type == ChecklistItemType.Note) and self.justification == Justification.Center):
-            justification = ''
+                or self.item_type == ChecklistItemType.Note):
+            justification = '' if self.justification == Justification.Center else f", justification: {self.justification}"
         blanks_below = f", blanksBelow: {self.blanks_below}" if self.blanks_below != 0 else ''
         interaction_type = f", interactionType: {self.interaction_type}" if self.interaction_type is not None else ''
 
         if self.item_type == ChecklistItemType.Challenge:
-            return f"{{ type: {self.item_type}, content: '{self.content}', response: {self.response}{justification}{blanks_below}{interaction_type} }},"
+            return f'{{ type: {self.item_type}, content: "{self.content}", response: {self.response}{justification}{blanks_below}{interaction_type} }},'
         if (self.item_type == ChecklistItemType.Warning
                 or self.item_type == ChecklistItemType.Caution
                 or self.item_type == ChecklistItemType.Note
                 or self.item_type == ChecklistItemType.Subtitle
                 or self.item_type == ChecklistItemType.PlainText):
-            return f"{{ type: {self.item_type}, content: '{self.content}'{justification}{blanks_below}{interaction_type} }},"
+            return f'{{ type: {self.item_type}, content: "{self.content}"{justification}{blanks_below}{interaction_type} }},'
         if self.item_type == ChecklistItemType.Link:
             justification = f"  justification: {self.justification},\n" if self.justification != Justification.Left else ''
             blanks_below = f"  blanksBelow: {self.blanks_below},\n" if self.blanks_below != 0 else ''
             return (f"{{\n"
                     f"  type: {self.item_type},\n"
-                    f"  content: '{self.content}',\n"
+                    f'  content: "{self.content}",\n'
                     f"{self.link_target}"       
                     f"{justification}"
                     f"{blanks_below}"
@@ -219,6 +219,7 @@ if args.file.endswith('.txt'):
 elif args.file.endswith('.json'):
     with open(args.file, 'r') as file:
         data = json.load(file)
+        aircraft = args.file.split('/')[-1].split('.')[0]
 
 
     def str_sanitizer(string: str, keep_line_breaks: bool = True) -> str:
@@ -227,6 +228,9 @@ elif args.file.endswith('.json'):
                                     .replace(" \\n", "\\n")
                                     .replace("\\n ", "\\n")).split()))
         return "\\n".join([" ".join(s.split()) for s in string.split('\n\n')])
+
+    def category_sanitizer(string: str) -> str:
+        return re.sub(r'\W+', '', string)
 
 
     checklist_categories = []
@@ -239,7 +243,7 @@ elif args.file.endswith('.json'):
         for checklist in group['checklists']:
             checklist_names.append(checklist['name'])
             # print(f"---- {category} - {checklist['name']} ----")
-            print(f"new VisionJetChecklist(VisionJet{re.sub(r'\W+', '', category)}ChecklistNames.{re.sub(r'\W+', '', checklist['name'])}, VisionJetChecklistCategory.{re.sub(r'\W+', '', category)}, [")
+            print(f"new {aircraft}Checklist({aircraft}{category_sanitizer(category)}ChecklistNames.{category_sanitizer(checklist['name'])}, {aircraft}ChecklistCategory.{category_sanitizer(category)}, [")
             for entry in checklist['entries']:
                 entry_justification = Justification[str(entry['justification']).capitalize()] if 'justification' in entry else Justification.Left
                 entry_blanks_below = entry['blanksBelow'] if 'blanksBelow' in entry else 0
@@ -331,13 +335,13 @@ elif args.file.endswith('.json'):
                         quit(f"Unknown type: {entry['type']}")
             print("]),")
         print("]")
-        print("export enum VisionJet" + category.replace(" ", "") + "ChecklistNames {")
+        print(f'export enum {aircraft}{category_sanitizer(category)}ChecklistNames {{')
         for checklist_name in checklist_names:
-            print(f"  {re.sub(r'\W+', '', checklist_name)} = '{checklist_name}',")
+            print(f"  {category_sanitizer(checklist_name)} = '{checklist_name}',")
         print("}")
 
-    print("export enum VisionJetChecklistCategories {")
+    print(f"export enum {aircraft}ChecklistCategory {{")
     for category in checklist_categories:
-        print(f"  {re.sub(r'\W+', '', category)} = '{category}',")
+        print(f"  {category_sanitizer(category)} = '{category}',")
     print("}")
 

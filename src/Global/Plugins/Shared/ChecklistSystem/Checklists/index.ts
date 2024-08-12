@@ -9,3 +9,4 @@ export * from "./VisionJetCautionGZChecklist";
 export * from "./VisionJetEmergencyProceduresChecklist";
 export * from "./VisionJetNormalChecklist";
 export * from "./VisionJetWarningChecklist";
+export * from "./HondaJetNormalChecklist";

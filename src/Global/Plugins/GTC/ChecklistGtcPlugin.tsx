@@ -3,11 +3,13 @@ import { AbstractG3000GtcPlugin, GtcService, GtcViewKeys, GtcViewLifecyclePolicy
 import { ChecklistFilePaths } from "@base/Shared";
 import { ChecklistGtcMfdHomePage, ChecklistGtcPage, BaseChecklistGtcPlugin, ChecklistGtcViewKeys } from "@base/GTC";
 import {
+  HondaJetChecklistCategory,
   LongitudeChecklistCategory,
   TbmChecklistCategory,
   VisionJetChecklistCategory,
 } from "../Shared/ChecklistSystem/Checklist";
 import {
+  HondaJetNormalChecklists,
   LongitudeAbbrevChecklists,
   LongitudeNormalChecklists,
   TbmAmplifiedChecklists,
@@ -21,6 +23,7 @@ import {
   VisionJetWarningChecklists,
 } from "../Shared/ChecklistSystem/Checklists";
 import {
+  HondaJetChecklistRepository,
   LongitudeChecklistRepository,
   TbmChecklistRepository,
   VisionJetChecklistRepository,
@@ -113,6 +116,22 @@ export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
                     ...VisionJetNormalChecklists.getChecklists(),
                   ],
                   VisionJetNormalChecklists.getChecklists()[6],
+                )
+              }
+            />
+          );
+        } else if (aircraftType === AircraftModel.HondaJet) {
+          return (
+            <ChecklistGtcPage
+              gtcService={service}
+              controlMode={mode}
+              displayPaneIndex={index}
+              checklistCategories={[HondaJetChecklistCategory.Normal]}
+              checklistRepository={
+                new HondaJetChecklistRepository(
+                  service.bus,
+                  [...HondaJetNormalChecklists.getChecklists()],
+                  HondaJetNormalChecklists.getChecklists()[0],
                 )
               }
             />

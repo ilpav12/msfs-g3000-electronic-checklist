@@ -1,0 +1,230 @@
+import { ChecklistItemType, Justification } from "@base/Shared/ChecklistSystem/ChecklistItem";
+import { HondaJetChecklist, HondaJetChecklistCategory } from "../Checklist";
+
+export enum HondaJetNormalChecklistNames {
+  BEFORESTARTINGENGINES = "BEFORE STARTING ENGINES",
+  STARTINGENGINES = "STARTING ENGINES",
+  BEFORETAXI = "BEFORE TAXI",
+  TAXI = "TAXI",
+  BEFORETAKEOFF = "BEFORE TAKEOFF",
+  AFTERTAKEOFF = "AFTER TAKEOFF",
+  CLIMB = "CLIMB",
+  CRUISE = "CRUISE",
+  DESCENT = "DESCENT",
+  APPROACH = "APPROACH",
+  BEFORELANDING = "BEFORE LANDING",
+  BALKEDLANDING = "BALKED LANDING",
+  AFTERLANDING = "AFTER LANDING",
+  SHUTDOWN = "SHUTDOWN",
+  ENGINEDRYMOTOR = "ENGINE DRY MOTOR",
+}
+
+/** A utility class to generate Vision Jet Normal checklist data. */
+export class HondaJetNormalChecklists {
+  /**
+   * Generates the Vision Jet Normal checklist data.
+   * @returns An array of Vision Jet Normal checklists.
+   **/
+  public static getChecklists(): HondaJetChecklist[] {
+    return [
+      new HondaJetChecklist(HondaJetNormalChecklistNames.BEFORESTARTINGENGINES, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "BATTERY", response: "ON" },
+        { type: ChecklistItemType.Challenge, content: "OXYGEN", response: "(Checked, ON and NORM)" },
+        { type: ChecklistItemType.Challenge, content: "PRESSURIZATION", response: "(NORM)" },
+        { type: ChecklistItemType.Challenge, content: "ELECTRICAL", response: "(ON and NORM)" },
+        { type: ChecklistItemType.Challenge, content: "ELT", response: "NORM" },
+        { type: ChecklistItemType.Challenge, content: "NOSE WHEEL STEERING", response: "NORM" },
+        { type: ChecklistItemType.Challenge, content: "LANDING GEAR", response: "DN" },
+        { type: ChecklistItemType.Challenge, content: "ALTERNATE GEAR RELEASE Handle", response: "Stowed (fully in)" },
+        { type: ChecklistItemType.Challenge, content: "PARKING BRAKE", response: "Set" },
+        { type: ChecklistItemType.Challenge, content: "FLAPS", response: "UP" },
+        { type: ChecklistItemType.Challenge, content: "Thrust Levers", response: "CUT OFF" },
+        { type: ChecklistItemType.Challenge, content: "SPEEDBRAKE<br />(if installed)", response: "RET" },
+        { type: ChecklistItemType.Challenge, content: "ICE PROTECTION", response: "(NORM and OFF)" },
+        { type: ChecklistItemType.Challenge, content: "FUEL Panel", response: "(NORM)" },
+        { type: ChecklistItemType.Challenge, content: "TRIM Panel", response: "(Checked, set and NORM)" },
+        { type: ChecklistItemType.Challenge, content: "WINDSHIELD HEAT Panel", response: "NORM" },
+        { type: ChecklistItemType.Challenge, content: "PNEUMATIC Panel", response: "(NORM)" },
+        { type: ChecklistItemType.Challenge, content: "Glareshield Panels", response: "(Dark)" },
+        { type: ChecklistItemType.Challenge, content: "Standby Instrument", response: "Checked" },
+        { type: ChecklistItemType.Challenge, content: "AVIONICS INITIALIZATION", response: "(Complete)" },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.STARTINGENGINES, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "Passenger Briefing", response: "Complete" },
+        { type: ChecklistItemType.Challenge, content: "Rudder Pedals", response: "Adjusted" },
+        { type: ChecklistItemType.Challenge, content: "Seats, Safety Belts", response: "Set" },
+        { type: ChecklistItemType.Challenge, content: "Doors", response: "Closed" },
+        { type: ChecklistItemType.Challenge, content: "PARKING BRAKE", response: "Set" },
+        { type: ChecklistItemType.Challenge, content: "CAS Messages", response: "Review" },
+        { type: ChecklistItemType.Challenge, content: "ELEC VOLTS", response: "23.5 Volts minimum" },
+        { type: ChecklistItemType.Challenge, content: "Engines", response: "(Start)" },
+        { type: ChecklistItemType.Challenge, content: "Engine Instruments", response: "Check" },
+        { type: ChecklistItemType.Challenge, content: "ENGINE ANTI-ICE", response: "As required" },
+        { type: ChecklistItemType.Challenge, content: "External Power", response: "Disconnect" },
+        { type: ChecklistItemType.Challenge, content: "Flight Controls", response: "Free and correct" },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.BEFORETAXI, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "WING ANTI-ICE", response: "As required" },
+        { type: ChecklistItemType.Challenge, content: "Avionics / Flight Data", response: "(Set/Entered)" },
+        {
+          type: ChecklistItemType.Challenge,
+          content: "Altimeters",
+          response:
+            "Set BARO, verify altitude within 75 feet of the field elevation and agree within 75 feet of each other",
+        },
+        { type: ChecklistItemType.Challenge, content: "FLAPS", response: "Set for takeoff" },
+        { type: ChecklistItemType.Challenge, content: "SPEEDBRAKE<br />(if installed)", response: "Checked then RET" },
+        { type: ChecklistItemType.Challenge, content: "CABIN SIGNS", response: "As required" },
+        { type: ChecklistItemType.Challenge, content: "PARKING BRAKE", response: "Release" },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.TAXI, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "Brakes", response: "Check" },
+        { type: ChecklistItemType.Challenge, content: "Nosewheel Steering", response: "Check" },
+        { type: ChecklistItemType.Challenge, content: "Flight Instruments", response: "Check" },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.BEFORETAKEOFF, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "FLAPS", response: "Set for takeoff" },
+        { type: ChecklistItemType.Challenge, content: "Trims", response: "Set for takeoff" },
+        { type: ChecklistItemType.Challenge, content: "SPEEDBRAKE<br />(if installed)", response: "RET" },
+        { type: ChecklistItemType.Challenge, content: "CAS Messages", response: "Review" },
+        { type: ChecklistItemType.Challenge, content: "Navigation", response: "Set" },
+        { type: ChecklistItemType.Challenge, content: "Flight Guidance", response: "Set" },
+        { type: ChecklistItemType.Challenge, content: "TOLD Data", response: "Confirmed" },
+        { type: ChecklistItemType.Challenge, content: "Takeoff Briefing", response: "Complete" },
+        { type: ChecklistItemType.Challenge, content: "Radar", response: "As required" },
+        { type: ChecklistItemType.Challenge, content: "ICE PROTECTION", response: "(As required)" },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.AFTERTAKEOFF, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "LANDING GEAR", response: "UP (Positive rate of climb)" },
+        { type: ChecklistItemType.Challenge, content: "Yaw Damper", response: "Verify engaged" },
+        { type: ChecklistItemType.Challenge, content: "FLAPS", response: "UP (130 KIAS minimum)" },
+        { type: ChecklistItemType.Challenge, content: "Thrust Levers", response: "MCT" },
+        { type: ChecklistItemType.Challenge, content: "Flight Guidance", response: "As required" },
+        { type: ChecklistItemType.Challenge, content: "ICE PROTECTION", response: "(As required)" },
+        { type: ChecklistItemType.Challenge, content: "CABIN SIGNS", response: "As required" },
+        { type: ChecklistItemType.Challenge, content: "WINDSHIELD HEAT", response: "As required" },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.CLIMB, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "Pressurization", response: "Checked" },
+        {
+          type: ChecklistItemType.Challenge,
+          content: "Altimeters<br />(transition altitude)",
+          response: "Set STD",
+          blanksBelow: 1,
+        },
+        { type: ChecklistItemType.Subtitle, content: "PRIOR TO ENTERING RVSM AIRSPACE" },
+        {
+          type: ChecklistItemType.Challenge,
+          content: "Flight Guidance",
+          response: "CPL to pilot flying,<br />select desired modes",
+        },
+        { type: ChecklistItemType.Challenge, content: "Autopilot", response: "Engage" },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.CRUISE, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Subtitle, content: "WHEN IN RVSM AIRSPACE, ONCE PER HOUR" },
+        {
+          type: ChecklistItemType.Challenge,
+          content: "Altimeters / Altitude",
+          response: "Set / Agree within 200 ft",
+          blanksBelow: 1,
+        },
+        { type: ChecklistItemType.Subtitle, content: "DURING ALL PHASES OF CRUISE FLIGHT" },
+        { type: ChecklistItemType.Challenge, content: "Systems", response: "Monitor" },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.DESCENT, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "WINDSHIELD HEAT", response: "NORM (passing 18,000 ft)" },
+        { type: ChecklistItemType.Challenge, content: "Landing Field Elevation", response: "Verify set" },
+        { type: ChecklistItemType.Challenge, content: "ENGINE ANTI-ICE", response: "As required" },
+        { type: ChecklistItemType.Challenge, content: "Altimeters<br />(transition altitude)", response: "Set" },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.APPROACH, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "Seats and Seat Belts", response: "Adjusted and secure" },
+        { type: ChecklistItemType.Challenge, content: "Passenger Briefing", response: "Complete" },
+        { type: ChecklistItemType.Challenge, content: "CABIN SIGNS", response: "As required" },
+        { type: ChecklistItemType.Challenge, content: "Avionics", response: "Set" },
+        { type: ChecklistItemType.Challenge, content: "Landing Data", response: "Set and confirmed" },
+        { type: ChecklistItemType.Challenge, content: "CAS Messages", response: "Check" },
+        { type: ChecklistItemType.Challenge, content: "Approach Briefing", response: "Complete" },
+        { type: ChecklistItemType.Challenge, content: "FLAPS", response: "TO/APPR", blanksBelow: 1 },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.BEFORELANDING, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "LANDING GEAR", response: "DN" },
+        { type: ChecklistItemType.Challenge, content: "SPEEDBRAKE (if installed)", response: "RET" },
+        { type: ChecklistItemType.Challenge, content: "FLAPS", response: "LDG<br />or TO/APPR (ice)" },
+        { type: ChecklistItemType.Challenge, content: "Airspeed", response: "Vref" },
+        { type: ChecklistItemType.Challenge, content: "Autopilot/Yaw Damper", response: "Disengage", blanksBelow: 1 },
+        {
+          type: ChecklistItemType.Link,
+          content: "AFTER LANDING Checklist",
+          linkTarget: {
+            checklistName: HondaJetNormalChecklistNames.AFTERLANDING,
+            checklistCategory: HondaJetChecklistCategory.Normal,
+          },
+        },
+        {
+          type: ChecklistItemType.Link,
+          content: "BALKED LANDING Checklist",
+          linkTarget: {
+            checklistName: HondaJetNormalChecklistNames.BALKEDLANDING,
+            checklistCategory: HondaJetChecklistCategory.Normal,
+          },
+        },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.BALKEDLANDING, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "TO/GA", response: "Press" },
+        { type: ChecklistItemType.Challenge, content: "Thrust Levers", response: "TO" },
+        { type: ChecklistItemType.Challenge, content: "Airspeed", response: "Maintain Vref", blanksBelow: 1 },
+        { type: ChecklistItemType.Subtitle, content: "WHEN CLEAR OF OBSTACLES" },
+        { type: ChecklistItemType.Challenge, content: "FLAPS", response: "TO/APPR" },
+        { type: ChecklistItemType.Challenge, content: "LANDING GEAR", response: "UP (positive rate of climb)" },
+        { type: ChecklistItemType.Challenge, content: "Yaw Damper", response: "Engaged" },
+        { type: ChecklistItemType.Challenge, content: "Airspeed", response: "Maintain Vac" },
+        {
+          type: ChecklistItemType.Challenge,
+          content: "FLAPS",
+          response: "UP (130 KIAS minimum)<br />or TO/APPR (ice)",
+        },
+        { type: ChecklistItemType.Challenge, content: "Thrust Levers", response: "MCT" },
+        { type: ChecklistItemType.Challenge, content: "Flight Guidance", response: "As required" },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.AFTERLANDING, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "CABIN SIGNS", response: "As required" },
+        { type: ChecklistItemType.Challenge, content: "ENGINE ANTI-ICE", response: "As required" },
+        { type: ChecklistItemType.Challenge, content: "SPEEDBRAKE<br />(if installed)", response: "RET" },
+        { type: ChecklistItemType.Challenge, content: "FLAPS", response: "UP or TO/APPR (ice)" },
+        { type: ChecklistItemType.Challenge, content: "Trims", response: "Set in green band" },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.SHUTDOWN, HondaJetChecklistCategory.Normal, [
+        { type: ChecklistItemType.Challenge, content: "PARKING BRAKE", response: "Set" },
+        { type: ChecklistItemType.Challenge, content: "Wheel Chocks", response: "Installed" },
+        { type: ChecklistItemType.Challenge, content: "ENGINE ANTI-ICE", response: "OFF" },
+        { type: ChecklistItemType.Challenge, content: "External Power", response: "As desired" },
+        { type: ChecklistItemType.Challenge, content: "Thrust Levers", response: "CUT OFF" },
+        { type: ChecklistItemType.Challenge, content: "CABIN SIGNS", response: "As required" },
+        { type: ChecklistItemType.Challenge, content: "OXYGEN SUPPLY", response: "Pull off" },
+        { type: ChecklistItemType.Challenge, content: "PARKING BRAKE", response: "Release" },
+        { type: ChecklistItemType.Challenge, content: "BATTERY", response: "OFF", blanksBelow: 1 },
+      ]),
+      new HondaJetChecklist(HondaJetNormalChecklistNames.ENGINEDRYMOTOR, HondaJetChecklistCategory.Normal, [
+        {
+          type: ChecklistItemType.Subtitle,
+          content: "(Motoring the engine without introducing fuel is required.)",
+          blanksBelow: 1,
+        },
+        { type: ChecklistItemType.Challenge, content: "Thurst Lever<br />(affected engine)", response: "CUT OFF" },
+        {
+          type: ChecklistItemType.Note,
+          content: "NOTE: For dry motoring ensure the thrust lever remains in the CUT OFF position.",
+          justification: Justification.Left,
+        },
+        { type: ChecklistItemType.Challenge, content: "Engine START Switch<br />(affected engine)", response: "Press" },
+        {
+          type: ChecklistItemType.Note,
+          content: "NOTE: Ensure the duration of dry motoring doesn't exceed the starter duty cycle limitation.",
+          justification: Justification.Left,
+        },
+        { type: ChecklistItemType.Challenge, content: "Engine PUSH to DISC", response: "Press" },
+      ]),
+    ];
+  }
+}
