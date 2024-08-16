@@ -1,7 +1,7 @@
 import { FSComponent, Subject, Subscription, VNode } from "@microsoft/msfs-sdk";
 import { GtcTouchButton, GtcView, GtcViewProps } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistEvents, ChecklistReadonly } from "@base/Shared/ChecklistSystem";
-import { ChecklistGtcViewKeys } from "@base/GTC/Pages/MfdHomePage/ChecklistGtcMfdHomePage";
+import { ChecklistGtcViewKeys } from "@base/GTC/ChecklistGtcViewKeys";
 
 import "./ChecklistGtcOptionsPopup.css";
 

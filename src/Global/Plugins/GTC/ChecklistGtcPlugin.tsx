@@ -1,7 +1,7 @@
 import { FSComponent, registerPlugin } from "@microsoft/msfs-sdk";
-import { AbstractG3000GtcPlugin, GtcService, GtcViewKeys, GtcViewLifecyclePolicy } from "@microsoft/msfs-wtg3000-gtc";
+import { AbstractG3000GtcPlugin, GtcService, GtcViewLifecyclePolicy } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistFilePaths } from "@base/Shared";
-import { ChecklistGtcMfdHomePage, ChecklistGtcPage, BaseChecklistGtcPlugin, ChecklistGtcViewKeys } from "@base/GTC";
+import { ChecklistGtcPage, BaseChecklistGtcPlugin, ChecklistGtcViewKeys } from "@base/GTC";
 import {
   HondaJetChecklistCategory,
   LongitudeChecklistCategory,
@@ -39,17 +39,6 @@ export class ChecklistGtcPlugin extends BaseChecklistGtcPlugin {
     if (!isAircraftSupported) {
       return;
     }
-
-    gtcService.registerView(GtcViewLifecyclePolicy.Static, GtcViewKeys.MfdHome, "MFD", function (service, mode, index) {
-      return (
-        <ChecklistGtcMfdHomePage
-          gtcService={service}
-          controlMode={mode}
-          displayPaneIndex={index}
-          supportPerfPage={aircraftType === AircraftModel.Longitude || aircraftType === AircraftModel.LongitudeMod}
-        />
-      );
-    });
 
     gtcService.registerView(
       GtcViewLifecyclePolicy.Persistent,

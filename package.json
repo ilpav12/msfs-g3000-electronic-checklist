@@ -1,6 +1,6 @@
 {
   "name": "msfs-g3000-electronic-checklist",
-  "version": "0.2.1",
+  "version": "1.1.0",
   "description": "A WorkingTitle G3000 Plugin adding Electronic Checklist functionalities",
   "scripts": {
     "build": "rollup --config"

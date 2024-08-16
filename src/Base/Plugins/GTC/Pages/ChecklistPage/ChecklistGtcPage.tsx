@@ -22,7 +22,7 @@ import {
 } from "@microsoft/msfs-wtg3000-gtc";
 import { ChecklistGtcOptionsPopup } from "@base/GTC/Pages/ChecklistPage/ChecklistGtcOptionsPopup";
 import { ChecklistRepository, ChecklistEvents } from "@base/Shared/ChecklistSystem";
-import { ChecklistGtcViewKeys } from "@base/GTC/Pages/MfdHomePage/ChecklistGtcMfdHomePage";
+import { ChecklistGtcViewKeys } from "@base/GTC/ChecklistGtcViewKeys";
 import { IncompleteChecklistsGtcPage } from "@base/GTC/Pages/ChecklistPage/IncompleteChecklistsGtcPage";
 import { TabbedContainer, TabConfiguration } from "@base/GTC/UI/TabbedContainer";
 

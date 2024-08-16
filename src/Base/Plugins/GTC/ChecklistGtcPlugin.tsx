@@ -1,11 +1,20 @@
-import { HEvent, MappedSubject } from "@microsoft/msfs-sdk";
+import {
+  DisplayComponent,
+  DisplayComponentFactory,
+  FSComponent,
+  HEvent,
+  MappedSubject,
+  VNode,
+} from "@microsoft/msfs-sdk";
 import {
   AbstractG3000GtcPlugin,
+  GtcDesignatedPaneButton,
   GtcInteractionEvent,
   GtcKnobStatePluginOverrides,
+  ImgTouchButton,
   LabelBarPluginHandlers,
 } from "@microsoft/msfs-wtg3000-gtc";
-import { ChecklistGtcViewKeys } from "@base/GTC/Pages";
+import { ChecklistGtcViewKeys } from "@base/GTC/ChecklistGtcViewKeys";
 import {
   ChecklistEvents,
   ChecklistInteractionEventAction,
@@ -17,8 +26,77 @@ import {
 } from "@base/Shared/ChecklistSystem/ChecklistEvents";
 import { DisplayPaneIndex, DisplayPanesUserSettings } from "@microsoft/msfs-wtg3000-common";
 import { ControllableDisplayPaneIndex } from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
+import { ChecklistFilePaths, ChecklistPaneKeys } from "@base/Shared";
+
+class CreateFragmentFromComponentChildren extends DisplayComponent<any> {
+  public render(): VNode {
+    return <>{this.props.children}</>;
+  }
+}
 
 export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
+  private isNavigraphPluginInstalled?: boolean;
+  private isChecklistButtonAlreadyPresent?: boolean;
+
+  /**
+   * Adds the checklist GtcDesignatedPaneButton. If a checklist button is already present, it will replace it,
+   * otherwise it will add it to the list of buttons. If Navigraph Plugin is installed, it will be placed in the fourth
+   * row, otherwise it will be placed in the third row as in the real unit.
+   */
+  public onComponentCreating = (
+    constructor: DisplayComponentFactory<any>,
+    props: any,
+  ): DisplayComponent<any> | undefined => {
+    if (props.label === "Checklists") {
+      this.isChecklistButtonAlreadyPresent = true;
+      return new GtcDesignatedPaneButton({
+        displayPaneSettingManager: this.binder.gtcService.selectedPaneSettings,
+        selectedPaneViewKeys: [ChecklistPaneKeys.Checklist],
+        label: "Checklist",
+        imgSrc: ChecklistFilePaths.ASSETS_PATH + "/icon_small_checklist.png",
+        onPressed: () => {
+          this.binder.gtcService.selectedPaneSettings.getSetting("displayPaneDesignatedView").value =
+            ChecklistPaneKeys.Checklist;
+          this.binder.gtcService.selectedPaneSettings.getSetting("displayPaneView").value = ChecklistPaneKeys.Checklist;
+          this.binder.gtcService.changePageTo(ChecklistGtcViewKeys.Checklist);
+        },
+        class: "gtc-directory-button",
+      });
+    }
+
+    if (props.label === "SimBrief") {
+      this.isNavigraphPluginInstalled = true;
+    }
+
+    if (
+      !this.isChecklistButtonAlreadyPresent &&
+      constructor.name === "ImgTouchButton" &&
+      ((this.isNavigraphPluginInstalled && (props.label === "PERF" || props.label === "Speed Bugs")) ||
+        (!this.isNavigraphPluginInstalled && props.label === "Aircraft<br>Systems"))
+    ) {
+      props.children = [
+        new ImgTouchButton(props).render(),
+        <GtcDesignatedPaneButton
+          displayPaneSettingManager={this.binder.gtcService.selectedPaneSettings}
+          selectedPaneViewKeys={[ChecklistPaneKeys.Checklist]}
+          label="Checklist"
+          imgSrc={ChecklistFilePaths.ASSETS_PATH + "/icon_small_checklist.png"}
+          onPressed={() => {
+            this.binder.gtcService.selectedPaneSettings.getSetting("displayPaneDesignatedView").value =
+              ChecklistPaneKeys.Checklist;
+            this.binder.gtcService.selectedPaneSettings.getSetting("displayPaneView").value =
+              ChecklistPaneKeys.Checklist;
+            this.binder.gtcService.changePageTo(ChecklistGtcViewKeys.Checklist);
+          }}
+          class="gtc-directory-button"
+        />,
+      ];
+      return new CreateFragmentFromComponentChildren(props);
+    }
+
+    return undefined;
+  };
+
   private readonly isChecklistPaneViewActive = MappedSubject.create(
     ([selectedPaneIndex, viewKey]) => {
       return selectedPaneIndex !== -1 && viewKey === ChecklistGtcViewKeys.Checklist;

@@ -11,7 +11,7 @@ import "./ChecklistPane.css";
  * Tbm checklist display pane view keys.
  */
 export enum ChecklistPaneKeys {
-  Checklist = "Checklist",
+  Checklist = "ElectronicChecklist",
 }
 
 export interface ChecklistPageProps<Names, Category> extends DisplayPaneViewProps {
