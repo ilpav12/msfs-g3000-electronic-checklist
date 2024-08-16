@@ -9,16 +9,17 @@ Download the current version on the
 [releases page](https://github.com/ilpav12/msfs-g3000-electronic-checklist/releases/latest). Unzip the file and copy the
 content to the `Community` folder of your MSFS installation.
 
-Documentation for the Daher TBM 930 Garmin G3000:
+Official documentation of the Garmin G3000 Electronic Checklist can be found on chapter 8.9 of this
+[pilot's guide](https://static.garmin.com/pumac/190-02046-02_a.pdf).
 
-- [Pilot's Guide](https://static.garmin.com/pumac/190-02046-02_a.pdf)
-- [Cockpit Reference Guide](https://static.garmin.com/pumac/190-02047-02_a.pdf)
+### Supported Aircraft
 
-In the TBM 930 Normal and Amplified Procedures are available. The source of the procedures is the official [pilot's
-information manual](https://www.tbm.aero/medias_front/documents/154203PIM-TBM-930-FromSN1227.pdf) from Daher.
-
-In the Longitude Normal and Abbreviated Procedures are available. The source of the procedures is the official Garmin
-Checklist [GCL file](https://ww2.txtav.com/TechnicalPublications/Downloads/MFDCheckLists?Brand=Cessna).
+| Developer | Aircraft                  | Categories                                                                                                           | Source                                                                                                                                   |
+|-----------|---------------------------|----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| Asobo     | Daher TBM 930             | Normal Procedures<br/>Amplified Procedures                                                                           | [Pilot's information manual](https://www.tbm.aero/medias_front/documents/154203PIM-TBM-930-FromSN1227.pdf)                               |
+| Asobo     | Cessna Citation Longitude | Abbreviated Proc<br/>Normal Proc                                                                                     | [Garmin Checklist File](https://ww2.txtav.com/TechnicalPublications/Downloads/MFDCheckLists?Brand=Cessna)                                |
+| FlightFX  | SF50 Vision Jet           | Emergency Procedures<br/>Warning<br/>Abnormal Procedures<br/>Caution (A-F)<br/>Caution (G-Z)<br/>Advisory<br/>Normal | [Garmin Checklist File](https://techpubs.cirrusaircraft.com/tech/pubs/checklists/view/11?avionics_brand=perspective-touch-plus&model=SF) |
+| FlightFX  | Marwan Gharibs HJet       | Normal                                                                                                               | Garmin Checklist File                                                                                                                    |
 
 ### Control Bindings
 
