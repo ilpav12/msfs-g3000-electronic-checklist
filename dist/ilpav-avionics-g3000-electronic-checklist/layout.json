@@ -8,32 +8,32 @@
     {
       "path": "html_ui/ChecklistPlugins/ChecklistGtcPlugin.css",
       "size": 19160,
-      "date": 133679411159793715
+      "date": 133683273896904156
     },
     {
       "path": "html_ui/ChecklistPlugins/ChecklistGtcPlugin.js",
-      "size": 790229,
-      "date": 133679411159793715
+      "size": 782740,
+      "date": 133683273896914128
     },
     {
       "path": "html_ui/ChecklistPlugins/ChecklistMfdPlugin.css",
       "size": 6403,
-      "date": 133679411155130774
+      "date": 133683273892092167
     },
     {
       "path": "html_ui/ChecklistPlugins/ChecklistMfdPlugin.js",
-      "size": 779453,
-      "date": 133679411155130774
+      "size": 779463,
+      "date": 133683273892098300
     },
     {
       "path": "html_ui/ChecklistPlugins/ChecklistPfdPlugin.css",
       "size": 6403,
-      "date": 133679411150852470
+      "date": 133683273887414732
     },
     {
       "path": "html_ui/ChecklistPlugins/ChecklistPfdPlugin.js",
-      "size": 779453,
-      "date": 133679411150852470
+      "size": 779463,
+      "date": 133683273887419792
     },
     {
       "path": "html_ui/ChecklistPlugins/Assets/icon_small_checklist.png",
@@ -74,11 +74,6 @@
       "path": "SimObjects/Airplanes/mg-hjet/model/HA420_interior.xml",
       "size": 220854,
       "date": 133678546592323535
-    },
-    {
-      "path": "SimObjects/Airplanes/mg-hjet/panel/Instruments/G3000/Plugins/HjetGtcPlugins.js",
-      "size": 237357,
-      "date": 133410168000000000
     },
     {
       "path": "SimObjects/Airplanes/visionjet/model/VisionJet_Interior.xml",

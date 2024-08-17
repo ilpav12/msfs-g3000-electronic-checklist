@@ -35,8 +35,10 @@ class CreateFragmentFromComponentChildren extends DisplayComponent<any> {
 }
 
 export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
-  private isNavigraphPluginInstalled?: boolean;
-  private isChecklistButtonAlreadyPresent?: boolean;
+  private isNavigraphPluginInstalled = (window as any)._pluginSystem.scripts.includes(
+    "coui://html_ui/NavigraphMods/NavigraphG3000GtcPlugin.js",
+  );
+  private isChecklistButtonAlreadyPresent = false;
 
   /**
    * Adds the checklist GtcDesignatedPaneButton. If a checklist button is already present, it will replace it,
@@ -64,18 +66,13 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
       });
     }
 
-    if (props.label === "SimBrief") {
-      this.isNavigraphPluginInstalled = true;
-    }
-
     if (
       !this.isChecklistButtonAlreadyPresent &&
       constructor.name === "ImgTouchButton" &&
-      ((this.isNavigraphPluginInstalled && (props.label === "PERF" || props.label === "Speed Bugs")) ||
-        (!this.isNavigraphPluginInstalled && props.label === "Aircraft<br>Systems"))
+      ((this.isNavigraphPluginInstalled && props.label === "Waypoint<br>Info") ||
+        (!this.isNavigraphPluginInstalled && props.label === "Music"))
     ) {
       props.children = [
-        new ImgTouchButton(props).render(),
         <GtcDesignatedPaneButton
           displayPaneSettingManager={this.binder.gtcService.selectedPaneSettings}
           selectedPaneViewKeys={[ChecklistPaneKeys.Checklist]}
@@ -90,6 +87,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
           }}
           class="gtc-directory-button"
         />,
+        new ImgTouchButton(props).render(),
       ];
       return new CreateFragmentFromComponentChildren(props);
     }
