@@ -35,8 +35,8 @@ class CreateFragmentFromComponentChildren extends DisplayComponent<any> {
 }
 
 export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
-  private isNavigraphPluginInstalled = (window as any)._pluginSystem.scripts.includes(
-    "coui://html_ui/NavigraphMods/NavigraphG3000GtcPlugin.js",
+  private isNavigraphPluginInstalled = (window as any)._pluginSystem.scripts.find((script: string) =>
+    script.includes("NavigraphG3000GtcPlugin.js"),
   );
   private isChecklistButtonAlreadyPresent = false;
 
@@ -72,6 +72,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
       ((this.isNavigraphPluginInstalled && props.label === "Waypoint<br>Info") ||
         (!this.isNavigraphPluginInstalled && props.label === "Music"))
     ) {
+      console.log((window as any)._pluginSystem.scripts);
       props.children = [
         <GtcDesignatedPaneButton
           displayPaneSettingManager={this.binder.gtcService.selectedPaneSettings}
