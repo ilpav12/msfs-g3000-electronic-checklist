@@ -26,14 +26,12 @@ export class NextChecklistControl extends ChecklistUiControl<NextChecklistContro
   /** @inheritDoc */
   protected onFocused(source: HardwareUiControl<FmsUiControlEvents>): void {
     super.onFocused(source);
-    this.isLastSub?.resume();
     this.labelRef.instance.classList.add("highlight-select");
   }
 
   /** @inheritDoc */
   protected onBlurred(source: HardwareUiControl<FmsUiControlEvents>): void {
     super.onBlurred(source);
-    this.isLastSub?.pause();
     this.labelRef.instance.classList.remove("highlight-select");
   }
 
