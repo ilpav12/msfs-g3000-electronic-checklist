@@ -159,7 +159,12 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
           this.scroll("backward");
           return true;
         case ChecklistInteractionEventAction.ScrollDown:
-          if (this.props.focusedItemType.get() === ChecklistPageFocusableItemType.NextChecklist) {
+          // Needed because of the bug scrolling back to the first item when the last item is focused
+          if (
+            this.props.focusedItemType.get() === ChecklistPageFocusableItemType.NextChecklist ||
+            (this.checklistItemListRef.instance.getFocusedIndex() === this.items.length - 1 &&
+              this.props.checklist.get().isLastChecklist)
+          ) {
             return false;
           }
           this.scroll("forward");
@@ -183,7 +188,13 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
 
     if (event.type === "check_all_items" && event.checklistName === this.props.checklist.get().name) {
       this.checklistItemListRef.instance.focus(FocusPosition.Last);
-      return this.scroll("forward"); // Scroll once more for "Go to next checklist"
+      if (
+        this.checklistItemListRef.instance.getFocusedIndex() !== this.items.length - 1 ||
+        !this.props.checklist.get().isLastChecklist
+      ) {
+        this.scroll("forward"); // Scroll once more for "Go to next checklist"
+      }
+      return true;
     }
 
     if (event.type === "checklist_reset" && event.checklistName === this.props.checklist.get().name) {
@@ -202,8 +213,12 @@ export class ChecklistDisplay<Names, Category> extends ChecklistUiControl<Checkl
     if (item && item.type === ChecklistItemType.Challenge) {
       const checklist = this.props.checklist.get();
       const itemIndex = checklist.items.indexOf(item);
-      // Scroll forward if we're completing the item, don't scroll if we're resetting the item to incomplete
-      if (item.state.get() === ChecklistItemState.Incomplete) {
+      // Scroll forward if we're completing the item, don't scroll if we're resetting the item to incomplete or if we're
+      // at the last item of the last checklist of the category
+      if (
+        item.state.get() === ChecklistItemState.Incomplete &&
+        !(checklist.isLastChecklist && itemIndex === checklist.items.length - 1)
+      ) {
         this.scroll("forward");
       }
       if (itemIndex >= 0) {
