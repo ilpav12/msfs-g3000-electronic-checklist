@@ -61,7 +61,7 @@ export class ChecklistMfdPlugin extends AbstractG3000MfdPlugin {
               new TbmChecklistRepository(
                 this.binder.bus,
                 [...TbmNormalChecklists.getChecklists(), ...TbmAmplifiedChecklists.getChecklists()],
-                TbmNormalChecklists.getChecklists()[1],
+                TbmNormalChecklists.getChecklists()[0],
               )
             }
           />

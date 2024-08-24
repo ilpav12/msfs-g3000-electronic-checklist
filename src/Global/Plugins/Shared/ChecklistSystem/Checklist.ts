@@ -1,9 +1,9 @@
 import { Checklist } from "@base/Shared/ChecklistSystem/Checklist";
 import {
-  LongitudeAbbrevChecklistNames,
-  LongitudeNormalChecklistNames,
-  TbmNormalChecklistNames,
-  TbmAmplifiedChecklistNames,
+  LongitudeAbbrevProcChecklistNames,
+  LongitudeNormalProcChecklistNames,
+  TbmNormalProceduresChecklistNames,
+  TbmAmplifiedProceduresChecklistNames,
   VisionJetEmergencyProceduresChecklistNames,
   VisionJetWarningChecklistNames,
   VisionJetAbnormalProceduresChecklistNames,
@@ -16,23 +16,23 @@ import {
 
 /** The possible Longitude checklist categories, in the order they appear in the aircraft */
 export enum LongitudeChecklistCategory {
-  Normal = "Normal Proc",
-  Abbrev = "Abbreviated Proc",
+  AbbrevProc = "Abbrev Proc",
+  NormalProc = "Normal Proc",
 }
 
 /** The possible Longitude checklist names */
-export type LongitudeChecklistNames = LongitudeNormalChecklistNames | LongitudeAbbrevChecklistNames;
+export type LongitudeChecklistNames = LongitudeAbbrevProcChecklistNames | LongitudeNormalProcChecklistNames;
 
 export class LongitudeChecklist<N = LongitudeChecklistNames, C = LongitudeChecklistCategory> extends Checklist<N, C> {}
 
 /** The possible Tbm checklist categories, in the order they appear in the aircraft */
 export enum TbmChecklistCategory {
-  Normal = "Normal Procedures",
-  Amplified = "Amplified Procedures",
+  NormalProcedures = "Normal Procedures",
+  AmplifiedProcedures = "Amplified Procedures",
 }
 
 /** The possible Tbm checklist names */
-export type TbmChecklistNames = TbmNormalChecklistNames | TbmAmplifiedChecklistNames;
+export type TbmChecklistNames = TbmNormalProceduresChecklistNames | TbmAmplifiedProceduresChecklistNames;
 
 export class TbmChecklist<N = TbmChecklistNames, C = TbmChecklistCategory> extends Checklist<N, C> {}
 

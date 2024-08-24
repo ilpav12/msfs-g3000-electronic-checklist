@@ -7,11 +7,11 @@ export enum ItemsShowcaseChecklistNames {
   BlanksBelow = "Blanks Below",
 }
 
-/** A utility class to generate normal checklist data. */
+/** A utility class to generate showcase checklist data. */
 export class ItemsShowcaseChecklists {
   /**
-   * Generates the normal checklist data.
-   * @returns An array of normal checklists.
+   * Generates the normal showcase data.
+   * @returns An array of showcase checklists.
    **/
   public static getChecklists(): Checklist[] {
     return [
@@ -19,21 +19,27 @@ export class ItemsShowcaseChecklists {
         {
           type: ChecklistItemType.Challenge,
           content: "Challenge with response",
+          color: "white",
+          fontSize: 15,
           response: "Response",
         },
         {
           type: ChecklistItemType.Challenge,
           content: "Challenge without response",
-          response: null,
+          color: "white",
+          fontSize: 15,
         },
-        { type: ChecklistItemType.Warning, content: "Warning" },
-        { type: ChecklistItemType.Caution, content: "Caution" },
-        { type: ChecklistItemType.Note, content: "Note" },
-        { type: ChecklistItemType.Subtitle, content: "Subtitle" },
-        { type: ChecklistItemType.PlainText, content: "Plain Text" },
+        {
+          type: ChecklistItemType.Text,
+          content: "Text",
+          color: "white",
+          fontSize: 15,
+        },
         {
           type: ChecklistItemType.Link,
           content: "Link to checklist (Justifications)",
+          color: "cyan",
+          fontSize: 15,
           linkTarget: {
             checklistName: ItemsShowcaseChecklistNames.Justifications,
             checklistCategory: ChecklistCategory.ItemsShowcase,
@@ -44,30 +50,40 @@ export class ItemsShowcaseChecklists {
         {
           type: ChecklistItemType.Challenge,
           content: "Challenge",
+          color: "white",
+          fontSize: 15,
           response: "Response",
           justification: Justification.Left,
         },
         {
           type: ChecklistItemType.Challenge,
           content: "Challenge",
+          color: "white",
+          fontSize: 15,
           response: "Response",
           justification: Justification.Indent1,
         },
         {
           type: ChecklistItemType.Challenge,
           content: "Challenge",
+          color: "white",
+          fontSize: 15,
           response: "Response",
           justification: Justification.Indent2,
         },
         {
           type: ChecklistItemType.Challenge,
           content: "Challenge",
+          color: "white",
+          fontSize: 15,
           response: "Response",
           justification: Justification.Indent3,
         },
         {
           type: ChecklistItemType.Challenge,
           content: "Challenge",
+          color: "white",
+          fontSize: 15,
           response: "Response",
           justification: Justification.Indent4,
         },
@@ -79,66 +95,88 @@ export class ItemsShowcaseChecklists {
           {
             type: ChecklistItemType.Challenge,
             content: "Challenge",
+            color: "white",
+            fontSize: 15,
             response: "Response",
             blanksBelow: 0,
           },
           {
             type: ChecklistItemType.Challenge,
             content: "Challenge",
+            color: "white",
+            fontSize: 15,
             response: "Response",
             blanksBelow: 1,
           },
           {
             type: ChecklistItemType.Challenge,
             content: "Challenge",
+            color: "white",
+            fontSize: 15,
             response: "Response",
             blanksBelow: 2,
           },
           {
             type: ChecklistItemType.Challenge,
             content: "Challenge",
+            color: "white",
+            fontSize: 15,
             response: "Response",
             blanksBelow: 3,
           },
           {
             type: ChecklistItemType.Challenge,
             content: "Challenge",
+            color: "white",
+            fontSize: 15,
             response: "Response",
             blanksBelow: 4,
           },
           {
             type: ChecklistItemType.Challenge,
             content: "Challenge",
+            color: "white",
+            fontSize: 15,
             response: "Response",
             blanksBelow: 5,
           },
           {
             type: ChecklistItemType.Challenge,
             content: "Challenge",
+            color: "white",
+            fontSize: 15,
             response: "Response",
             blanksBelow: 6,
           },
           {
             type: ChecklistItemType.Challenge,
             content: "Challenge",
+            color: "white",
+            fontSize: 15,
             response: "Response",
             blanksBelow: 7,
           },
           {
             type: ChecklistItemType.Challenge,
             content: "Challenge",
+            color: "white",
+            fontSize: 15,
             response: "Response",
             blanksBelow: 8,
           },
           {
             type: ChecklistItemType.Challenge,
             content: "Challenge",
+            color: "white",
+            fontSize: 15,
             response: "Response",
             blanksBelow: 9,
           },
           {
             type: ChecklistItemType.Challenge,
             content: "Challenge",
+            color: "white",
+            fontSize: 15,
             response: "Response",
             blanksBelow: 10,
           },

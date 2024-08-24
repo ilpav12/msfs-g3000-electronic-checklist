@@ -2,7 +2,7 @@
   position: absolute;
   top: 35px;
   left: 5px;
-  max-width: calc(var(--checklist-container-width) - 30px);
+  max-width: calc(100% - 30px);
   background-color: var(--checklist-color-black);
   border: 3px solid var(--checklist-color-white);
   border-radius: 10px;
@@ -15,7 +15,6 @@
   margin-right: 12px;
   height: fit-content;
   max-height: 260px;
-  font-size: 22px;
 }
 
 .checklist-category,
@@ -25,12 +24,11 @@
 
 .checklist-title {
   margin-left: 15px;
-  margin-top: 5px;
 }
 
 .checklist-category p,
 .checklist-title p {
   color: var(--checklist-color-cyan);
   padding: 4px 0 4px 1px;
-  font-size: 22px;
+  font-size: 20px;
 }

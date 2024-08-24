@@ -76,25 +76,14 @@ export class Checklist<Names = ChecklistNames, Category = ChecklistCategory> {
       return new ChecklistItem(
         data.type,
         data.content,
+        data.color,
+        data.fontSize,
         data.type === ChecklistItemType.Challenge ? data.response : undefined,
         data.type === ChecklistItemType.Link ? data.linkTarget : undefined,
         data.blanksBelow,
         "justification" in data ? data.justification : undefined,
         "imagePath" in data ? data.imagePath : undefined,
         data.interactionType,
-        data.type === ChecklistItemType.Branch
-          ? data.branchItems?.map((branchItemData) => {
-              return new ChecklistItem(
-                branchItemData.type,
-                branchItemData.content,
-                undefined,
-                branchItemData.linkTarget,
-                undefined,
-                undefined,
-                undefined,
-              );
-            })
-          : undefined,
       );
     });
 

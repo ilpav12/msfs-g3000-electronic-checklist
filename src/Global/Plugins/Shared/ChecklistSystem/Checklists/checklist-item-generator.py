@@ -6,24 +6,18 @@ from enum import StrEnum
 
 class ChecklistItemType(StrEnum):
     Challenge = 'ChecklistItemType.Challenge',
-    Warning = 'ChecklistItemType.Warning',
-    Caution = 'ChecklistItemType.Caution',
-    Note = 'ChecklistItemType.Note',
-    Subtitle = 'ChecklistItemType.Subtitle',
-    PlainText = 'ChecklistItemType.PlainText',
+    Text = 'ChecklistItemType.Text',
     Link = 'ChecklistItemType.Link',
-    Branch = 'ChecklistItemType.Branch',
-    BranchItem = 'ChecklistItemType.BranchItem',
 
 
 class Justification(StrEnum):
-    Left = 'Justification.Left',
-    Indent1 = 'Justification.Indent1',
-    Indent2 = 'Justification.Indent2',
-    Indent3 = 'Justification.Indent3',
-    Indent4 = 'Justification.Indent4',
-    Center = 'Justification.Center',
-    Right = 'Justification.Right',
+    left = 'Justification.Left',
+    indent1 = 'Justification.Indent1',
+    indent2 = 'Justification.Indent2',
+    indent3 = 'Justification.Indent3',
+    indent4 = 'Justification.Indent4',
+    center = 'Justification.Center',
+    right = 'Justification.Right',
 
 
 class ChecklistItemInteractionType(StrEnum):
@@ -40,7 +34,7 @@ class LinkTarget:
 
     def __str__(self):
         return (f"  linkTarget: {{\n"
-                f"    checklistName: {aircraft}{category_sanitizer(category)}ChecklistNames.{category_sanitizer(self.checklist_name)},\n"
+                f"    checklistName: {aircraft}{category_sanitizer(self.category_name)}ChecklistNames.{category_sanitizer(self.checklist_name)},\n"
                 f"    checklistCategory: {aircraft}ChecklistCategory.{category_sanitizer(self.category_name)},\n"
                 f"  }},\n")
 
@@ -52,13 +46,17 @@ class ChecklistItem:
     def __init__(self,
                  item_type: ChecklistItemType,
                  content: str,
+                 color: str,
+                 font_size: int,
                  response: str | None = None,
                  link_target: LinkTarget | None = None,
                  blanks_below: int = 0,
-                 justification: Justification = Justification.Left,
+                 justification: Justification | None = None,
                  interaction_type: ChecklistItemInteractionType | None = None):
         self.item_type = item_type
         self.content = content
+        self.color = color
+        self.font_size = font_size
         self.response = response
         self.link_target = link_target
         self.blanks_below = blanks_below
@@ -66,41 +64,31 @@ class ChecklistItem:
         self.interaction_type = interaction_type
 
     def __str__(self):
-        justification = f", justification: {self.justification}" if self.justification != Justification.Left else ''
-        if (self.item_type == ChecklistItemType.Warning
-                or self.item_type == ChecklistItemType.Caution
-                or self.item_type == ChecklistItemType.Note):
-            justification = '' if self.justification == Justification.Center else f", justification: {self.justification}"
-        blanks_below = f", blanksBelow: {self.blanks_below}" if self.blanks_below != 0 else ''
-        interaction_type = f", interactionType: {self.interaction_type}" if self.interaction_type is not None else ''
-
-        if self.item_type == ChecklistItemType.Challenge:
-            return f'{{ type: {self.item_type}, content: "{self.content}", response: {self.response}{justification}{blanks_below}{interaction_type} }},'
-        if (self.item_type == ChecklistItemType.Warning
-                or self.item_type == ChecklistItemType.Caution
-                or self.item_type == ChecklistItemType.Note
-                or self.item_type == ChecklistItemType.Subtitle
-                or self.item_type == ChecklistItemType.PlainText):
-            return f'{{ type: {self.item_type}, content: "{self.content}"{justification}{blanks_below}{interaction_type} }},'
-        if self.item_type == ChecklistItemType.Link:
-            justification = f"  justification: {self.justification},\n" if self.justification != Justification.Left else ''
-            blanks_below = f"  blanksBelow: {self.blanks_below},\n" if self.blanks_below != 0 else ''
-            return (f"{{\n"
-                    f"  type: {self.item_type},\n"
-                    f'  content: "{self.content}",\n'
-                    f"{self.link_target}"       
-                    f"{justification}"
-                    f"{blanks_below}"
-                    f"{interaction_type}"
-                    f"}},")
+        result =  f'{{\n'
+        result += f'  type: {self.item_type},\n'
+        result += f'  content: "{self.content}",\n'
+        result += f'  color: "{self.color}",\n'
+        result += f'  fontSize: {self.font_size},\n'
+        result += f'  response: "{self.response}",\n' if self.response else ''
+        result += f'{self.link_target}' if self.link_target else ''
+        result += f'  blanksBelow: {self.blanks_below},\n' if self.blanks_below > 0 else ''
+        result += f'  justification: {self.justification},\n' if self.justification != Justification.left else ''
+        result += f'  interactionType: {self.interaction_type},\n' if self.interaction_type else ''
+        result += f'}},'
+        return result
 
     def __repr__(self):
         return self.__str__()
 
 
+def category_sanitizer(string: str) -> str:
+    return re.sub(r'\W+', '', string.title())
+
+
 parser = argparse.ArgumentParser(description='Generate checklist items from a text file.')
 parser.add_argument('-f', '--file', type=str, help='The file to read from.')
 args = parser.parse_args()
+aircraft = args.file.split('/')[-1].split('.')[0]
 
 if args.file.endswith('.txt'):
     with open(args.file, 'r', encoding='utf-8') as f:
@@ -111,126 +99,114 @@ if args.file.endswith('.txt'):
     checklist_items: list[ChecklistItem] = []
 
     i = 0
+    category = None
     while i < len(lines):
-        if lines[i].strip() == '▲ WARNING ▲':
-            item_type = ChecklistItemType.Warning
-            content = ''
+        if lines[i].startswith('# '):
+            category = lines[i].strip()
+            print("return [")
             i += 1
-            first = True
+            continue
+
+        if lines[i].startswith('## '):
+            print(f"new {aircraft}Checklist({aircraft}{category_sanitizer(category)}ChecklistNames.{category_sanitizer(lines[i].strip())}, {aircraft}ChecklistCategory.{category_sanitizer(category)}, [")
+            i += 1
+            continue
+
+        if lines[i].strip() == 'End of procedure.':
+            print("]),")
+            i += 1
+            continue
+
+        if lines[i].strip() == '▲ WARNING ▲':
+            content = '< WARNING >'
+            i += 1
             while lines[i].strip() != '▲':
-                if first:
-                    content += f"WARNING: {lines[i].strip()}"
-                    first = False
-                else:
-                    content += f" {lines[i].strip()}"
+                content += f"<br>{lines[i].strip()}"
                 i += 1
 
-            checklist_items.append(ChecklistItem(item_type, content))
+            print(ChecklistItem(item_type=ChecklistItemType.Text,
+                                content=content,
+                                color='red',
+                                font_size=15,
+                                justification=Justification.center))
+
             i += 1
             continue
 
         if lines[i].strip() == '▲ CAUTION ▲':
-            item_type = ChecklistItemType.Caution
-            content = ''
+            content = '< CAUTION >'
             i += 1
-            first = True
             while lines[i].strip() != '▲':
-                if first:
-                    content += f"CAUTION: {lines[i].strip()}"
-                    first = False
-                else:
-                    content += f" {lines[i].strip()}"
+                content += f"<br>{lines[i].strip()}"
                 i += 1
 
-            checklist_items.append(ChecklistItem(item_type, content))
+            print(ChecklistItem(item_type=ChecklistItemType.Text,
+                                content=content,
+                                color='yellow',
+                                font_size=15,
+                                justification=Justification.center))
             i += 1
             continue
 
         if lines[i].strip() == '● NOTE ●':
-            item_type = ChecklistItemType.Note
-            content = ''
+            content = '< NOTE >'
             i += 1
-            first = True
             while lines[i].strip() != '●':
-                if first:
-                    content += f"NOTE: {lines[i].strip()}"
-                    first = False
-                else:
-                    content += f" {lines[i].strip()}"
+                content += f"<br>{lines[i].strip()}"
                 i += 1
 
-            checklist_items.append(ChecklistItem(item_type, content))
-            i += 1
-            continue
-
-        if ' .' in lines[i]:
-            item_type = ChecklistItemType.Challenge
-            level = (len(lines[i]) - len(lines[i].lstrip())) // 4
-            if level > 0:
-                justification = Justification[f"Indent{level}"]
-            else:
-                justification = Justification.Left
-
-            content = lines[i].replace(' -', '.')
-            if content.strip().startswith(' '):
-                if (len(checklist_items)
-                        and checklist_items[-1].item_type == ChecklistItemType.Challenge
-                        and not checklist_items[-1].content[0].isdigit()):
-                    letter = chr(ord(checklist_items[i - 1].content[0]) + 1)
-                else:
-                    letter = 'a'
-                content = content.replace(' .', f"{letter}.", 1)
-            content = content.split(' .')
-            content = [x.strip() for x in content if x]
-
-            for j in range(len(content)):
-                last_space = 0
-                line_len = 0
-                for k in range(len(content[j])):
-                    if content[j][k] == '\\':
-                        line_len = -1
-                    line_len += 1
-                    if content[j][k] == ' ':
-                        last_space = k
-                    if line_len > 16:
-                        content[j] = content[j][:last_space] + '\\n' + content[j][last_space + 1:]
-                        line_len = k - last_space
-                        last_space = k
-
-            response = f"'{content[1]}'" if len(content) > 1 else 'null'
-
-            checklist_items.append(ChecklistItem(item_type=item_type,
-                                                 content=content[0],
-                                                 response=response,
-                                                 justification=justification))
+            print(ChecklistItem(item_type=ChecklistItemType.Text,
+                                content=content,
+                                color='white',
+                                font_size=15,
+                                justification=Justification.center))
             i += 1
             continue
 
         level = (len(lines[i]) - len(lines[i].lstrip())) // 4
         if level > 0:
-            justification = Justification[f"Indent{level}"]
+            justification = Justification[f"indent{level}"]
         else:
-            justification = Justification.Left
-        checklist_items.append(ChecklistItem(ChecklistItemType.PlainText, lines[i].strip().replace(' :', ':'), justification=justification))
+            justification = Justification.left
+
+        if lines[i].strip().startswith('_'):
+            print(ChecklistItem(item_type=ChecklistItemType.Text,
+                                content=lines[i].strip().replace('_', ''),
+                                color='white',
+                                font_size=18))
+            i += 1
+            continue
+
+        if ' .' in lines[i]:
+            item_type = ChecklistItemType.Challenge
+
+            content = [x.strip() for x in lines[i].split(' - ')[1].split(' .') if x]
+            response = content[1] if len(content) > 1 else 'null'
+
+            print(ChecklistItem(item_type=item_type,
+                                content=content[0],
+                                color='white',
+                                font_size=15,
+                                response=response,
+                                justification=justification))
+            i += 1
+            continue
+
+        print(ChecklistItem(item_type=ChecklistItemType.Text,
+                            content=lines[i].strip(),
+                            color='white',
+                            font_size=15,
+                            justification=justification,
+                            interaction_type=ChecklistItemInteractionType.NoScrollStop))
         i += 1
 
-    for i in range(len(checklist_items)):
-        print(checklist_items[i])
 elif args.file.endswith('.json'):
     with open(args.file, 'r') as file:
         data = json.load(file)
-        aircraft = args.file.split('/')[-1].split('.')[0]
 
 
-    def str_sanitizer(string: str, keep_line_breaks: bool = True) -> str:
-        if keep_line_breaks:
-            return (" ".join((string.replace("\n", "\\n")
-                                    .replace(" \\n", "\\n")
-                                    .replace("\\n ", "\\n")).split()))
-        return "\\n".join([" ".join(s.split()) for s in string.split('\n\n')])
-
-    def category_sanitizer(string: str) -> str:
-        return re.sub(r'\W+', '', string)
+    def str_sanitizer(string: str) -> str:
+        return string.replace('\n', '<br>').replace('"', '\\"')
 
 
     checklist_categories = []
@@ -242,98 +218,20 @@ elif args.file.endswith('.json'):
         print("return [")
         for checklist in group['checklists']:
             checklist_names.append(checklist['name'])
-            # print(f"---- {category} - {checklist['name']} ----")
             print(f"new {aircraft}Checklist({aircraft}{category_sanitizer(category)}ChecklistNames.{category_sanitizer(checklist['name'])}, {aircraft}ChecklistCategory.{category_sanitizer(category)}, [")
             for entry in checklist['entries']:
-                entry_justification = Justification[str(entry['justification']).capitalize()] if 'justification' in entry else Justification.Left
-                entry_blanks_below = entry['blanksBelow'] if 'blanksBelow' in entry else 0
-                match entry['type']:
-                    case 'Challenge':
-                        entry_response = f"'{str_sanitizer(entry['response'])}'" \
-                            if 'response' in entry and entry['response'] != '' \
-                            else 'null'
-                        print(ChecklistItem(ChecklistItemType.Challenge,
-                                            str_sanitizer(entry['text']),
-                                            entry_response,
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification))
-                    case 'Subtitle':
-                        print(ChecklistItem(ChecklistItemType.Subtitle,
-                                            str_sanitizer(entry['text']),
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification))
-                    case 'Subtitle - Stop':
-                        print(ChecklistItem(ChecklistItemType.Subtitle,
-                                            str_sanitizer(entry['text']),
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification,
-                                            interaction_type=ChecklistItemInteractionType.ScrollStop))
-                    case 'Sub Step':
-                        print(ChecklistItem(ChecklistItemType.PlainText,
-                                            str_sanitizer(entry['text']),
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification))
-                    case 'Plain Text':
-                        print(ChecklistItem(ChecklistItemType.Note,
-                                            str_sanitizer(entry['text'], False),
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification))
-                    case 'Plain Text - Stop':
-                        print(ChecklistItem(ChecklistItemType.Note,
-                                            str_sanitizer(entry['text'], False),
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification,
-                                            interaction_type=ChecklistItemInteractionType.ScrollStop))
-                    case 'WARNING':
-                        print(ChecklistItem(ChecklistItemType.Warning,
-                                            'WARNING',
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification,
-                                            interaction_type=ChecklistItemInteractionType.NoScrollStop))
-                    case 'Warning':
-                        print(ChecklistItem(ChecklistItemType.Note,
-                                            str_sanitizer(entry['text'], False),
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification))
-                    case 'CAUTION':
-                        print(ChecklistItem(ChecklistItemType.Caution,
-                                            'CAUTION',
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification,
-                                            interaction_type=ChecklistItemInteractionType.NoScrollStop))
-                    case 'Caution':
-                        print(ChecklistItem(ChecklistItemType.Note,
-                                            str_sanitizer(entry['text'], False),
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification))
-                    case 'NOTE':
-                        print(ChecklistItem(ChecklistItemType.Note,
-                                            'NOTE',
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification,
-                                            interaction_type=ChecklistItemInteractionType.NoScrollStop))
-                    case 'Note':
-                        print(ChecklistItem(ChecklistItemType.Note,
-                                            str_sanitizer(entry['text'], False),
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification))
-                    case 'Link':
-                        entry_link_target = LinkTarget(data["groups"][entry['linkedChecklist']['group']]['name'],
-                                                       data["groups"][entry['linkedChecklist']['group']]['checklists'][entry['linkedChecklist']['checklist']]['name'])
-                        print(ChecklistItem(ChecklistItemType.Link,
-                                            str_sanitizer(entry['text']),
-                                            link_target=entry_link_target,
-                                            blanks_below=entry_blanks_below,
-                                            justification=entry_justification))
-                    case 'Break':
-                        print(ChecklistItem(ChecklistItemType.PlainText,
-                                            str_sanitizer(entry['text']),
-                                            blanks_below=entry_blanks_below,
-                                            justification=Justification.Center,
-                                            interaction_type=ChecklistItemInteractionType.NoScrollStop))
-                    case _:
-                        quit(f"Unknown type: {entry['type']}")
-            print("]),")
+                entry_type = next((entry_type for entry_type in data['entryTypes'] if entry_type['name'] == entry['type']), None)
+                print(ChecklistItem(item_type=ChecklistItemType.Challenge if entry_type['interaction'] == 'checkbox' else ChecklistItemType.Link if entry_type['interaction'] == 'link' else ChecklistItemType.Text,
+                                    content=str_sanitizer(entry['text']),
+                                    color=entry_type['color'],
+                                    font_size=entry_type['fontSize'],
+                                    response=str_sanitizer(entry['response']) if 'response' in entry else None,
+                                    link_target=LinkTarget(data['groups'][entry['linkedChecklist']['group']]['name'],
+                                                           data['groups'][entry['linkedChecklist']['group']]['checklists'][entry['linkedChecklist']['checklist']]['name']) if 'linkedChecklist' in entry else None,
+                                    blanks_below=entry['blanksBelow'] if 'blanksBelow' in entry else 0,
+                                    justification=Justification[entry['justification']] if 'justification' in entry else Justification.left,
+                                    interaction_type=ChecklistItemInteractionType.NoScrollStop if entry_type['interaction'] == 'noScrollStop' else None))
+            print("])," if checklist['name'] != group['checklists'][-1]['name'] else "], true),")
         print("]")
         print(f'export enum {aircraft}{category_sanitizer(category)}ChecklistNames {{')
         for checklist_name in checklist_names:
@@ -344,4 +242,3 @@ elif args.file.endswith('.json'):
     for category in checklist_categories:
         print(f"  {category_sanitizer(category)} = '{category}',")
     print("}")
-

@@ -1,4 +1,4 @@
-import { EventBus, FSComponent, Subject, Subscription, VNode } from "@microsoft/msfs-sdk";
+import { EventBus, FSComponent, ObjectSubject, Subject, Subscription, VNode } from "@microsoft/msfs-sdk";
 import {
   ChecklistItemReadonly,
   ChecklistItemState,
@@ -29,6 +29,10 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
   ChecklistItemDisplayProps<Names, Category>
 > {
   private readonly itemRef = FSComponent.createRef<HTMLDivElement>();
+  private readonly itemStyle = ObjectSubject.create({
+    color: this.props.item.color,
+    "font-size": `${this.props.item.fontSize + 6}px`,
+  });
 
   private itemStateSub?: Subscription;
 
@@ -41,6 +45,12 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
           state === ChecklistItemState.Completed
             ? ChecklistPageFocusableItemType.ChallengeChecked
             : ChecklistPageFocusableItemType.ChallengeUnchecked,
+        );
+      }
+      if (this.props.item.type === ChecklistItemType.Challenge) {
+        this.itemStyle.set(
+          "color",
+          state === ChecklistItemState.Completed ? "var(--checklist-color-green)" : this.props.item.color,
         );
       }
     }, true);
@@ -92,7 +102,7 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
             }}
           >
             <div class="checklist-challenge-content">
-              <svg width="36px" height="36px" viewBox="0 0 36 36">
+              <svg width="30px" height="30px" viewBox="0 0 36 36">
                 <path
                   class="checklist-challenge-border"
                   d="M 8.5 23.5 L 8.5 8.5 L 23.5 8.5"
@@ -124,6 +134,7 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
                   "all-width": !this.props.item.response,
                   ...justificationClasses,
                 }}
+                style={this.itemStyle}
               >
                 {this.props.item.content}
               </div>
@@ -132,6 +143,7 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
                   "checklist-challenge-dotted-spacer": true,
                   hidden: !this.props.item.response,
                 }}
+                style={this.itemStyle}
               >
                 <div>......................................................................</div>
               </div>
@@ -141,47 +153,43 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
                   "checklist-challenge-response": true,
                   hidden: !this.props.item.response,
                 }}
+                style={this.itemStyle}
               >
                 {this.props.item.response}
               </div>
             </div>
-            <img
-              class={{
-                "checklist-image": true,
-                hidden: !this.props.item.imagePath,
-              }}
-              src={this.props.item.imagePath}
-            />
+            {this.props.item.imagePath && (
+              <img
+                class={{
+                  "checklist-image": true,
+                }}
+                src={this.props.item.imagePath}
+                alt={this.props.item.imagePath.split("/").pop()}
+              />
+            )}
           </div>
         );
-      case ChecklistItemType.Warning:
-      case ChecklistItemType.Caution:
-      case ChecklistItemType.Note:
-      case ChecklistItemType.Subtitle:
-      case ChecklistItemType.PlainText:
+      case ChecklistItemType.Text:
       case ChecklistItemType.Link:
         return (
           <>
             <div
               class={{
-                "checklist-warning": this.props.item.type === ChecklistItemType.Warning,
-                "checklist-caution": this.props.item.type === ChecklistItemType.Caution,
-                "checklist-note": this.props.item.type === ChecklistItemType.Note,
-                "checklist-subtitle": this.props.item.type === ChecklistItemType.Subtitle,
-                "checklist-plain-text": this.props.item.type === ChecklistItemType.PlainText,
-                "checklist-link": this.props.item.type === ChecklistItemType.Link,
                 ...justificationClasses,
               }}
+              style={this.itemStyle}
             >
               {this.props.item.content}
             </div>
-            <img
-              class={{
-                "checklist-image": true,
-                hidden: !this.props.item.imagePath,
-              }}
-              src={this.props.item.imagePath}
-            />
+            {this.props.item.imagePath && (
+              <img
+                class={{
+                  "checklist-image": true,
+                }}
+                src={this.props.item.imagePath}
+                alt={this.props.item.imagePath.split("/").pop()}
+              />
+            )}
           </>
         );
       default:
