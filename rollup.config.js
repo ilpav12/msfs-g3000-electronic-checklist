@@ -1,6 +1,6 @@
 import css from "rollup-plugin-import-css";
 import esbuild from "rollup-plugin-esbuild";
-import typescriptPaths from "rollup-plugin-typescript-paths";
+import { typescriptPaths } from "rollup-plugin-typescript-paths";
 import fs from "node:fs";
 
 const distDir = "./dist/ilpav-avionics-g3000-electronic-checklist";
