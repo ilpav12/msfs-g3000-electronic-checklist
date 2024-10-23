@@ -185,6 +185,10 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
 
     const previousPanesState = {
       [DisplayPaneIndex.LeftPfd]: {
+        previousDesignatedView: DisplayPanesUserSettings.getDisplayPaneManager(
+          this.binder.bus,
+          DisplayPaneIndex.LeftPfd,
+        ).getSetting("displayPaneDesignatedView").value,
         previousView: DisplayPanesUserSettings.getDisplayPaneManager(
           this.binder.bus,
           DisplayPaneIndex.LeftPfd,
@@ -195,6 +199,10 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
         ).getSetting("displayPaneVisible").value,
       },
       [DisplayPaneIndex.LeftMfd]: {
+        previousDesignatedView: DisplayPanesUserSettings.getDisplayPaneManager(
+          this.binder.bus,
+          DisplayPaneIndex.LeftMfd,
+        ).getSetting("displayPaneDesignatedView").value,
         previousView: DisplayPanesUserSettings.getDisplayPaneManager(
           this.binder.bus,
           DisplayPaneIndex.LeftMfd,
@@ -205,6 +213,10 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
         ).getSetting("displayPaneVisible").value,
       },
       [DisplayPaneIndex.RightMfd]: {
+        previousDesignatedView: DisplayPanesUserSettings.getDisplayPaneManager(
+          this.binder.bus,
+          DisplayPaneIndex.RightMfd,
+        ).getSetting("displayPaneDesignatedView").value,
         previousView: DisplayPanesUserSettings.getDisplayPaneManager(
           this.binder.bus,
           DisplayPaneIndex.RightMfd,
@@ -215,6 +227,10 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
         ).getSetting("displayPaneVisible").value,
       },
       [DisplayPaneIndex.RightPfd]: {
+        previousDesignatedView: DisplayPanesUserSettings.getDisplayPaneManager(
+          this.binder.bus,
+          DisplayPaneIndex.RightPfd,
+        ).getSetting("displayPaneDesignatedView").value,
         previousView: DisplayPanesUserSettings.getDisplayPaneManager(
           this.binder.bus,
           DisplayPaneIndex.RightPfd,
@@ -249,11 +265,15 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
         const paneSettings = DisplayPanesUserSettings.getDisplayPaneManager(this.binder.bus, pane);
 
         if (Object.values(ChecklistInteractEvents).includes(event as ChecklistInteractEvents)) {
+          const paneDesignatedView = paneSettings.getSetting("displayPaneDesignatedView");
           const paneView = paneSettings.getSetting("displayPaneView");
           const paneVisibility = paneSettings.getSetting("displayPaneVisible");
           if (paneView.get() !== ChecklistGtcViewKeys.Checklist || !paneVisibility.get()) {
             previousPanesState[pane].wasVisible = paneVisibility.get();
             paneVisibility.set(true);
+
+            previousPanesState[pane].previousDesignatedView = paneDesignatedView.get();
+            paneDesignatedView.set(ChecklistPaneKeys.Checklist);
 
             previousPanesState[pane].previousView = paneView.get();
             paneView.set(ChecklistGtcViewKeys.Checklist);
@@ -274,12 +294,14 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
         }
 
         if (Object.values(ChecklistInteractLongEvents).includes(event as ChecklistInteractLongEvents)) {
+          const paneDesignatedView = paneSettings.getSetting("displayPaneDesignatedView");
           const paneView = paneSettings.getSetting("displayPaneView");
           const paneVisibility = paneSettings.getSetting("displayPaneVisible");
           if (paneView.get() !== ChecklistGtcViewKeys.Checklist || !paneVisibility.get()) {
             return false;
           }
 
+          paneDesignatedView.set(previousPanesState[pane].previousDesignatedView);
           paneView.set(previousPanesState[pane].previousView);
           paneVisibility.set(previousPanesState[pane].wasVisible);
 
