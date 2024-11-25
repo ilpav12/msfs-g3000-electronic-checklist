@@ -9,7 +9,7 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "@microsoft/msfs-garminsdk": "^0.6.0",
+    "@microsoft/msfs-garminsdk": "^2.0.5",
     "@microsoft/msfs-sdk": "^0.8.0",
     "@microsoft/msfs-types": "^1.14.6",
     "@microsoft/msfs-wtg3000-common": "^1.1.19",
