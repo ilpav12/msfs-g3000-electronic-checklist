@@ -6,3 +6,4 @@ updates:
       interval: "weekly"
     allow:
       - dependency-name: "@microsoft/msfs-*"
+        versions: ["0.x", "1.x"]

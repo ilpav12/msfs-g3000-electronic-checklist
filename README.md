@@ -1,7 +1,12 @@
-# MSFS G3000 Electronic Checklist
+# MSFS 2020 G3000 Electronic Checklist
 
 This is a plugin for the Working Title G3000 for the Microsoft Flight Simulator adding Electronic
 Checklist functionalities.
+
+## MSFS 2024 Support
+
+MSFS 2024 is not planned as this feature is now natively supported by 
+[WT v2 avionics](https://microsoft.github.io/msfs-avionics-mirror/2024/docs/g3000/features/electronic-checklists).
 
 ## Pilots
 
@@ -44,8 +49,8 @@ where `[index]` is a number from 1 to 4 corresponding to a controllable pane:
 Feel free to open issues or send pull requests.
 
 This is an adaptation of the SR22T G1000 Electronic Checklist by
-[Working Title](https://github.com/microsoft/msfs-avionics-mirror/tree/main/src/workingtitle-aircraft-sr22t) and
-utilizes their Avionics Frameworks.
+[Working Title](https://github.com/microsoft/msfs-avionics-mirror/tree/v1/src/workingtitle-aircraft-sr22t/src/Plugins/Shared/ChecklistSystem)
+and utilizes their Avionics Frameworks.
 
 In order to build the project, install the dependencies with `npm install` and run `npm run build` to generate the
 plugin files in the `dist` folder. Then symlink or copy the files to the `Community` folder of your MSFS installation.
