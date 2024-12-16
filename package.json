@@ -12,7 +12,7 @@
     "@microsoft/msfs-garminsdk": "^0.6.0",
     "@microsoft/msfs-sdk": "^0.8.0",
     "@microsoft/msfs-types": "^1.14.6",
-    "@microsoft/msfs-wtg3000-common": "^1.1.19",
+    "@microsoft/msfs-wtg3000-common": "^2.0.4",
     "@microsoft/msfs-wtg3000-gtc": "^1.1.19",
     "@microsoft/msfs-wtg3000-mfd": "^1.1.19",
     "@microsoft/msfs-wtg3000-pfd": "^1.1.19",
