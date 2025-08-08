@@ -24,9 +24,9 @@ import {
   ChecklistScrollUpEvents,
   ChecklistScrollDownEvents,
 } from "@base/Shared/ChecklistSystem/ChecklistEvents";
-import { DisplayPaneIndex, DisplayPanesUserSettings } from "@microsoft/msfs-wtg3000-common";
+import { DisplayPaneIndex, DisplayPanesUserSettings, G3000FilePaths } from "@microsoft/msfs-wtg3000-common";
 import { ControllableDisplayPaneIndex } from "@microsoft/msfs-wtg3000-common/Components/DisplayPanes/DisplayPaneTypes";
-import { ChecklistFilePaths, ChecklistPaneKeys } from "@base/Shared";
+import { ChecklistPaneKeys } from "@base/Shared";
 
 class CreateFragmentFromComponentChildren extends DisplayComponent<any> {
   public render(): VNode {
@@ -51,7 +51,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
         displayPaneSettingManager: this.binder.gtcService.selectedPaneSettings,
         selectedPaneViewKeys: [ChecklistPaneKeys.Checklist],
         label: "Checklist",
-        imgSrc: ChecklistFilePaths.ASSETS_PATH + "/icon_small_checklist.png",
+        imgSrc: `${G3000FilePaths.ASSETS_PATH}/Images/GTC/icon_small_checklist.png`,
         onPressed: () => {
           this.binder.gtcService.selectedPaneSettings.getSetting("displayPaneDesignatedView").value =
             ChecklistPaneKeys.Checklist;
@@ -68,7 +68,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
           displayPaneSettingManager={this.binder.gtcService.selectedPaneSettings}
           selectedPaneViewKeys={[ChecklistPaneKeys.Checklist]}
           label="Checklist"
-          imgSrc={ChecklistFilePaths.ASSETS_PATH + "/icon_small_checklist.png"}
+          imgSrc={`${G3000FilePaths.ASSETS_PATH}/Images/GTC/icon_small_checklist.png`}
           onPressed={() => {
             this.binder.gtcService.selectedPaneSettings.getSetting("displayPaneDesignatedView").value =
               ChecklistPaneKeys.Checklist;
