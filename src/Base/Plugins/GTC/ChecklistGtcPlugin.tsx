@@ -35,15 +35,11 @@ class CreateFragmentFromComponentChildren extends DisplayComponent<any> {
 }
 
 export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
-  private isNavigraphPluginInstalled = (window as any)._pluginSystem.scripts.find((script: string) =>
-    script.includes("NavigraphG3000GtcPlugin.js"),
-  );
   private isChecklistButtonAlreadyPresent = false;
 
   /**
    * Adds the checklist GtcDesignatedPaneButton. If a checklist button is already present, it will replace it,
-   * otherwise it will add it to the list of buttons. If Navigraph Plugin is installed, it will be placed in the fourth
-   * row, otherwise it will be placed in the third row as in the real unit.
+   * otherwise it will add it to the list of buttons in the third row in second place as in the real unit.
    */
   public onComponentCreating = (
     constructor: DisplayComponentFactory<any>,
@@ -66,13 +62,7 @@ export class BaseChecklistGtcPlugin extends AbstractG3000GtcPlugin {
       });
     }
 
-    if (
-      !this.isChecklistButtonAlreadyPresent &&
-      constructor.name === "ImgTouchButton" &&
-      ((this.isNavigraphPluginInstalled && props.label === "Waypoint<br>Info") ||
-        (!this.isNavigraphPluginInstalled && props.label === "Music"))
-    ) {
-      console.log((window as any)._pluginSystem.scripts);
+    if (!this.isChecklistButtonAlreadyPresent && constructor.name === "ImgTouchButton" && props.label === "Music") {
       props.children = [
         <GtcDesignatedPaneButton
           displayPaneSettingManager={this.binder.gtcService.selectedPaneSettings}
