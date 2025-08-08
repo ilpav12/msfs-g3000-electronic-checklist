@@ -1,4 +1,5 @@
 import { EventBus, FSComponent, ObjectSubject, Subject, Subscription, VNode } from "@microsoft/msfs-sdk";
+import { G3000FilePaths } from "@microsoft/msfs-wtg3000-common";
 import {
   ChecklistItemReadonly,
   ChecklistItemState,
@@ -102,32 +103,22 @@ export class ChecklistItemDisplay<Names, Category> extends ChecklistUiControl<
             }}
           >
             <div class="checklist-challenge-content">
-              <svg width="30px" height="30px" viewBox="0 0 36 36">
-                <path
-                  class="checklist-challenge-border"
-                  d="M 8.5 23.5 L 8.5 8.5 L 23.5 8.5"
-                  transform="matrix(1.125,0,0,1.125,0,0)"
-                  stroke="#CECECE"
-                  stroke-width="1"
-                  fill="none"
-                />
-                <path
-                  class="checklist-challenge-border"
-                  d="M 23.5 8.5 L 23.5 24 M 23.5 23.5 L 8.5 23.5"
-                  transform="matrix(1.125,0,0,1.125,0,0)"
-                  stroke="#8B8B8B"
-                  stroke-width="1"
-                  fill="none"
-                />
-                <path
-                  class="checklist-challenge-mark"
-                  d="M 9 15 L 15 22 L 23 12"
-                  transform="matrix(1.125,0,0,1.125,0,0)"
-                  stroke="#00FF00"
-                  stroke-width="3"
-                  fill="none"
-                />
-              </svg>
+              <img
+                src={`${G3000FilePaths.ASSETS_PATH}/Images/Common/icon_checklist_complete.png`}
+                alt="checklist complete"
+                class={{
+                  "checklist-challenge-mark": true,
+                  hidden: this.props.item.state.map((v) => v === ChecklistItemState.Incomplete),
+                }}
+              />
+              <img
+                src={`${G3000FilePaths.ASSETS_PATH}/Images/Common/icon_checklist_incomplete.png`}
+                alt="checklist incomplete"
+                class={{
+                  "checklist-challenge-mark": true,
+                  hidden: this.props.item.state.map((v) => v === ChecklistItemState.Completed),
+                }}
+              />
               <div
                 class={{
                   "checklist-challenge-title": true,

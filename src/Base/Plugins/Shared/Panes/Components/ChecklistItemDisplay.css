@@ -99,20 +99,11 @@ html {
   justify-content: space-between;
 }
 
-.checklist-challenge svg {
-  flex-shrink: 0;
-}
-
-.checklist-challenge .checklist-challenge-mark {
-  display: none;
-}
-
-.checklist-challenge.completed svg .checklist-challenge-mark {
-  display: inherit;
-}
-
-.checklist-challenge.completed svg .checklist-challenge-border {
-  stroke: var(--checklist-color-green) !important;
+.checklist-challenge-mark {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  margin-top: 6px;
 }
 
 .checklist-challenge-title,
