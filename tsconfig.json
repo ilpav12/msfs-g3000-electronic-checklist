@@ -1,33 +1,22 @@
 {
   "compilerOptions": {
-    "incremental": true,
     "target": "es2017",
     "module": "es2015",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "build",
     "declaration": false,
     "declarationMap": false,
     "removeComments": false,
     "moduleResolution": "node",
     "jsxFactory": "FSComponent.buildComponent",
     "jsxFragmentFactory": "FSComponent.Fragment",
-    "jsx": "react",
+    "jsx": "preserve",
+    "baseUrl": "./",
     "paths": {
-      "*": ["/*"],
-      "@base/*": ["./src/Base/Plugins/*"]
+      "@base/*": ["src/Base/Plugins/*"]
     }
   },
-  "exclude": ["../Gulpfile.ts", "**/node_modules", "**/build", "**/dist"],
-  "ts-node": {
-    "transpiler": "@sucrase/ts-node-plugin",
-    "transpileOnly": true,
-    "compilerOptions": {
-      "module": "commonjs"
-    },
-    "files": true
-  }
+  "exclude": ["**/node_modules", "**/build", "**/dist"],
 }

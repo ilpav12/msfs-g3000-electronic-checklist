@@ -1,6 +1,6 @@
 {
   "name": "msfs-g3000-electronic-checklist",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "A WorkingTitle G3000 Plugin adding Electronic Checklist functionalities",
   "scripts": {
     "build": "rollup --config"
@@ -17,12 +17,12 @@
     "@microsoft/msfs-wtg3000-mfd": "^1.1.19",
     "@microsoft/msfs-wtg3000-pfd": "^1.1.19",
     "@rollup/plugin-alias": "^5.1.0",
-    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "@types/node": "^20.14.10",
-    "prettier": "3.3.2",
+    "prettier": "^3.3.2",
     "rollup": "^4.22.4",
     "rollup-plugin-esbuild": "^6.1.1",
-    "rollup-plugin-import-css": "^3.5.0",
+    "rollup-plugin-import-css": "^4.0.2",
     "rollup-plugin-typescript-paths": "^1.5.0",
     "tslib": "^2.6.3",
     "typescript": "^5.5.4"
