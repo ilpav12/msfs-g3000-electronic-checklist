@@ -9,3 +9,7 @@ updates:
     ignore:
       - dependency-name: "@microsoft/msfs-*"
         versions: [">=2.0.0"]
+    groups:
+      msfs-dependencies:
+        patterns:
+          - "@microsoft/msfs-*"
