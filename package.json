@@ -20,7 +20,7 @@
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@types/node": "^20.14.10",
     "prettier": "^3.3.2",
-    "rollup": "^4.22.4",
+    "rollup": "^4.59.0",
     "rollup-plugin-esbuild": "^6.1.1",
     "rollup-plugin-import-css": "^4.0.2",
     "rollup-plugin-typescript-paths": "^1.5.0",
