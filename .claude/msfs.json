@@ -1,0 +1,7 @@
+{
+  "aircraft": "G3000 electronic checklist (SDK v1)",
+  "suite": "g3000",
+  "sources": {
+    "@microsoft/msfs-*": "C:/Users/ilpav/WebstormProjects/msfs-avionics-mirror-v1/src"
+  }
+}
